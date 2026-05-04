@@ -1,0 +1,34 @@
+{
+  "watchfaces": [
+    {
+      "slug": "sample-minimal-editorial",
+      "path": "/generated/watchfaces/sample-minimal-editorial/",
+      "spec": "/generated/watchfaces/sample-minimal-editorial/spec.json",
+      "preview": "/generated/watchfaces/sample-minimal-editorial/preview.svg",
+      "package": "/generated/watchfaces/sample-minimal-editorial/watchface-package.zip",
+      "createdAt": "2026-05-04T14:45:23.285Z",
+      "request": {
+        "direction": "minimal editorial watchface with a warm accent",
+        "style": "minimal",
+        "mood": "calm",
+        "language": "en-US",
+        "mustInclude": [
+          "time",
+          "date",
+          "battery"
+        ],
+        "avoid": [
+          "clutter",
+          "overlap",
+          "low contrast"
+        ],
+        "palette": [
+          "#101318",
+          "#F4F1EA",
+          "#D0A85C"
+        ]
+      },
+      "theme": "minimal"
+    }
+  ]
+}

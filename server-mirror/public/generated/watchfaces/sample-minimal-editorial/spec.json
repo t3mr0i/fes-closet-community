@@ -1,0 +1,80 @@
+{
+  "specVersion": "watchface-spec/v1",
+  "type": "watchface-design",
+  "request": {
+    "direction": "minimal editorial watchface with a warm accent",
+    "style": "minimal",
+    "mood": "calm",
+    "language": "en-US",
+    "mustInclude": [
+      "time",
+      "date",
+      "battery"
+    ],
+    "avoid": [
+      "clutter",
+      "overlap",
+      "low contrast"
+    ],
+    "palette": [
+      "#101318",
+      "#F4F1EA",
+      "#D0A85C"
+    ]
+  },
+  "canvas": {
+    "width": 152,
+    "height": 704,
+    "orientation": "vertical"
+  },
+  "theme": "minimal",
+  "palette": {
+    "background": "#101318",
+    "foreground": "#F4F1EA",
+    "accent": "#D0A85C",
+    "muted": "#8B919B"
+  },
+  "layout": {
+    "time": {
+      "x": 12,
+      "y": 72,
+      "width": 128,
+      "height": 108,
+      "align": "left",
+      "fontSize": 38,
+      "weight": 700,
+      "letterSpacing": 0
+    },
+    "date": {
+      "x": 14,
+      "y": 194,
+      "width": 124,
+      "height": 28,
+      "align": "left",
+      "fontSize": 13,
+      "weight": 500,
+      "letterSpacing": 0
+    },
+    "battery": {
+      "x": 14,
+      "y": 610,
+      "width": 56,
+      "height": 14,
+      "align": "left",
+      "fontSize": 10,
+      "weight": 600,
+      "letterSpacing": 0
+    },
+    "accentBand": {
+      "x": 12,
+      "y": 192,
+      "width": 10,
+      "height": 240
+    }
+  },
+  "copy": {
+    "time": "12:45",
+    "date": "Mon 4 May"
+  },
+  "generationPrompt": "Create a single wearable watchface design for a Sony FES watch. Canvas: 152x704, vertical. Theme: minimal. Direction: minimal editorial watchface with a warm accent. Language: en-US. Must include: time, date, battery. Avoid: clutter, overlap, low contrast. Palette: background #101318, foreground #F4F1EA, accent #D0A85C, muted #8B919B. Layout summary: time at y=72, date at y=194, battery at y=610. Return a structured JSON object with layers, typography, palette, and export-ready asset notes only."
+}

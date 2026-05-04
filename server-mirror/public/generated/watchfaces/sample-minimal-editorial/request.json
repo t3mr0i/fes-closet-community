@@ -1,0 +1,21 @@
+{
+  "direction": "minimal editorial watchface with a warm accent",
+  "style": "minimal",
+  "mood": "calm",
+  "language": "en-US",
+  "mustInclude": [
+    "time",
+    "date",
+    "battery"
+  ],
+  "avoid": [
+    "clutter",
+    "overlap",
+    "low contrast"
+  ],
+  "palette": [
+    "#101318",
+    "#F4F1EA",
+    "#D0A85C"
+  ]
+}

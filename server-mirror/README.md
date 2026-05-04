@@ -1,14 +1,15 @@
-# FES Closet Static Server Mirror
+# FES Closet Static Mirror
 
-This folder is a cheap-server/static-hosting option for the old Sony endpoints.
+This folder is the GitHub-native hosting layer for the old Sony content.
 
 It contains copied local APK data:
 
 - `public/api/` - store JSON metadata
 - `public/storage/` - icons, images, bundled `skin.zip` files
 - `public/fw/` - bundled firmware files
+- `public/generated/` - community-generated watchface packages
 
-For the current offline APK patch, the app still uses bundled local assets. This mirror is useful if we later want the app to point at a community-hosted URL instead.
+The current offline APK patch still uses bundled local assets. The mirror is for community hosting and for generated watchfaces that should stay available on GitHub Pages.
 
 ## Local test
 
@@ -22,12 +23,9 @@ or any static HTTP server:
 python3 -m http.server 8080 --directory public
 ```
 
-## Cheap deployment targets
+## Deployment target
 
-- Cloudflare Pages: free/static, good default.
-- GitHub Pages: free/static, public repo required unless paid/private setup.
-- Netlify/Vercel: free/static, simple drag-and-drop or git deploy.
-- Small VPS: more control, but more maintenance.
+Use GitHub Pages with GitHub Actions.
 
 The app expects paths shaped like:
 
@@ -36,38 +34,25 @@ The app expects paths shaped like:
 - `/storage/<creatorId>/<skinId>/skin.zip`
 - `/fw/version.json`
 
-## Recommended: Cloudflare Pages
+## GitHub Pages
 
-1. Create a repo containing this `server-mirror/` folder.
-2. In Cloudflare Pages, create a project from that repo.
-3. Use:
-   - Build command: empty
-   - Output directory: `server-mirror/public`
-4. Deploy.
+1. Keep the static files under `server-mirror/public`.
+2. Use `.github/workflows/deploy-pages.yml` to publish the static mirror.
+3. GitHub Pages serves the site from the workflow artifact.
 
-If you want dynamic generation endpoints too, keep the `functions/` directory in the same Pages project. That gives you:
+The generated watchfaces live under `public/generated/watchfaces/<slug>/` and are published the same way.
 
-- `/api/generate-watchface`
-- `/api/store/...`
-- `/storage/...`
+## Watchface generation
 
-The generator endpoint accepts a natural-language direction and returns a structured watchface spec plus a preview SVG. It is provider-agnostic, so you can wire an LLM behind it later without changing the API shape.
+Use `.github/workflows/generate-watchface.yml` to create a new watchface package from a direction string.
 
-Alternative with Wrangler:
+That workflow:
 
-```sh
-cd server-mirror
-npx wrangler pages deploy public --project-name fes-closet-community-mirror
-```
-
-## Netlify
-
-```sh
-cd server-mirror
-npx netlify deploy --prod --dir public
-```
-
-`netlify.toml` is included.
+- takes the prompt inputs from the Actions UI
+- writes `request.json`, `spec.json`, `preview.svg`, and `watchface-package.zip`
+- updates `public/generated/index.json`
+- commits the generated files back to the repo
+- triggers the Pages deployment workflow
 
 ## VPS
 
@@ -86,30 +71,3 @@ The current APK still uses bundled local data. To use this hosted mirror, patch 
 - `STORE_STORAGE_ENDPOINT` points to `https://your-domain.example/storage/`
 
 Then rebuild/sign the APK.
-
-## Generator API
-
-Example request:
-
-```sh
-curl -X POST https://your-domain.example/api/generate-watchface \
-  -H 'content-type: application/json' \
-  -d '{
-    "direction": "minimal editorial watchface with a warm accent",
-    "style": "minimal",
-    "language": "en-US",
-    "mustInclude": ["time", "date", "battery"]
-  }'
-```
-
-Response shape:
-
-- `specVersion`
-- `canvas`
-- `palette`
-- `layout`
-- `copy`
-- `generationPrompt`
-- `previewSvg`
-
-The JSON schema lives at `public/api/watchface-generator/schema.json`.

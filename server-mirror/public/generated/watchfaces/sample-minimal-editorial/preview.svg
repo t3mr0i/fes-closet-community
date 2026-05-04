@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="704" viewBox="0 0 152 704">
+  <rect width="152" height="704" fill="#101318"/>
+  <rect x="12" y="192" width="10" height="240" fill="#D0A85C" opacity="0.9"/>
+  <text x="12" y="72" fill="#F4F1EA" font-size="38" font-weight="700" font-family="Arial, sans-serif">12:45</text>
+  <text x="14" y="194" fill="#8B919B" font-size="13" font-family="Arial, sans-serif">Mon 4 May</text>
+  <rect x="14" y="600" width="42" height="6" rx="3" fill="#D0A85C" opacity="0.9"/>
+  <text x="14" y="684" fill="#8B919B" font-size="9" font-family="Arial, sans-serif">watchface generator preview</text>
+</svg>
