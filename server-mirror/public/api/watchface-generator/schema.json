@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "/api/watchface-generator/schema.json",
+  "title": "Watchface Design Request",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "direction": {
+      "type": "string",
+      "description": "Short natural-language direction for the model."
+    },
+    "style": {
+      "type": "string",
+      "description": "High-level style bucket such as minimal, editorial, tech, photo, or retro."
+    },
+    "mood": {
+      "type": "string",
+      "description": "Tone or emotional direction."
+    },
+    "language": {
+      "type": "string",
+      "description": "Locale for generated copy."
+    },
+    "mustInclude": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Elements that must be present in the design."
+    },
+    "avoid": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Things the design should avoid."
+    },
+    "palette": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^#?[0-9a-fA-F]{6}$"
+      },
+      "description": "Optional requested colors."
+    },
+    "colors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^#?[0-9a-fA-F]{6}$"
+      },
+      "description": "Alias for palette."
+    }
+  }
+}

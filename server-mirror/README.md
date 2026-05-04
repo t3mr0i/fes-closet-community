@@ -45,6 +45,14 @@ The app expects paths shaped like:
    - Output directory: `server-mirror/public`
 4. Deploy.
 
+If you want dynamic generation endpoints too, keep the `functions/` directory in the same Pages project. That gives you:
+
+- `/api/generate-watchface`
+- `/api/store/...`
+- `/storage/...`
+
+The generator endpoint accepts a natural-language direction and returns a structured watchface spec plus a preview SVG. It is provider-agnostic, so you can wire an LLM behind it later without changing the API shape.
+
 Alternative with Wrangler:
 
 ```sh
@@ -78,3 +86,30 @@ The current APK still uses bundled local data. To use this hosted mirror, patch 
 - `STORE_STORAGE_ENDPOINT` points to `https://your-domain.example/storage/`
 
 Then rebuild/sign the APK.
+
+## Generator API
+
+Example request:
+
+```sh
+curl -X POST https://your-domain.example/api/generate-watchface \
+  -H 'content-type: application/json' \
+  -d '{
+    "direction": "minimal editorial watchface with a warm accent",
+    "style": "minimal",
+    "language": "en-US",
+    "mustInclude": ["time", "date", "battery"]
+  }'
+```
+
+Response shape:
+
+- `specVersion`
+- `canvas`
+- `palette`
+- `layout`
+- `copy`
+- `generationPrompt`
+- `previewSvg`
+
+The JSON schema lives at `public/api/watchface-generator/schema.json`.
