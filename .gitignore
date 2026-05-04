@@ -1,0 +1,5 @@
+*.apk
+*.keystore
+*.before-offline-patch
+apk-update-files.txt
+.DS_Store

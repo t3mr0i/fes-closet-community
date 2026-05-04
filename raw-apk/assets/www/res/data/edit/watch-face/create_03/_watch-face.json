@@ -1,0 +1,14 @@
+{
+    "defaultOffset": 0,
+    "templates": {
+        "translateY": [
+            { "key": "translateY_295", "initial": 295 },
+            { "key": "translateY_361", "initial": 361 }
+        ]
+    },
+    "files": [
+        "hour.png",
+        "min.png",
+        "event1.png"
+    ]
+}

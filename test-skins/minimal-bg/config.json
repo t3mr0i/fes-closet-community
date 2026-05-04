@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "revision": 1777900000000,
+  "components": [
+    {
+      "type": "background",
+      "image": "bg.png",
+      "layout": {
+        "size": [152, 704]
+      }
+    }
+  ]
+}

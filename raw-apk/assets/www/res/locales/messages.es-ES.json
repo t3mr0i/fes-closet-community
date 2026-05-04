@@ -1,0 +1,413 @@
+{
+    "app": {
+        "name": "FES Closet",
+        "namecn": "FES Closet (China)",
+        "supportURL": "http://fashion-entertainments.com/es/fes-watch-u/support.html",
+        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "common": {
+            "backAllCaps": "ATRÁS",
+            "nextAllCaps": "SIGUIENTE",
+            "doneAllCaps": "HECHO",
+            "startAllCaps": "COMENZAR",
+            "skipAllCaps": "OMITIR",
+            "cancelAllCaps": "CANCELAR",
+            "ok": "DE ACUERDO",
+            "back": "Atrás",
+            "next": "Siguiente",
+            "done": "Hecho",
+            "skip": "Omitir",
+            "cancel": "Cancelar",
+            "close": "Cerrar",
+            "transfer": "Enviar",
+            "preparing": "Preparando",
+            "save": "Guardar",
+            "delete": "Borrar",
+            "remove": "Eliminar",
+            "unregister": "Anular el registro",
+            "refresh": "Actualizar",
+            "select": "Seleccionar",
+            "reset": "Inicializar",
+            "retry": "Reintentar",
+            "restore": "Restaurar",
+            "settings": "Ajustes",
+            "support": "Soporte técnico",
+            "update": "Actualizar",
+            "later": "Más tarde",
+            "share": "Compartir"
+        },
+        "utility": {
+            "fraction": "{{count}}/{{total}}",
+            "bracket": "({{content}})",
+            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+        },
+        "url": {
+            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/es-ES.html",
+            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/es-ES.html",
+            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/es-ES.html",
+            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/en-US.html",
+            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/en-US.html",
+            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/en-US.html"
+        },
+        "os": {
+            "cameraUsageDescription": "Utilizada para crear diseños.",
+            "libraryUsageDescription": "Utilizada para crear diseños.",
+            "bluetoothUsageDescription": "Utilizado para conectar con el reloj.",
+            "contactsUsageDescription": "Asignar imagen a contacto.",
+            "photoLibraryAddUsageDescription": "Guardar imagen del diseño."
+        }
+    },
+    "store": {
+        "title": "TIENDA",
+        "common": {
+            "moneyUnit": "€",
+            "moneyDelimiter": ",",
+            "buy": "COMPRAR",
+            "buyFor": "por",
+            "buyPrice": "{{price}}",
+            "buyTransaction": "CONSEGUIR GRATIS",
+            "install": "CONSEGUIR GRATIS",
+            "getAgain": "VOLVER A COMPRAR",
+            "try": "PROBAR",
+            "purchased": "DESCARGADO",
+            "designer": "DISEÑADOR"
+        },
+        "information": {
+            "offline": "Desconectado",
+            "offlineDetail": "Sin conexión a internet.",
+            "serverAccessLimitation": "Los servidores están actualmente ocupados. \nVuelva a intentarlo más tarde.",
+            "serverMaintenance": "Temporalmente no disponible por mantenimiento.\nTiempo de reinicio del servicio programado: {{time}}.",
+            "serverMaintenanceEmergency": "Temporalmente no disponible por mantenimiento.\nPara obtener más información, visite la página de soporte técnico.",
+            "support": "Soporte técnico",
+            "notAvailable": "No disponible en su país/región.",
+            "closeout": "El servicio de la tienda ha finalizado."
+        }
+    },
+    "closet": {
+        "title": "MIS ESTILOS",
+        "common": {
+            "delete": "BORRAR",
+            "share": "COMPARTIR",
+            "install": "ENVIAR",
+            "installed": "EN USO"
+        },
+        "information": {
+            "empty": "No hay ningún diseño."
+        }
+    },
+    "edit": {
+        "background": {
+            "title": "CREAR",
+            "selectLibrary": "BIBLIOTECA",
+            "selectGallery": "GALERÍA",
+            "launchCamera": "CÁMARA"
+        },
+        "pattern": {
+            "title": "EDITAR",
+            "selectWatchFace": "ASPECTO",
+            "applyFilters": "FILTRAR"
+        },
+        "save": {
+            "title": "GUARDAR",
+            "description": "Nombre del diseño",
+            "unavailable": "No es posible usar {{param}}.",
+            "unavailableCharacter": "Está utilizando caracteres que no están disponibles.",
+            "limitString": "Introduzca un número de caracteres menor o igual que {{numOfString}}."
+        },
+        "selectContent": {
+            "title": "TODAS LAS FOTOS"
+        }
+    },
+    "dialog": {
+        "settingsUpdated": "Ajustes actualizados",
+        "skipSettings": {
+            "title": "¿Desea omitir los ajustes?",
+            "description": "Los ajustes del reloj también se pueden cambiar desde la pantalla de ajustes de esta aplicación."
+        },
+        "deletePattern": {
+            "title": "¿Desea eliminar el diseño?",
+            "description": "Los diseños descargados desde la Tienda pueden volver a guardarse en Mis estilos."
+        },
+        "unregisterWatch": {
+            "title": "¿Desea anular el registro del reloj?"
+        },
+        "restorePurchase": {
+            "title": "¿Desea restaurar los diseños?"
+        },
+        "selectRemove": {
+            "title": "Eliminar diseño",
+            "description_plural": "El reloj solo puede guardar {{count}} diseños. \nElimine otros diseños."
+        },
+        "progress": {
+            "title": "Enviando diseño...",
+            "titleTry": "Enviando prueba de diseño...",
+            "description": "Mantenga su smartphone cerca de la tapa trasera del reloj mientras visualiza esta pantalla.",
+            "estimateTimePrefix": "Tiempo restante",
+            "done": {
+                "title": "Envío completado",
+                "descriptionTry": "El diseño de prueba se eliminará después de 3 minutos o tras presionar el botón del reloj.",
+                "descriptionShare": "Es posible compartir la imagen del diseño.\n#feswatchu",
+                "descriptionShareCN": "Es posible compartir la imagen del diseño.\n#fesWatch#"
+            }
+        },
+        "install": {
+            "titleStart": "¿Desea enviar el diseño al reloj?",
+            "descriptionAfterSave": "El diseño se ha guardado en Mis estilos. Recuerde que también puede enviarlo al reloj.",
+            "description": "Mantenga su smartphone cerca de la tapa trasera del reloj mientras realiza el envío.",
+            "estimateTimePrefix": "Tiempo estimado de envío"
+        },
+        "error": {
+            "title": {
+                "general": "Se ha producido un error.",
+                "authentication": "No es posible autenticar.",
+                "purchase": "No es posible comprar el diseño.",
+                "save": "No es posible guardar el diseño.",
+                "delete": "No es posible borrar el diseño.",
+                "remove": "No es posible eliminar el diseño.",
+                "restorePurchase": "No es posible restaurar la compra.",
+                "needNotToRestorePurchase": "No es necesario restaurar la compra.",
+                "resetFi": "No es posible inicializar el reloj.",
+                "skinCorrupted": "El diseño está corrupto.",
+                "transferPattern": "No es posible enviar el diseño.",
+                "transferUpdate": "No es posible actualizar el software del sistema.",
+                "transfer": "No se puede enviar.",
+                "bluetooth": "Encienda la función Bluetooth para permitir que \"{{appName}}\" se conecte al reloj.",
+                "location": "Active los servicios de ubicación en su smartphone para permitir que \"{{appName}}\" se conecte al reloj.",
+                "connectionToWatch": "No es posible realizar la conexión.",
+                "registration": "No es posible realizar el registro.",
+                "setting": "No es posible actualizar los ajustes.",
+                "sd_connection": "Se ha producido un error.",
+                "sd_download": "Se ha producido un error.",
+                "sd_duplication": "Descarga detenida"
+            },
+            "message": {
+                "sd_download": "Si el error se produce varias veces, consulte nuestra página de soporte.",
+                "sd_duplication": "Ya descargado. Compruebe el armario.",
+                "errorCode": "Código de error: {{errorCode}}",
+                "serverGeneral": "Por favor, inténtelo de nuevo más tarde.",
+                "internetAccess": "Verifique la conexión de red y vuelva a intentarlo.",
+                "account": "Revise su cuenta e inténtelo de nuevo.",
+                "save": "No hay suficiente almacenamiento disponible. Puede administrar su almacenamiento en Ajustes.",
+                "restorePurchase": "No hay suficiente almacenamiento disponible. Puede administrar su almacenamiento en Ajustes.",
+                "needNotToRestorePurchase": "No hay diseños que restaurar.",
+                "hasRestoreFailedProducts": "Error al restaurar algunos diseños. \nVuelva a intentarlo más tarde.",
+                "resetFi": "Si el error se produce varias veces, consulte nuestra página de soporte.",
+                "skinCorrupted": "Consulte nuestra página de soporte.",
+                "transfer": "Muestre esta pantalla de la aplicación mientras realiza el envío y vuelva a intentarlo.",
+                "compatibility": "Este reloj no es compatible.",
+                "batteryFi": "El nivel de la batería del reloj es bajo. Cargue la batería y vuelva a intentarlo.",
+                "batteryApp": "El nivel de la batería de su smartphone es bajo. Cargue la batería y vuelva a intentarlo.",
+                "transferUpdate": "Si el error se produce varias veces, consulte nuestra página de soporte.",
+                "connectionToWatch": "Compruebe lo siguiente y vuelva a intentarlo: \nEl reloj tiene suficiente batería. \nSu smartphone está lo suficientemente cerca del reloj. \nEl Bluetooth de su smartphone está encendido.",
+                "registrationFull": "Esta aplicación solo puede registrar {{count}} reloj. Anule el registro de otros relojes desde esta aplicación.",
+                "registrationFull_plural": "Esta aplicación solo puede registrar {{count}} relojes. Anule el registro de otros relojes desde esta aplicación.",
+                "registrationAnotherApp": "Este reloj ya ha sido registrado en otro smartphone. Por favor, inicialice el reloj.",
+                "disconnected": "La conexión con el reloj se ha perdido. Conéctese  de nuevo al reloj y vuelva a intentarlo.",
+                "location": "Los servicios de ubicación de su smartphone están desactivados. Active los servicios de ubicación y vuelva a intentarlo."
+            },
+            "install": {
+                "title": "No es posible enviar el diseño.",
+                "description": "Si el error se produce varias veces, consulte nuestra página de soporte.",
+                "titleAlready": "¿Desea enviarlo de nuevo?",
+                "descriptionAlready": "Este diseño ya ha sido enviado al reloj."
+            }
+        },
+        "update": {
+            "title": "Actualizar aplicación",
+            "description": "Hay una nueva versión de la aplicación disponible. ¿Desea actualizarla?",
+            "detail": "Últimas novedades:"
+        },
+        "updateinfo": {
+            "title": "Información",
+            "description": "Versión de la aplicación : {{version}}"
+        },
+        "systemupdate": {
+            "title": "Información",
+            "description": "Actualice el software del sistema a la versión {{version}}."
+        },
+        "remove": {
+            "title": "Eliminar diseños",
+            "description": "Los diseños eliminados se pueden volver a enviar al reloj desde Mis estilos."
+        }
+    },
+    "fi": {
+        "common": {
+            "update": "Actualizando...",
+            "search": "Buscando reloj..."
+        }
+    },
+    "settings": {
+        "general": {
+            "title": "AJUSTES",
+            "fi": {
+                "section": "RELOJ",
+                "setting": "Ajustes del reloj",
+                "registration": "Registro del reloj"
+            },
+            "app": {
+                "section": "APP",
+                "storeSettings": "Ajustes de Mis estilos",
+                "support": "Pagina de soporte",
+                "supportURL": "http://fashion-entertainments.com/es/fes-watch-u/support.html",
+                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "version": "Versión de la aplicación",
+                "legal": "Aviso legal"
+            }
+        },
+        "fi": {
+            "title": "AJUSTES DEL RELOJ",
+            "setting": {
+                "section": "AJUSTES",
+                "time": "Fecha y hora",
+                "timeDisplayMode": "Modo de visualización",
+                "skinAutoChange": "Cambio de estilo automático",
+                "skinManage": "Administrar diseños en el reloj",
+                "unregistration": "Eliminar el registro del reloj",
+                "reset": "Inicializar reloj"
+            },
+            "information": {
+                "section": "ACERCA DE",
+                "fwUpdate": "Actualizar el software del sistema",
+                "fwLatest": "Más reciente ",
+                "fwVersion": "Versión de software del sistema",
+                "modelName": "Modelo",
+                "serialNo": "Número de serie"
+            }
+        },
+        "skinManage": {
+            "title": "DISEÑO",
+            "titleSelectingNone": "SELECCIONAR",
+            "titleSelecting": "{{count}} SELECCIONADO",
+            "titleSelecting_plural": "{{count}} SELECCIONADOS",
+            "remove": "Eliminar",
+            "unknownContent": "Los diseños no están en Mis estilos."
+        },
+        "dateTime": {
+            "title": "FECHA Y HORA",
+            "sync": "Establecer hora con la opción de fecha/hora en el smartphone"
+        },
+        "timeDisplayMode": {
+            "title": "MODO DE VISUALIZACIÓN",
+            "always": "Siempre encendido",
+            "alwaysBatteryInfo": "Duración de la batería: corta",
+            "watchAction": "Visualización de tiempo automático",
+            "watchActionBatteryInfo": "Duración de la batería: corta",
+            "buttonPush": "Al presionar el botón",
+            "buttonPushBatteryInfo": "Duración de la batería: estándar",
+            "description": "Ajuste la hora para mostrar la hora.",
+            "descriptionDetailTitle": "La visualización automática de la hora se produce cuando: \n- su brazo está hacia abajo y lo levanta para ver la hora del reloj; \n- girando la muñeca."
+        },
+        "skinAutoChange": {
+            "title": "CAMBIO DE ESTILO AUTOMÁTICO",
+            "off": "APAGADO",
+            "byDay": "Cada día",
+            "byHour": "Cada hora",
+            "byMinute10": "Cada 10 minutos",
+            "byMinute": "Cada 1 minuto",
+            "byMinimumDuration": "Cada 5 segundos",
+            "description": "Los diseños del reloj se pueden cambiar en intervalos fijos."
+        },
+        "store": {
+            "title": "AJUSTES DE MIS ESTILOS",
+            "setting": {
+                "restorePurchase": "Restaurar diseños preinstalados"
+            }
+        },
+        "resetFi": {
+            "title": "INICIALIZAR RELOJ",
+            "start": "Inicializar reloj",
+            "description": "¿Desea inicializar el reloj?",
+            "descriptionDetail1": "El reloj se restablecerá a los valores predeterminados. \nEsta operación no se puede deshacer.",
+            "descriptionDetail2": "Buscando reloj...",
+            "descriptionDetail3": "Mantenga presionado el botón del reloj durante 2 segundos antes de que hayan transcurrido 10 segundos.",
+            "estimateTimePrefix": "Tiempo restante"
+        },
+        "legal": {
+            "title": "AVISO LEGAL",
+            "eula": "Acuerdo de licencia de usuario final",
+            "tos": "Términos de servicio",
+            "pp": "Política de privacidad",
+            "oss": "Licencias de código abierto",
+            "sendInformation": "Tratamiento de datos no personales ",
+            "sendInformationDescription": "Con respecto al estado de uso de esta aplicación y del dispositivo registrado en la aplicación, el cliente acepta que la información no personal del cliente puede ser proporcionada a un tercero siempre y cuando la información sea combinada/procesada de manera que el cliente no pueda ser identificado. "
+        },
+        "fwUpdate": {
+            "title": "ACTUALIZACIÓN DE SOFTWARE",
+            "start": "Iniciar actualización del software del sistema",
+            "description": "¿Desea actualizar el software del sistema?",
+            "descriptionDetail1": "Hay una actualización disponible para mejorar las funciones del reloj.\nLa actualización tardará unos 10 minutos en realizarse y no se puede cancelar después de que haya comenzado.",
+            "descriptionDetail2": "Enviando datos al reloj...",
+            "descriptionDetail3": "Siga mostrando este cuadro de diálogo y mantenga su smartphone cerca del reloj.",
+            "descriptionDetail4": "Mantenga presionado el botón del reloj durante 2 segundos antes de que hayan transcurrido 10 segundos."
+        },
+        "restorePurchase": {
+            "title": "Restaurando diseños...",
+            "progress": "({{count}}/{{max}})"
+        },
+        "oss": {
+            "title": "Licencias de código abierto"
+        }
+    },
+    "connection": {
+        "title": "PARA CONECTAR",
+        "description": "Conectar smartphone y reloj",
+        "descriptionDetail1": "Si el icono de Bluetooth no aparece en el reloj, mantenga presionado el botón del reloj durante 2 segundos.",
+        "descriptionDetail2": "La conexión se estabilizará si coloca el reloj cerca del teléfono inteligente."
+    },
+    "oobe": {
+        "registration": {
+            "title": "PARA CONECTAR",
+            "description": "Conectar smartphone y reloj",
+            "descriptionDetail1": "Si el icono de Bluetooth no aparece en el reloj, mantenga presionado el botón del reloj durante 2 segundos.",
+            "descriptionDetail2": "La conexión se estabilizará si coloca el reloj cerca del teléfono inteligente.",
+            "descriptionDetail3": "La conexión se perderá 5 minutos después de la última operación realizada desde el teléfono inteligente hasta el reloj."
+        },
+        "dateTime": {
+            "title": "FECHA Y HORA",
+            "sync": "Establecer hora con la opción de fecha/hora en el smartphone",
+            "description": "Establecer fecha y hora"
+        },
+        "welcome": {
+            "title": "BIENVENIDO/A",
+            "description": "Puede configurar FES Watch U o descargar/crear nuevos diseños.\nCambie el diseño a uno que le guste.",
+            "agreement": "Por favor, confirme y acepte los siguientes términos y condiciones para poder utilizar este servicio.",
+            "eula": "ACUERDO DE LICENCIA DE USUARIO FINAL",
+            "tos": "Términos de servicio",
+            "pp": "Política de privacidad",
+            "start": "DE ACUERDO",
+            "moreInfo": "MÁS INFORMACIÓN"
+        },
+        "timeDisplayMode": {
+            "title": "MODO DE VISUALIZACIÓN",
+            "always": "Siempre encendido",
+            "alwaysBatteryInfo": "Duración de la batería: corta",
+            "watchAction": "Visualización de tiempo automático",
+            "watchActionBatteryInfo": "Duración de la batería: corta",
+            "buttonPush": "Al presionar el botón",
+            "buttonPushBatteryInfo": "Duración de la batería: estándar",
+            "description": "Establezca el tiempo para mostrar la hora",
+            "descriptionDetailTitle": "La visualización automática de la hora se produce cuando: \n- su brazo está hacia abajo y lo levanta para ver la hora del reloj; \n- girando la muñeca."
+        },
+        "skinAutoChange": {
+            "title": "CAMBIO DE ESTILO AUTOMÁTICO",
+            "off": "APAGADO",
+            "byDay": "Cada día",
+            "byHour": "Cada hora",
+            "byMinute10": "Cada 10 minutos",
+            "byMinute": "Cada 1 minuto",
+            "byMinimumDuration": "Cada 5 segundos",
+            "description": "Los diseños del reloj se pueden cambiar en intervalos fijos."
+        }
+    },
+    "sd": {
+        "download": {
+            "title": "Descargando",
+            "description": "Descargando el diseño especial."
+        },
+        "complete": {
+            "title": "Descarga completa",
+            "description": "El diseño especial se ha añadido al armario."
+        }
+    },
+    "EOF": "EOF"
+}

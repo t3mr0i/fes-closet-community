@@ -1,0 +1,142 @@
+<article><script type="text/template" id="dialog-common-alert"><section class="fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <p class="message">{{message}}</p>
+            <div class="ui-grid-solo">
+                <button id="{{idButton}}" class="ui-btn ui-block-a emphasis" data-auto-close="true">{{labelButton}}</button>
+            </div>
+        </section></script><script type="text/template" id="dialog-common-confirm"><section class="fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <p class="message">{{message}}</p>
+            <div class="ui-grid-a">
+                <button id="{{idNegative}}" class="ui-btn ui-block-a" data-auto-close="true">{{labelNegative}}</button>
+                <button id="{{idPositive}}" class="ui-btn ui-block-b emphasis" data-auto-close="true">{{labelPositive}}</button>
+            </div>
+        </section></script><script type="text/template" id="dialog-transfer-progress"><section class="dialog-transfer-progress fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <p class="message">{{message}}</p>
+            <div class="remaining-time">
+                <p class="label" data-i18n="dialog.install.estimateTimePrefix">dialog.install.estimateTimePrefix</p>
+                <div class="time">
+                    <div class="minute">--</div>
+                    <div class="colon">:</div>
+                    <div class="second">--</div>
+                </div>
+                <div class="bar">
+                    <div class="background"></div>
+                    <div class="foreground"></div>
+                </div>
+                <p class="percent"></p>
+            </div>
+            <div class="image-area">
+                <figure class="share-image"></figure>
+            </div>
+            <div class="ui-grid-a">
+                <button id="transfer-dlg-btn-negative" class="ui-btn ui-block-a" data-auto-close="false">{{labelNegative}}</button>
+                <button id="transfer-dlg-btn-positive" class="ui-btn ui-block-b ui-state-disabled emphasis" data-auto-close="false">{{labelPositive}}</button>
+            </div>
+        </section></script><script type="text/template" id="dialog-remove-installed-skin"><section class="dialog-remove-installed-skin fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <p class="message">{{message}}</p>
+            <section class="listview-area selection-mode">
+                <div class="installed-skin-listview">
+                    <ul class="listview-scroll-map"></ul>
+                </div>
+            </section>
+            <div class="button-area ui-grid-a">
+                <button id="remove-installed-skin-dlg-btn-cancel" class="ui-btn ui-block-a" data-auto-close="true">{{labelNegative}}</button>
+                <button id="remove-installed-skin-dlg-btn-exec" class="ui-btn ui-block-b ui-state-disabled emphasis" data-auto-close="true">{{labelPositive}}</button>
+            </div>
+        </section></script><script type="text/template" id="dialog-restore-purchase"><section class="dialog-restore-purchase fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <section class="progress-area">
+                <div class="bar">
+                    <div class="background"></div>
+                    <div class="foreground"></div>
+                </div>
+                <p class="progress-text"></p>
+            </section>
+            <div class="ui-grid-a">
+                <button id="restore-purchase-dlg-btn-restore" class="ui-btn ui-block-a" data-auto-close="false">{{labelNegative}}</button>
+                <button id="restore-purchase-dlg-btn-cancel" class="ui-btn ui-block-b emphasis" data-auto-close="true">{{labelPositive}}</button>
+            </div>
+        </section></script><script type="text/template" id="dialog-reset-fi"><section class="dialog-reset-fi fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <div class="confirm-content">
+                <p class="message">{{message}}</p>
+            </div>
+            <div class="wait-content no-display">
+                <p class="message" data-i18n="settings.resetFi.descriptionDetail3">settings.resetFi.descriptionDetail3</p>
+                <div class="remaining-time">
+                    <p class="label" data-i18n="settings.resetFi.estimateTimePrefix">settings.resetFi.estimateTimePrefix</p>
+                    <div class="time">
+                        <div class="minute">{{minute}}</div>
+                        <div class="colon">:</div>
+                        <div class="second">{{second}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-grid-a">
+                <button id="reset-fi-dlg-btn-cancel" class="ui-btn ui-block-a" data-auto-close="true">{{labelNegative}}</button>
+                <button id="reset-fi-dlg-btn-start" class="ui-btn ui-block-b emphasis" data-auto-close="false">{{labelPositive}}</button>
+            </div>
+        </section></script><script type="text/template" id="dialog-fw-update"><section class="dialog-fw-update fes-common-dialog" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="fes">
+            <header class="{{_header}}">
+                <h1 class="title">{{title}}</h1>
+            </header>
+            <div class="wait-content">
+                <p class="message">{{message}}</p>
+                <div class="remaining-time">
+                    <!-- TODO: [文言] 残り時間 -->
+                    <p class="label" data-i18n="settings.resetFi.estimateTimePrefix">settings.resetFi.estimateTimePrefix</p>
+                    <div class="time">
+                        <div class="minute">{{minute}}</div>
+                        <div class="colon">:</div>
+                        <div class="second">{{second}}</div>
+                    </div>
+                </div>
+                <div class="ui-grid-a">
+                    <button id="fw-update-dlg-btn-cancel" class="ui-btn ui-block-a" data-auto-close="false">{{labelNegative}}</button>
+                    <button id="fw-update-dlg-btn-retry" class="ui-btn ui-block-b emphasis" data-auto-close="false">{{labelPositive}}</button>
+                </div>
+            </div>
+            <div class="exec-content no-display">
+                <p class="message" data-i18n="settings.fwUpdate.descriptionDetail3">settings.fwUpdate.descriptionDetail3</p>
+                <div class="progress-area">
+                    <div class="bar">
+                        <div class="background"></div>
+                        <div class="foreground"></div>
+                    </div>
+                    <p class="progress-text"></p>
+                </div>
+            </div>
+        </section></script><script type="text/template" id="dialog-connection"><section class="dialog-connection fes-common-dialog base-connection ui-page-theme-fes" data-role="popup" data-corners="false" data-theme="fes" data-overlay-theme="no-overlay" data-tolerance="0">
+            <header class="ui-header">
+                <button class="command-cancel ui-btn ui-btn-left ui-btn-icon-left ui-icon-close fes-header-button"></button>
+                <h1 class="ui-title" data-i18n="connection.title">connection.title</h1>
+                <button class="command-cancel ui-btn ui-btn-right fes-header-button" data-i18n="app.common.cancel">app.common.cancel</button>
+            </header>
+            <div class="image-area">
+                <figure class="guide-image"></figure>
+            </div>
+            <div class="ui-content main-content">
+                <p class="description-title" data-i18n="connection.description">connection.description</p>
+                <p class="description-detail" data-i18n="connection.descriptionDetail1">connection.descriptionDetail1</p>
+                <p class="description-detail" data-i18n="connection.descriptionDetail2">connection.descriptionDetail2</p>
+                <div class="connection-progress">
+                    <p class="description-progress" data-i18n="fi.common.search">fi.common.serach</p>
+                    <figure class="activity-indicator"></figure>
+                </div>
+            </div>
+        </section></script></article>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:mthwvc="http://www.w3.org/ns/widgets"
+    android-versionCode="22"
+    id="jp.co.sony.fes"
+    ios-CFBundleIdentifier="jp.co.sony.fes.enterprise"
+    ios-CFBundleVersion="1.13.0"
+    version="1.13.0">
+    <preference
+        name="loglevel"
+        value="DEBUG"/>
+    <feature name="Whitelist">
+        <param
+            name="android-package"
+            value="org.apache.cordova.whitelist.WhitelistPlugin"/>
+        <param
+            name="onload"
+            value="true"/>
+    </feature>
+    <feature name="NativeBridge">
+        <param
+            name="android-package"
+            value="com.sony.cdp.plugin.nativebridge.NativeBridge"/>
+    </feature>
+    <feature name="File">
+        <param
+            name="android-package"
+            value="org.apache.cordova.file.FileUtils"/>
+        <param
+            name="onload"
+            value="true"/>
+    </feature>
+    <feature name="InAppBrowser">
+        <param
+            name="android-package"
+            value="org.apache.cordova.inappbrowser.InAppBrowser"/>
+    </feature>
+    <feature name="Vibration">
+        <param
+            name="android-package"
+            value="org.apache.cordova.vibration.Vibration"/>
+    </feature>
+    <feature name="SecureLocalStorage">
+        <param
+            name="android-package"
+            value="nl.afas.cordova.plugin.secureLocalStorage.SecureLocalStorage"/>
+    </feature>
+    <feature name="BluetoothLePlugin">
+        <param
+            name="android-package"
+            value="com.randdusing.bluetoothle.BluetoothLePlugin"/>
+    </feature>
+    <feature name="Battery">
+        <param
+            name="android-package"
+            value="org.apache.cordova.batterystatus.BatteryListener"/>
+    </feature>
+    <feature name="NativeSettings">
+        <param
+            name="android-package"
+            value="com.phonegap.plugins.nativesettings.NativeSettings"/>
+    </feature>
+    <feature name="UniversalAnalytics">
+        <param
+            name="android-package"
+            value="com.danielcwilson.plugins.analytics.UniversalAnalyticsPlugin"/>
+    </feature>
+    <feature name="Insomnia">
+        <param
+            name="android-package"
+            value="nl.xservices.plugins.Insomnia"/>
+    </feature>
+    <feature name="Camera">
+        <param
+            name="android-package"
+            value="org.apache.cordova.camera.CameraLauncher"/>
+    </feature>
+    <feature name="SocialSharing">
+        <param
+            name="android-package"
+            value="nl.xservices.plugins.SocialSharing"/>
+    </feature>
+    <feature name="LaunchMyApp">
+        <param
+            name="android-package"
+            value="nl.xservices.plugins.LaunchMyApp"/>
+    </feature>
+    <name>FES Closet
+    </name>
+    <preference
+        name="android-minSdkVersion"
+        value="21"/>
+    <allow-intent href="market:*"/>
+    <preference
+        name="DisallowOverscroll"
+        value="true"/>
+    <preference
+        name="Orientation"
+        value="portrait"/>
+    <preference
+        name="iosPersistentFileLocation"
+        value="Library"/>
+    <preference
+        name="AndroidPersistentFileLocation"
+        value="Internal"/>
+    <preference
+        name="KeyboardDisplayRequiresUserAction"
+        value="false"/>
+    <name>FES-SA
+    </name>
+    <description> FES Mobile Client Application.\10
+    </description>
+    <content src="index.html"/>
+    <access origin="https://*/*"/>
+    <access origin="content:///*"/>
+    <allow-intent href="http://*/*"/>
+    <allow-intent href="https://*/*"/>
+    <allow-intent href="tel:*"/>
+    <allow-intent href="sms:*"/>
+    <allow-intent href="mailto:*"/>
+    <allow-intent href="geo:*"/>
+</widget>

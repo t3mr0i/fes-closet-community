@@ -1,0 +1,5 @@
+package com.google.firebase.firebase_core;
+
+/* loaded from: classes.dex */
+public final class R {
+}
