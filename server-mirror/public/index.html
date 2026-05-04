@@ -3,20 +3,513 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FES Closet Community Mirror</title>
+  <title>FES Closet Community</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 720px; margin: 48px auto; padding: 0 20px; line-height: 1.5; }
-    code { background: #f2f2f2; padding: 2px 5px; border-radius: 4px; }
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f4;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #626972;
+      --line: #d8ddd4;
+      --accent: #21695f;
+      --accent-strong: #174d46;
+      --warn: #9b5d16;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #eef1ea;
+    }
+
+    .wrap {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      padding: 28px 0 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 8px 0 0;
+      max-width: 720px;
+      color: var(--muted);
+    }
+
+    .status {
+      min-width: 260px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.7);
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status strong {
+      display: block;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    main {
+      padding: 22px 0 48px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .tabs {
+      display: inline-grid;
+      grid-auto-flow: column;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font: inherit;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .search {
+      width: min(320px, 100%);
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .skin {
+      display: grid;
+      grid-template-rows: 220px auto;
+      min-height: 390px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .preview {
+      position: relative;
+      display: grid;
+      place-items: center;
+      background: #e7eae4;
+      min-height: 220px;
+    }
+
+    .preview img {
+      display: block;
+      max-width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+    }
+
+    .preview .fallback {
+      display: grid;
+      place-items: center;
+      width: 82px;
+      height: 168px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: var(--muted);
+      text-align: center;
+      padding: 8px;
+      font-size: 12px;
+    }
+
+    .body {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    .title {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .creator,
+    .desc {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .desc {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 8px 10px;
+      text-decoration: none;
+      font-weight: 650;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .button.secondary {
+      background: #ffffff;
+      color: var(--accent-strong);
+    }
+
+    .empty {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 18px;
+      color: var(--muted);
+    }
+
+    .notice {
+      margin-top: 22px;
+      border: 1px solid #e1c58f;
+      background: #fff8e8;
+      color: #5e4215;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 13px;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 4px;
+      padding: 2px 5px;
+    }
+
+    @media (max-width: 760px) {
+      .topbar,
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .status,
+      .search {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .tabs {
+        width: 100%;
+        grid-auto-flow: column;
+        justify-content: start;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>FES Closet Community Mirror</h1>
-  <p>Static skin metadata and assets for the FES Watch U community app.</p>
-  <ul>
-    <li><a href="/api/store/skins-en-us.json">Skins JSON</a></li>
-    <li><a href="/api/store/creators-en-us.json">Creators JSON</a></li>
-    <li><a href="/index.json">Mirror index</a></li>
-  </ul>
+  <header>
+    <div class="wrap topbar">
+      <div>
+        <h1>FES Closet Community</h1>
+        <p class="lead">Offline catalog for FES Watch U skins. Community designs, generated watchfaces, and bundled official skins are served from GitHub Pages without the Sony server.</p>
+      </div>
+      <div class="status" id="status">
+        <strong>Loading catalog</strong>
+        Reading local mirror files.
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <div class="tabs" role="tablist" aria-label="Skin categories">
+        <button class="tab" role="tab" aria-selected="true" data-tab="community">Community</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="generated">Generated</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="official">Official bundle</button>
+      </div>
+      <input class="search" id="search" type="search" placeholder="Search skins" autocomplete="off">
+    </div>
+
+    <div class="meta-row" id="meta"></div>
+    <section class="grid" id="grid" aria-live="polite"></section>
+
+    <div class="notice">
+      Transfer still happens in the patched FES Closet app over Bluetooth LE. This page hosts and exposes the packages; the app should point its store endpoints to <code>https://t3mr0i.github.io/fes-closet-community/api/</code> and <code>https://t3mr0i.github.io/fes-closet-community/storage/</code>.
+    </div>
+  </main>
+
+  <script>
+    const COMMUNITY_CREATOR_ID = "community-0000-0000-0000-000000000001";
+    const root = location.pathname.endsWith("/")
+      ? location.pathname
+      : location.pathname.replace(/\/[^/]*$/, "/");
+    const state = {
+      tab: "community",
+      query: "",
+      skins: [],
+      generated: [],
+      creators: new Map(),
+    };
+
+    function url(path) {
+      const clean = String(path || "").replace(/^\/+/, "");
+      return `${root}${clean}`;
+    }
+
+    function storageUrl(value) {
+      return String(value || "").replace("<STORAGE_DIRECTORY>/", url("storage/"));
+    }
+
+    function text(value, fallback = "") {
+      return String(value || fallback).trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function skinCard(item) {
+      const image = item.image
+        ? `<img src="${escapeHtml(item.image)}" alt="">`
+        : `<div class="fallback">No preview</div>`;
+      const secondary = item.detail
+        ? `<a class="button secondary" href="${escapeHtml(item.detail)}">Details</a>`
+        : `<a class="button secondary" href="${escapeHtml(item.preview || item.zip)}">Preview</a>`;
+
+      return `
+        <article class="skin">
+          <div class="preview">${image}</div>
+          <div class="body">
+            <div class="title">
+              <h2>${escapeHtml(item.name)}</h2>
+              <span class="badge">${escapeHtml(item.kind)}</span>
+            </div>
+            <p class="creator">${escapeHtml(item.creator)}</p>
+            <p class="desc">${escapeHtml(item.description || item.brief || "No description available.")}</p>
+            <div class="actions">
+              <a class="button" href="${escapeHtml(item.zip)}">Download ZIP</a>
+              ${secondary}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function normalizeOfficialSkin(skin) {
+      const creator = state.creators.get(skin.creatorId);
+      return {
+        id: skin.id,
+        kind: skin.creatorId === COMMUNITY_CREATOR_ID ? "Community" : "Official",
+        name: text(skin.name, skin.id),
+        creator: creator ? creator.name : skin.creatorId,
+        brief: skin.brief,
+        description: skin.description,
+        image: storageUrl(skin.thumbnail || skin.storeImage || skin.detailImage),
+        preview: storageUrl(skin.storeImage || skin.detailImage || skin.thumbnail),
+        detail: skin.detailImage ? storageUrl(skin.detailImage) : "",
+        zip: storageUrl(skin.zip),
+        source: skin.creatorId === COMMUNITY_CREATOR_ID ? "community" : "official",
+      };
+    }
+
+    function normalizeGenerated(entry) {
+      return {
+        id: entry.slug,
+        kind: "Generated",
+        name: entry.slug.replace(/-/g, " "),
+        creator: "GitHub Actions generator",
+        brief: entry.request && entry.request.direction,
+        description: entry.request && entry.request.direction,
+        image: url(entry.preview),
+        preview: url(entry.preview),
+        detail: url(entry.spec),
+        zip: url(entry.package),
+        source: "generated",
+      };
+    }
+
+    function activeItems() {
+      const items = state.tab === "generated"
+        ? state.generated
+        : state.skins.filter((skin) => skin.source === state.tab);
+      const q = state.query.toLowerCase();
+      if (!q) return items;
+      return items.filter((item) =>
+        [item.name, item.creator, item.description, item.brief, item.kind]
+          .some((value) => String(value || "").toLowerCase().includes(q))
+      );
+    }
+
+    function renderMeta(items) {
+      const communityCount = state.skins.filter((item) => item.source === "community").length;
+      const officialCount = state.skins.filter((item) => item.source === "official").length;
+      const generatedCount = state.generated.length;
+      document.getElementById("meta").innerHTML = `
+        <span class="pill">${items.length} shown</span>
+        <span class="pill">${communityCount} community</span>
+        <span class="pill">${generatedCount} generated</span>
+        <span class="pill">${officialCount} official bundle</span>
+      `;
+    }
+
+    function render() {
+      document.querySelectorAll(".tab").forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.tab === state.tab));
+      });
+
+      const items = activeItems();
+      renderMeta(items);
+      const grid = document.getElementById("grid");
+      grid.innerHTML = items.length
+        ? items.map(skinCard).join("")
+        : `<div class="empty">No skins match the current filter.</div>`;
+    }
+
+    async function loadJson(path, fallback) {
+      try {
+        const response = await fetch(url(path), { cache: "no-store" });
+        if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+        return await response.json();
+      } catch (error) {
+        console.warn(`Failed to load ${path}`, error);
+        return fallback;
+      }
+    }
+
+    async function boot() {
+      const [skinsData, creatorsData, generatedData] = await Promise.all([
+        loadJson("api/store/skins-en-us.json", { skins: [] }),
+        loadJson("api/store/creators-en-us.json", { creators: [] }),
+        loadJson("generated/index.json", { watchfaces: [] }),
+      ]);
+
+      state.creators = new Map((creatorsData.creators || []).map((creator) => [creator.id, creator]));
+      state.skins = (skinsData.skins || []).map(normalizeOfficialSkin);
+      state.generated = (generatedData.watchfaces || []).map(normalizeGenerated);
+
+      document.getElementById("status").innerHTML = `
+        <strong>GitHub Pages mirror</strong>
+        ${state.skins.length + state.generated.length} packages indexed.
+      `;
+      render();
+    }
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.tab = button.dataset.tab;
+        render();
+      });
+    });
+
+    document.getElementById("search").addEventListener("input", (event) => {
+      state.query = event.target.value;
+      render();
+    });
+
+    boot();
+  </script>
 </body>
 </html>
-

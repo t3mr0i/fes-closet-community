@@ -42,6 +42,14 @@ The app expects paths shaped like:
 
 The generated watchfaces live under `public/generated/watchfaces/<slug>/` and are published the same way.
 
+The public catalog page at `/` has three user-facing tabs:
+
+- `Community` - community-maintained skins that are part of the store metadata
+- `Generated` - watchfaces created by the GitHub Actions generator
+- `Official bundle` - the preserved skins that shipped with the original app mirror
+
+Each entry links to its package ZIP and preview/detail assets. The page does not call the Sony backend.
+
 ## Watchface generation
 
 Use `.github/workflows/generate-watchface.yml` to create a new watchface package from a direction string.
@@ -67,7 +75,9 @@ add_header Access-Control-Allow-Origin * always;
 
 The current APK still uses bundled local data. To use this hosted mirror, patch `fes.utils.js` or `config.js` so:
 
-- `STORE_API_ENDPOINT` points to `https://your-domain.example/api/`
-- `STORE_STORAGE_ENDPOINT` points to `https://your-domain.example/storage/`
+- `STORE_API_ENDPOINT` points to `https://t3mr0i.github.io/fes-closet-community/api/`
+- `STORE_STORAGE_ENDPOINT` points to `https://t3mr0i.github.io/fes-closet-community/storage/`
 
 Then rebuild/sign the APK.
+
+The Sony server should not be required for browsing or downloading skins. Transfer to the watch remains local Bluetooth LE work inside the patched app.
