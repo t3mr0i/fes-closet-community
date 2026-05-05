@@ -2,9 +2,9 @@
     "app": {
         "name": "FES Closet",
         "namecn": "FES Closet (China)",
-        "supportURL": "http://fashion-entertainments.com/uk/fes-watch-u/support.html",
-        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
-        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "common": {
             "backAllCaps": "BACK",
             "nextAllCaps": "NEXT",
@@ -31,7 +31,7 @@
             "retry": "Retry ",
             "restore": "Restore",
             "settings": "Settings",
-            "support": "Support",
+            "support": "Community Catalog",
             "update": "Update",
             "later": "Later",
             "share": "Share"
@@ -42,12 +42,12 @@
             "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
         },
         "url": {
-            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/en-GB.html",
-            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/en-GB.html",
-            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/en-GB.html",
-            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/en-US.html",
-            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/en-US.html",
-            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/en-US.html"
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
         },
         "os": {
             "cameraUsageDescription": "Used for creation of patterns.",
@@ -58,7 +58,7 @@
         }
     },
     "store": {
-        "title": "STORE",
+        "title": "CATALOG",
         "common": {
             "moneyUnit": "$",
             "moneyDelimiter": ",",
@@ -77,8 +77,8 @@
             "offlineDetail": "No Internet connection.",
             "serverAccessLimitation": "Servers are currently too busy.\nPlease try again later.",
             "serverMaintenance": "Temporary unavailable for maintenance.\nScheduled service restart time :{{time}}",
-            "serverMaintenanceEmergency": "Temporary unavailable for maintenance.\nFor more information, please visit the support page.",
-            "support": "Support",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
             "notAvailable": "Not available in your country/region.",
             "closeout": "Store service has been terminated."
         }
@@ -181,7 +181,7 @@
                 "sd_duplication": "Download stopped"
             },
             "message": {
-                "sd_download": "If failed several times, please check the support page.",
+                "sd_download": "Check the community catalog or try again.",
                 "sd_duplication": "Already downloaded. Please check the Closet.",
                 "errorCode": "Error Code: {{errorCode}}",
                 "serverGeneral": "Please try again later.",
@@ -191,13 +191,13 @@
                 "restorePurchase": "There is not enough available storage. You can manage your storage in Settings.",
                 "needNotToRestorePurchase": "There are not patterns to restore. ",
                 "hasRestoreFailedProducts": "Restore failed for some patterns.\nPlease try again later. ",
-                "resetFi": "If failed several times, please check the support page.",
-                "skinCorrupted": "Please check the support page.",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
                 "transfer": "Please have this screen of the app showing while sending and try again.",
                 "compatibility": "This watch is not supported. ",
                 "batteryFi": "The battery level of the watch is low. Please charge the battery and try again. ",
                 "batteryApp": "The battery level of the smartphone is low. Please charge the battery and try again. ",
-                "transferUpdate": "If failed several times, please check the support page.",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
                 "connectionToWatch": "Please check the following and try again:\nThe watch is charged enough.\nThe smartphone is close enough to the watch.\nBluetooth on the smartphone is on.",
                 "registrationFull": "This app can register only {{count}} watch. Please unregister other watches from this app.",
                 "registrationFull_plural": "This app can register only {{count}} watches. Please unregister other watches from this app.",
@@ -207,7 +207,7 @@
             },
             "install": {
                 "title": "Cannot Send Pattern",
-                "description": "If failed several times, please check the support page.",
+                "description": "Check the community catalog or try again.",
                 "titleAlready": "Send Again?",
                 "descriptionAlready": "This pattern has already been sent to the watch."
             }
@@ -246,12 +246,12 @@
             },
             "app": {
                 "section": "APP",
-                "storeSettings": "Closet Settings",
-                "support": "Support Page",
-                "supportURL": "http://fashion-entertainments.com/uk/fes-watch-u/support.html",
-                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
                 "version": "App Version",
-                "legal": "Legal"
+                "legal": "Licenses"
             }
         },
         "fi": {
@@ -311,7 +311,8 @@
             "title": "CLOSET SETTINGS",
             "setting": {
                 "restorePurchase": "Restore Pre-installed Patterns"
-            }
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
         },
         "resetFi": {
             "title": "INITIALIZE WATCH",

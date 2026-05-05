@@ -8216,7 +8216,7 @@ var FES;
                       fromDisconnect: !a.isConnected,
                       ignoreRegistrationError: c,
                     },
-                    e = { FwUpdateDialog: !a.isConnected },
+                    e = { FwUpdateDialog: !1 },
                     f = { params: {} };
                   return (
                     (f.params[g.signature] = d), (f.params[h.signature] = e), f
@@ -9909,9 +9909,7 @@ var FES;
                             f.deviceFwVersion,
                             c._appFwVersion,
                           )),
-                          c._latestFwVersion ||
-                            c.navigateToFwUpdate(f, b, e.isInSubFlow()),
-                          d.resolve(c._latestFwVersion);
+                          d.resolve(!0);
                       })
                       .fail(function (a) {
                         d.reject(a);
@@ -17532,9 +17530,7 @@ var FES;
                           b._showingSkipDialog ||
                             (b._isFailedRegistration
                               ? b.navigateToSettings()
-                              : b._islatestFwVersion
-                                ? b.navigateToNextPage()
-                                : b.navigateToFwUpdate());
+                              : b.navigateToNextPage());
                       })
                       .fail(function (c) {
                         a.isCanceledError(c) || b.handleReject(c);
@@ -17635,9 +17631,7 @@ var FES;
                             b._readyToNavigate
                               ? b._isFailedRegistration
                                 ? b.navigateToSettings()
-                                : b._islatestFwVersion
-                                  ? b.navigateToNextPage()
-                                  : b.navigateToFwUpdate()
+                                : b.navigateToNextPage()
                               : e && f.cancelSubFlow();
                         },
                       );

@@ -2,9 +2,9 @@
     "app": {
         "name": "FES Closet",
         "namecn": "FES Closet (China)",
-        "supportURL": "http://fashion-entertainments.com/en/fes-watch-u/support.html",
-        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
-        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "common": {
             "backAllCaps": "上一步",
             "nextAllCaps": "下一步",
@@ -31,7 +31,7 @@
             "retry": "重试",
             "restore": "恢复",
             "settings": "设置",
-            "support": "支持",
+            "support": "Community Catalog",
             "update": "更新",
             "later": "以后再说",
             "share": "分享"
@@ -42,12 +42,12 @@
             "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
         },
         "url": {
-            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/zh-Hans.html",
-            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/zh-Hans.html",
-            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/zh-Hans.html",
-            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/zh-Hans.html",
-            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/zh-Hans.html",
-            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/zh-Hans.html"
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
         },
         "os": {
             "cameraUsageDescription": "创建图案的时候使用。",
@@ -58,7 +58,7 @@
         }
     },
     "store": {
-        "title": "在线商店",
+        "title": "CATALOG",
         "common": {
             "moneyUnit": "¥",
             "moneyDelimiter": ",",
@@ -77,8 +77,8 @@
             "offlineDetail": "无网络连接。",
             "serverAccessLimitation": "服务器目前太忙。\n请稍后重试。",
             "serverMaintenance": "正在维护中，暂时无法使用。 \n预计服务恢复时间: {{time}}",
-            "serverMaintenanceEmergency": "正在维护中，暂时无法使用。\n有关详细信息，请访问支持页面。",
-            "support": "支持",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
             "notAvailable": "在您的国家/地区不可用。",
             "closeout": "在线商店服务已终止。"
         }
@@ -181,7 +181,7 @@
                 "sd_duplication": "取消下载"
             },
             "message": {
-                "sd_download": "如果已失败多次，请查看支持页面。",
+                "sd_download": "Check the community catalog or try again.",
                 "sd_duplication": "已下载。请确认样式柜。",
                 "errorCode": "错误代码: {{errorCode}}",
                 "serverGeneral": "请稍后重试。",
@@ -191,13 +191,13 @@
                 "restorePurchase": "可用存储不足。您可以在“设置”中管理存储。",
                 "needNotToRestorePurchase": "没有可恢复的图案。",
                 "hasRestoreFailedProducts": "部分图案的恢复失败。\n请稍后再试。",
-                "resetFi": "如果已失败多次，请查看支持页面。",
-                "skinCorrupted": "请查看支持页面。",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
                 "transfer": "请在发送时保持本应用程序的显示状态并重试。",
                 "compatibility": "不支持此手表。",
                 "batteryFi": "手表的电池电量低。请充电后重试。",
                 "batteryApp": "智能手机的电池电量低。请充电后重试。",
-                "transferUpdate": "如果已失败多次，请查看支持页面。",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
                 "connectionToWatch": "请检查以下项并重试:\n手表电量充足。\n智能手机距离手表足够近。\n蓝牙已打开。",
                 "registrationFull": "此应用程序只能注册 {{count}} 块手表。请从此应用程序取消注册其他手表。",
                 "registrationFull_plural": "此应用程序只能注册 {{count}} 块手表。请从此应用程序取消注册其他手表。",
@@ -207,7 +207,7 @@
             },
             "install": {
                 "title": "无法发送图案",
-                "description": "如果已失败多次，请查看支持页面。",
+                "description": "Check the community catalog or try again.",
                 "titleAlready": "重新发送?",
                 "descriptionAlready": "已将此图案发送到手表。"
             }
@@ -246,12 +246,12 @@
             },
             "app": {
                 "section": "应用程序",
-                "storeSettings": "样式柜设置",
-                "support": "支持页面",
-                "supportURL": "http://fashion-entertainments.com/en/fes-watch-u/support.html",
-                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
                 "version": "应用程序版本",
-                "legal": "法律声明"
+                "legal": "Licenses"
             }
         },
         "fi": {
@@ -311,7 +311,8 @@
             "title": "样式柜设置",
             "setting": {
                 "restorePurchase": "恢复预装图案"
-            }
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
         },
         "resetFi": {
             "title": "初始化手表",

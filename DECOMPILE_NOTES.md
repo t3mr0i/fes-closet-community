@@ -190,6 +190,17 @@ offline gates remain active. The local endpoint constants are redirected:
 
 The transfer path to the watch remains local Bluetooth LE.
 
+## Legacy UI cleanup
+
+- Removed the visible firmware update entry from watch settings.
+- Stopped OOBE and transfer flows from forcing users into the legacy firmware
+  update path when Sony update services are unavailable.
+- Removed the legacy purchase restore button from Closet settings.
+- Removed dead EULA/Terms/Privacy links and the analytics opt-in toggle from
+  the Legal screen; the page now exposes only bundled OSS licenses.
+- Redirected support/legal URLs and support-style error messages to the
+  community catalog instead of Sony/FES support pages.
+
 Local test passed for:
 
 - `/index.json`

@@ -2,9 +2,9 @@
     "app": {
         "name": "FES Closet",
         "namecn": "FES Closet (China)",
-        "supportURL": "http://fashion-entertainments.com/de/fes-watch-u/support.html",
-        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
-        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "common": {
             "backAllCaps": "ZURÜCK",
             "nextAllCaps": "WEITER",
@@ -31,7 +31,7 @@
             "retry": "Wiederholen",
             "restore": "Wiederherstellen",
             "settings": "Einstellungen",
-            "support": "Unterstützung",
+            "support": "Community-Katalog",
             "update": "Aktualisieren",
             "later": "Später",
             "share": "TEILEN"
@@ -42,12 +42,12 @@
             "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
         },
         "url": {
-            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/de-DE.html",
-            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/de-DE.html",
-            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/de-DE.html",
-            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/en-US.html",
-            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/en-US.html",
-            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/en-US.html"
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
         },
         "os": {
             "cameraUsageDescription": "Wird für die Erstellung von Mustern verwendet.",
@@ -58,7 +58,7 @@
         }
     },
     "store": {
-        "title": "GESCHÄFT",
+        "title": "KATALOG",
         "common": {
             "moneyUnit": "€",
             "moneyDelimiter": ",",
@@ -77,8 +77,8 @@
             "offlineDetail": "Keine Internetverbindung.",
             "serverAccessLimitation": "Server sind derzeit überlastet. \nBitte versuchen Sie es zu einem späteren Zeitpunkt erneut.",
             "serverMaintenance": "Vorübergehend nicht für die Wartung verfügbar.\nServicewiederanlaufszeit um: {{time}}",
-            "serverMaintenanceEmergency": "Vorübergehend nicht für die Wartung verfügbar.\nFür weitere Informationen besuchen Sie bitte die Unterstützung-Seite.",
-            "support": "Unterstützung",
+            "serverMaintenanceEmergency": "Der originale Store ist offline. Der Community-Katalog wird statisch gehostet.",
+            "support": "Community-Katalog",
             "notAvailable": "Nicht verfügbar in Ihrem Land / Region.",
             "closeout": "Der Geschäftsservice wurde beendet."
         }
@@ -181,7 +181,7 @@
                 "sd_duplication": "Download gestoppt"
             },
             "message": {
-                "sd_download": "Wenn mehrere Male fehlgeschlagen, überprüfen Sie bitte die Unterstützungsseite.",
+                "sd_download": "Pruefe den Community-Katalog oder versuche es erneut.",
                 "sd_duplication": "Bereits heruntergeladen. Prüfen Sie den Closet.",
                 "errorCode": "Fehlercode: {{errorCode}}",
                 "serverGeneral": "Bitte versuche es später erneut.",
@@ -191,13 +191,13 @@
                 "restorePurchase": "Es ist nicht ausreichend Speicher verfügbar. Sie können Ihren Speicher in den Einstellungen verwalten",
                 "needNotToRestorePurchase": "Es gibt keine wiederherzustellenden Muster.",
                 "hasRestoreFailedProducts": "Wiederherstellung fehlgeschlagen für einige Muster.\nBitte versuchen Sie es später erneut.",
-                "resetFi": "Wenn mehrere Male fehlgeschlagen, überprüfen Sie bitte die Unterstützungsseite.",
-                "skinCorrupted": "Überprüfen Sie bitte die Unterstützungsseite.",
+                "resetFi": "Pruefe den Community-Katalog oder versuche es erneut.",
+                "skinCorrupted": "Pruefe den Community-Katalog oder versuche es erneut.",
                 "transfer": "Lassen Sie diesen Bildschirm der App bei Senden geöffnet und versuchen Sie es erneut",
                 "compatibility": "Diese Uhr wird nicht unterstützt.",
                 "batteryFi": "Die Akkuladung der Uhr ist niedrig. Laden Sie den Akku auf und versuchen Sie es erneut.",
                 "batteryApp": "Die Akkuladung des Smartphones ist niedrig. Laden Sie den Akku auf und versuchen Sie es erneut.",
-                "transferUpdate": "Wenn mehrere Male fehlgeschlagen, überprüfen Sie bitte die Unterstützungsseite.",
+                "transferUpdate": "Firmware-Updates werden in dieser Community-Version nicht mehr ueber Sony-Server bereitgestellt.",
                 "connectionToWatch": "Bitte überprüfen Sie die Folgende Punkte und versuchen Sie es erneut:\nDie Uhr ist ausreichend aufgeladen.\nDas Smartphone ist nahe genug an der Uhr.\nBluetooth ist auf dem Smartphone eingeschaltet.",
                 "registrationFull": "Diese App kann nur {{count}} Uhr(en) registrieren. Bitte entfernen Sie die Registrierung anderer Uhren von dieser App.",
                 "registrationFull_plural": "Diese App kann nur {{count}} Uhr(en) registrieren. Bitte entfernen Sie die Registrierung anderer Uhren von dieser App.",
@@ -207,7 +207,7 @@
             },
             "install": {
                 "title": "Kann kein Muster senden",
-                "description": "Wenn mehrere Male fehlgeschlagen, überprüfen Sie bitte die Unterstützungsseite.",
+                "description": "Pruefe den Community-Katalog oder versuche es erneut.",
                 "titleAlready": "Wieder absenden?",
                 "descriptionAlready": "Dieses Muster wurde bereits an die Uhr gesendet."
             }
@@ -246,12 +246,12 @@
             },
             "app": {
                 "section": "APP",
-                "storeSettings": "Einstellungen der Closet-App",
-                "support": "Unterstützungsseite",
-                "supportURL": "http://fashion-entertainments.com/de/fes-watch-u/support.html",
-                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "storeSettings": "Community-Katalog",
+                "support": "Community-Katalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
                 "version": "App-Version",
-                "legal": "Impressum"
+                "legal": "Lizenzen"
             }
         },
         "fi": {
@@ -311,7 +311,8 @@
             "title": "DIE EINSTELLUNG DER CLOSET-APP",
             "setting": {
                 "restorePurchase": "Vorinstallierter Muster wiederherstellen"
-            }
+            },
+            "description": "Designs werden aus dem Community-Katalog geladen. Alte Sony-Kaufwiederherstellung und Serverdienste sind deaktiviert."
         },
         "resetFi": {
             "title": "UHR INITIALISIEREN",

@@ -2,9 +2,9 @@
     "app": {
         "name": "FES Closet",
         "namecn": "FES Closet (China)",
-        "supportURL": "http://fashion-entertainments.com/fes-watch-u/support.html",
-        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
-        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "common": {
             "backAllCaps": "BACK",
             "nextAllCaps": "NEXT",
@@ -31,7 +31,7 @@
             "retry": "再試行",
             "restore": "復元",
             "settings": "設定",
-            "support": "サポート",
+            "support": "Community Catalog",
             "update": "アップデート",
             "later": "後で",
             "share": "共有"
@@ -42,12 +42,12 @@
             "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
         },
         "url": {
-            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/ja-JP.html",
-            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/ja-JP.html",
-            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/ja-JP.html",
-            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/ja-JP.html",
-            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/ja-JP.html",
-            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/ja-JP.html"
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
         },
         "os": {
             "cameraUsageDescription": "柄の作成に使用します。",
@@ -58,7 +58,7 @@
         }
     },
     "store": {
-        "title": "STORE",
+        "title": "CATALOG",
         "common": {
             "moneyUnit": "\\",
             "moneyDelimiter": ",",
@@ -77,8 +77,8 @@
             "offlineDetail": "インターネット接続がありません。",
             "serverAccessLimitation": "ただいま、アクセス集中により繋がりにくくなっております。\nしばらく時間が経ってから、もう一度お試しください。",
             "serverMaintenance": "ただいま、メンテナンス中のためStoreをご利用いただけません。\nサービス再開予定日時: {{time}}",
-            "serverMaintenanceEmergency": "ただいま、メンテナンス中のためStoreをご利用いただけません。\nサービス再開の情報は、サポートページをご確認ください。",
-            "support": "サポート",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
             "notAvailable": "あなたの国/地域ではご利用になれません。",
             "closeout": "Storeサービスは終了させていただきました。"
         }
@@ -181,7 +181,7 @@
                 "sd_duplication": "ダウンロード中断"
             },
             "message": {
-                "sd_download": "繰り返し失敗する場合は、サポートページをご確認ください。",
+                "sd_download": "Check the community catalog or try again.",
                 "sd_duplication": "すでにダウンロードされています。Closetをご確認ください。",
                 "errorCode": "エラーコード: {{errorCode}}",
                 "serverGeneral": "しばらく時間が経ってから、もう一度お試しください。",
@@ -191,13 +191,13 @@
                 "restorePurchase": "スマートフォンに十分な空き容量がありません。ストレージは\"設定\"から管理できます。",
                 "needNotToRestorePurchase": "復元可能な柄はありませんでした。",
                 "hasRestoreFailedProducts": "一部の柄は復元に失敗しました。\nしばらく時間が経ってから、もう一度お試しください。",
-                "resetFi": "繰り返し失敗する場合は、サポートページをご確認ください。",
-                "skinCorrupted": "サポートページをご確認ください。",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
                 "transfer": "送信中はこのアプリの画面を表示したままにし、もう一度お試しください。",
                 "compatibility": "サポート対象外のウォッチです。",
                 "batteryFi": "ウォッチの電池が十分にありません。充電してから、もう一度お試しください。",
                 "batteryApp": "スマートフォンの電池が十分にありません。充電してから、もう一度お試しください。",
-                "transferUpdate": "繰り返し失敗する場合は、サポートページをご確認ください。",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
                 "connectionToWatch": "以下を確認して、もう一度お試しください。\nウォッチの電池が十分にあること\nスマートフォンがウォッチの近くにあること\nスマートフォンのBluetooth機能がオンになっていること",
                 "registrationFull": "アプリにはウォッチを{{count}}台までしか登録できません。他のウォッチをアプリから解除してください。",
                 "registrationFull_plural": "アプリにはウォッチを{{count}}台までしか登録できません。他のウォッチをアプリから解除してください。",
@@ -207,7 +207,7 @@
             },
             "install": {
                 "title": "送信できません",
-                "description": "繰り返し失敗する場合は、サポートページをご確認ください。",
+                "description": "Check the community catalog or try again.",
                 "titleAlready": "再送信しますか？",
                 "descriptionAlready": "この柄はすでにウォッチへ送信されています。"
             }
@@ -246,12 +246,12 @@
             },
             "app": {
                 "section": "アプリケーション",
-                "storeSettings": "Closetの設定",
-                "support": "サポートページ",
-                "supportURL": "http://fashion-entertainments.com/fes-watch-u/support.html",
-                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
                 "version": "アプリバージョン",
-                "legal": "法律に基づく情報"
+                "legal": "Licenses"
             }
         },
         "fi": {
@@ -311,7 +311,8 @@
             "title": "CLOSET SETTINGS",
             "setting": {
                 "restorePurchase": "プリインストール柄を復元"
-            }
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
         },
         "resetFi": {
             "title": "INITIALIZE WATCH",

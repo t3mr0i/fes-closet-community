@@ -2,9 +2,9 @@
     "app": {
         "name": "FES Closet",
         "namecn": "FES Closet (China)",
-        "supportURL": "http://fashion-entertainments.com/fr/fes-watch-u/support.html",
-        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
-        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "common": {
             "backAllCaps": "RETOUR",
             "nextAllCaps": "SUIVANT",
@@ -31,7 +31,7 @@
             "retry": "Réessayer",
             "restore": "Restaurer",
             "settings": "Paramètres",
-            "support": "Assistance",
+            "support": "Community Catalog",
             "update": "Mise à jour",
             "later": "Plus tard",
             "share": "Partager"
@@ -42,12 +42,12 @@
             "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
         },
         "url": {
-            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/fr-FR.html",
-            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/fr-FR.html",
-            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/fr-FR.html",
-            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/en-US.html",
-            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/en-US.html",
-            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/en-US.html"
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
         },
         "os": {
             "cameraUsageDescription": "Utilisé pour la création de motifs",
@@ -58,7 +58,7 @@
         }
     },
     "store": {
-        "title": "BOUTIQUE",
+        "title": "CATALOG",
         "common": {
             "moneyUnit": "€",
             "moneyDelimiter": ",",
@@ -77,8 +77,8 @@
             "offlineDetail": "Pas de connexion à internet",
             "serverAccessLimitation": "Les serveurs sont actuellement surchargés.\nVeuillez réessayer ultérieurement.",
             "serverMaintenance": "Provisoirement indisponible pour maintenance.\nHeure de reprise prévue du service : {{time]]",
-            "serverMaintenanceEmergency": "Provisoirement indisponible pour maintenance.\nPour d’avantage d’informations, veuillez consulter la page d’assistance.",
-            "support": "Assistance",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
             "notAvailable": "Non disponible dans votre pays/région.",
             "closeout": "Le service de la boutique a pris fin."
         }
@@ -181,7 +181,7 @@
                 "sd_duplication": "Téléchargement interrompu"
             },
             "message": {
-                "sd_download": "Si l’échec se reproduit, veuillez consulter la page d’assistance.",
+                "sd_download": "Check the community catalog or try again.",
                 "sd_duplication": "Téléchargement déjà effectué. Vérifiez le placard.",
                 "errorCode": "Code d’erreur : {{errorCode}}",
                 "serverGeneral": "Veuillez réessayer ultérieurement.",
@@ -191,13 +191,13 @@
                 "restorePurchase": "Espace de stockage insuffisant. Vous pouvez gérer votre stockage dans les paramètres.",
                 "needNotToRestorePurchase": "Aucun motif à restaurer.",
                 "hasRestoreFailedProducts": "La restauration de certains motifs a échoué.\nVeuillez réessayer ultérieurement.",
-                "resetFi": "Si l’échec se reproduit, veuillez consulter la page d’assistance.",
-                "skinCorrupted": "Veuillez consulter la page d’assistance.",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
                 "transfer": "Veuillez afficher cette page de l’application pendant l’envoi et réessayer.",
                 "compatibility": "Cette montre n’est pas prise en charge.",
                 "batteryFi": "Le niveau de la batterie de la montre est bas. Veuillez charger la batterie et réessayer.",
                 "batteryApp": "Le niveau de la batterie du smartphone est bas. Veuillez charger la batterie et réessayer.",
-                "transferUpdate": "Si l’échec se reproduit, veuillez consulter la page d’assistance.",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
                 "connectionToWatch": "Veuillez vérifier les éléments suivants et réessayer :\nLa montre est suffisamment chargée.\nLe smartphone est assez proche de la montre.\nLe Bluetooth est activé sur le smartphone.",
                 "registrationFull": "Cette application ne peut s'inscrire que {{count}} montres. Veuillez désenregistrer les autres montres de cette application.",
                 "registrationFull_plural": "Cette application ne peut s'inscrire que {{count}} montres. Veuillez désenregistrer les autres montres de cette application.",
@@ -207,7 +207,7 @@
             },
             "install": {
                 "title": "Impossible d'envoyer le motif.",
-                "description": "Si l’échec se reproduit, veuillez consulter la page d’assistance.",
+                "description": "Check the community catalog or try again.",
                 "titleAlready": "Envoyer de nouveau ?",
                 "descriptionAlready": "Ce motif a déjà été envoyé à la montre."
             }
@@ -246,12 +246,12 @@
             },
             "app": {
                 "section": "APPLICATION",
-                "storeSettings": "Paramètres du placard",
-                "support": "Page d’assistance",
-                "supportURL": "http://fashion-entertainments.com/fr/fes-watch-u/support.html",
-                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
                 "version": "Version de l’application",
-                "legal": "Informations légales"
+                "legal": "Licenses"
             }
         },
         "fi": {
@@ -311,7 +311,8 @@
             "title": "PARAMÈTRES DU PLACARD",
             "setting": {
                 "restorePurchase": "Restaurer les motifs pré-installés"
-            }
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
         },
         "resetFi": {
             "title": "RÉINITIALISER LA MONTRE",

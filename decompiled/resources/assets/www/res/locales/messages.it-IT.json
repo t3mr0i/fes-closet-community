@@ -2,9 +2,9 @@
     "app": {
         "name": "FES Closet",
         "namecn": "FES Closet (China)",
-        "supportURL": "http://fashion-entertainments.com/it/fes-watch-u/support.html",
-        "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
-        "sd_supportURL": "https://sd.fes-street.com/e/support/",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "common": {
             "backAllCaps": "INDIETRO",
             "nextAllCaps": "AVANTI",
@@ -31,7 +31,7 @@
             "retry": "Riprova ",
             "restore": "Ripristina",
             "settings": "Impostazioni",
-            "support": "Supporto",
+            "support": "Community Catalog",
             "update": "Aggiorna",
             "later": "Più tardi",
             "share": "Condividi"
@@ -42,12 +42,12 @@
             "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
         },
         "url": {
-            "eula": "https://fashion-entertainments.com/fes-watch-u/app/eula/it-IT.html",
-            "tos": "https://fashion-entertainments.com/fes-watch-u/app/terms/it-IT.html",
-            "pp": "https://fashion-entertainments.com/fes-watch-u/app/privacy/it-IT.html",
-            "eulacn": "http://www.sonystyle.com.cn/app/download/fescloset/eula/en-US.html",
-            "toscn": "http://www.sonystyle.com.cn/app/download/fescloset/terms/en-US.html",
-            "ppcn": "http://www.sonystyle.com.cn/app/download/fescloset/privacy/en-US.html"
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
         },
         "os": {
             "cameraUsageDescription": "Utilizzato per la creazione di modelli.",
@@ -58,7 +58,7 @@
         }
     },
     "store": {
-        "title": "STORE",
+        "title": "CATALOG",
         "common": {
             "moneyUnit": "€",
             "moneyDelimiter": ",",
@@ -77,8 +77,8 @@
             "offlineDetail": "Nessuna connessione internet.",
             "serverAccessLimitation": "I server sono attualmente troppo occupati.\nRiprova più tardi.",
             "serverMaintenance": "Temporaneamente non disponibile per la manutenzione.\nOrario di riavvio del servizio pianificato: {{time}}",
-            "serverMaintenanceEmergency": "Temporaneamente non disponibile per la manutenzione.\nPer ulteriori informazioni, visita la pagina di supporto.",
-            "support": "Supporto",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
             "notAvailable": "Non disponibile nel tuo paese/regione.",
             "closeout": "Il servizio di archiviazione è stato chiuso."
         }
@@ -181,7 +181,7 @@
                 "sd_duplication": "Download interrotto"
             },
             "message": {
-                "sd_download": "In caso di ripetuti errori, controlla la pagina di supporto.",
+                "sd_download": "Check the community catalog or try again.",
                 "sd_duplication": "File già scaricato. Controlla nel Closet.",
                 "errorCode": "Codice di errore: {{errorCode}}",
                 "serverGeneral": "Riprova più tardi.",
@@ -191,13 +191,13 @@
                 "restorePurchase": "Non c'è abbastanza spazio disponibile. Puoi gestire il tuo spazio di archiviazione in Impostazioni.",
                 "needNotToRestorePurchase": "Non ci sono modelli da ripristinare. ",
                 "hasRestoreFailedProducts": "Ripristino non riuscito per alcuni modelli.\nRiprova più tardi. ",
-                "resetFi": "In caso di ripetuti errori, controlla la pagina di supporto.",
-                "skinCorrupted": "Controlla la pagina di supporto.",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
                 "transfer": "Lascia aperta questa schermata dell'app durante l'invio e riprova.",
                 "compatibility": "Questo orologio non è supportato. ",
                 "batteryFi": "Il livello della batteria dell'orologio è basso. Carica la batteria e riprova. ",
                 "batteryApp": "Il livello della batteria dello smartphone è basso. Carica la batteria e riprova. ",
-                "transferUpdate": "In caso di ripetuti errori, controlla la pagina di supporto.",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
                 "connectionToWatch": "Verifica quanto segue e riprova:\nL'orologio è carico sufficientemente.\nLo smartphone è abbastanza vicino all'orologio.\nIl Bluetooth sullo smartphone è acceso.",
                 "registrationFull": "Questa app può registrare solo {{count}} orologio. Annulla la registrazione di altri orologi da questa app.",
                 "registrationFull_plural": "Questa app può registrare solo {{count}} orologi. Annulla la registrazione di altri orologi da questa app.",
@@ -207,7 +207,7 @@
             },
             "install": {
                 "title": "Non è possibile inviare il modello",
-                "description": "In caso di ripetuti errori, controlla la pagina di supporto.",
+                "description": "Check the community catalog or try again.",
                 "titleAlready": "Invia di nuovo?",
                 "descriptionAlready": "Questo modello è già stato inviato all'orologio."
             }
@@ -246,12 +246,12 @@
             },
             "app": {
                 "section": "APP",
-                "storeSettings": "Impostazioni di Closet",
-                "support": "Pagina di supporto",
-                "supportURL": "http://fashion-entertainments.com/it/fes-watch-u/support.html",
-                "supportURLcn": "http://www.sonystyle.com.cn/fashion-entertainments/index.htm",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
                 "version": "Versione dell'app",
-                "legal": "Informazioni legali"
+                "legal": "Licenses"
             }
         },
         "fi": {
@@ -311,7 +311,8 @@
             "title": "IMPOSTAZIONI DI CLOSET",
             "setting": {
                 "restorePurchase": "Ripristina i modelli preinstallati"
-            }
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
         },
         "resetFi": {
             "title": "AVVIA OROLOGIO",
