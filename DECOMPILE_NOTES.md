@@ -166,15 +166,29 @@ The original APK was already configured with `TARGET_SERVER = "prod-local-ww"`, 
 
 A static mirror was prepared under `server-mirror/public/`.
 
-This can be deployed to cheap static hosting if we later decide to point the app at a community server instead of bundled local assets.
+This is deployed through GitHub Pages and is now the community-hosted catalog.
+The app no longer needs the Sony server for store browsing or skin downloads.
 
 Hosting support files:
 
-- `server-mirror/public/_headers` for Cloudflare Pages/Netlify-style headers
+- `.github/workflows/deploy-pages.yml`
+- `.github/workflows/generate-watchface.yml`
 - `server-mirror/public/index.json`
 - `server-mirror/public/index.html`
-- `server-mirror/netlify.toml`
-- `server-mirror/wrangler.toml`
+- `server-mirror/public/generated/`
+- `server-mirror/scripts/generate-watchface.mjs`
+
+Published URL:
+
+- `https://t3mr0i.github.io/fes-closet-community/`
+
+The patched app keeps `Config.TARGET_SERVER = "prod-local-ww"` so legacy
+offline gates remain active. The local endpoint constants are redirected:
+
+- `STORE_API_ENDPOINT_LOCAL = "https://t3mr0i.github.io/fes-closet-community/api/"`
+- `STORE_STORAGE_ENDPOINT_LOCAL = "https://t3mr0i.github.io/fes-closet-community/storage/"`
+
+The transfer path to the watch remains local Bluetooth LE.
 
 Local test passed for:
 

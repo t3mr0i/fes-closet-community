@@ -462,17 +462,13 @@
   var a;
   !(function (a) {
     var b = CDP.global.Config;
-    (a.STORE_API_ENDPOINT_LOCAL = (function () {
-      return CDP.Framework.toUrl("/res/data/api/");
-    })()),
+    (a.STORE_API_ENDPOINT_LOCAL = "https://t3mr0i.github.io/fes-closet-community/api/"),
       (a.STORE_API_ENDPOINT_DEV = "https://fes-dev-api.fes-street.com/api/v1/"),
       (a.STORE_API_ENDPOINT_QA = "https://fes-qa-api.fes-street.com/api/v1/"),
       (a.STORE_API_ENDPOINT_STAGING =
         "https://fes-stg-api.fes-street.com/api/v1/"),
       (a.STORE_API_ENDPOINT_PRODUCTION = "https://api.fes-street.com/api/v1/"),
-      (a.STORE_STORAGE_ENDPOINT_LOCAL = (function () {
-        return CDP.Framework.toUrl("/res/data/storage/");
-      })()),
+      (a.STORE_STORAGE_ENDPOINT_LOCAL = "https://t3mr0i.github.io/fes-closet-community/storage/"),
       (a.STORE_ENDPOINT_STATIC_CN_PRODUCTION =
         "https://s3.cn-north-1.amazonaws.com.cn/fes-store-cn/"),
       (a.STORE_ENDPOINT_STATIC_CN_STAGING =
