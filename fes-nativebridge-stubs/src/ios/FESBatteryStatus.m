@@ -1,9 +1,3 @@
-/**
- * FESBatteryStatus.m
- * Stub for Sony FES NativeBridge BatteryStatus on iOS.
- * Returns phone battery level (0-100) via UIDevice.
- */
-
 #import "CDPGate.h"
 #import "CDPNativeBridgeMsgUtils.h"
 #import <UIKit/UIKit.h>
@@ -13,8 +7,9 @@
 
 @implementation FESBatteryStatus
 
-- (void)getBatteryLevel:(CDPMethodContext*)context
+- (void)getBatteryLevel
 {
+    CDPMethodContext* context = [self getContextWithSendResultStatus:NO];
     [UIDevice currentDevice].batteryMonitoringEnabled = YES;
     float level = [UIDevice currentDevice].batteryLevel;
     NSInteger percent = level < 0 ? 100 : (NSInteger)(level * 100);

@@ -253,6 +253,82 @@ shown in the SVG preview are not rasterized into the installable skin -
 those need digit-strip PNGs (`hh-0.png`...`hh-9.png`, `mm-0.png`...`mm-9.png`)
 which is a separate piece of work.
 
+## iOS splash hang debug (2026-05-07)
+
+Symptom: iOS Cordova build (`ios-app/`) hangs at the FASHION ENTERTAINMENTS
+splash. Last visible log on device:
+
+    [INIT] deviceready fired
+    JQMIGRATE: Migrate is installed, version 3.1.0
+    [INIT] framework ready, loading app
+    [warn] [FES.Model.FIWatchConnection] context property allowed debug mode only.   (x2)
+    [INIT] calling app.main()
+    [warn] [CDP.Framework] cdp.framework.jqm is already initialized, ignored.
+
+So `app.main()` is invoked but nothing inside it logs. Probes were added to
+`ios-app/platforms/ios/www/scripts/app.js` (the file actually packaged into
+the IPA - `cordova prepare` had not been re-run, so source-side
+`ios-app/www/scripts/app.js` patches did not flow through). Probes log
+entry/exit of:
+
+- `b()` (the AMD-exported `main` function)
+- `c()` (init runtime: `$.when(g, Analytics.initialize, ClosetCollection.ensureFetchComplete)`)
+- the three deferreds inside `c()` (each individually so we see which one hangs)
+- `d()` (`checkOobeCompletion` -> route selection)
+- `Router.start()` return
+
+Same probes were also added to `ios-app/www/scripts/app.js` so they survive a
+future `cordova prepare ios`.
+
+Additionally, the Sony anti-debug guard
+
+    Object.defineProperty(n, "context", { get: function () {
+        return CDP.global.Config.DEBUG ? m : void console.warn(...);
+    }});
+
+on `FES.Model.FIWatchConnection` was simplified to always return `m`. The
+guard was cosmetic noise (logged twice during init, logged the warnings
+visible in `[INIT]` traces) - returning `undefined` to its callers in
+non-DEBUG mode is the only thing it did, and that's a real footgun for
+anything that reads `.context` later. Patch applied to both
+`ios-app/www/scripts/app.js` and `ios-app/platforms/ios/www/scripts/app.js`;
+not (yet) applied to `raw-apk/assets/www/scripts/app.js`.
+
+Backups: `ios-app/platforms/ios/www/scripts/app.js.before-offline-patch`
+already exists from earlier work and was not touched by these edits.
+
+Stubs reviewed under `fes-nativebridge-stubs/src/ios/`:
+`FESBatteryStatus`, `FESLocalContentProvider`, `FESMisc`,
+`FESNotificationHandler`, `FESUUID`. All five call `[self resolveParams:...]`
+on every code path - none of them is the silent-hang culprit. `plugin.xml`
+has only `<source-file>` entries (no `<feature>`), but `cdp-nativebridge`
+resolves classes via `NSClassFromString`, so `<feature>` registration is
+not required.
+
+Hang root cause confirmed by next probe run:
+
+    [c] g done          <- resolved
+    [c] Closet done     <- resolved
+    (no [c] Analytics done)
+
+`Analytics.initialize()` was the silent-hung deferred. It calls
+`ga.startTrackerWithId(id, success, error)` on the cordova-plugin-google-
+analytics shim. The previous `window.ga = {...}` shim in `debug-console.js`
+returned synchronously without invoking the success callback, so the
+deferred never resolved and `$.when()` in `c()` never completed.
+
+Fix: replaced `a.Utils.Analytics.initialize()` in `c()` with
+`$.Deferred().resolve().promise()` (Analytics is fully removed for the
+community build - no GA tracking, ever). Done in both
+`ios-app/www/scripts/app.js` and `ios-app/platforms/ios/www/scripts/app.js`.
+
+Removed the `window.ga = {...}` stub from `debug-console.js` (both copies).
+All other `Analytics.trackView/trackEvent/trackError` calls in the app are
+guarded by `d.Mobile && this.enable`, and `enable` requires `s_initialized`,
+which now stays `false` permanently - so the guards short-circuit and `ga`
+is never read. No `cordova-plugin-google-analytics` is installed as a real
+plugin (it was never in package.json), so nothing else to remove.
+
 ## Mirror cleanup (2026-05-07)
 
 - Removed `server-mirror/public/_headers` - GitHub Pages does not honor

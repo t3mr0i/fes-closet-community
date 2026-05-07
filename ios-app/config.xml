@@ -14,5 +14,20 @@
         <preference name="scheme" value="app" />
         <preference name="hostname" value="localhost" />
         <access origin="*" />
+        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="overwrite">
+            <string>FES Closet imports photos to use as backgrounds for your custom watchfaces.</string>
+        </edit-config>
+        <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="overwrite">
+            <string>FES Closet saves generated and shared watchface designs to your photo library.</string>
+        </edit-config>
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="overwrite">
+            <string>FES Closet uses the camera so you can capture a photo and turn it into a watchface design.</string>
+        </edit-config>
+        <edit-config target="NSBluetoothAlwaysUsageDescription" file="*-Info.plist" mode="overwrite">
+            <string>FES Closet uses Bluetooth to connect to your FES U Watch and install watchfaces.</string>
+        </edit-config>
+        <edit-config target="NSBluetoothPeripheralUsageDescription" file="*-Info.plist" mode="overwrite">
+            <string>FES Closet uses Bluetooth to connect to your FES U Watch and install watchfaces.</string>
+        </edit-config>
     </platform>
 </widget>

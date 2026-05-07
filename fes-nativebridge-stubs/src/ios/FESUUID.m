@@ -1,10 +1,3 @@
-/**
- * FESUUID.m
- * Stub for Sony FES NativeBridge UUID on iOS.
- * Called by ensureOwnerId() at startup to generate a persistent device UUID.
- * Returns a standard UUID string via NSUUID.
- */
-
 #import "CDPGate.h"
 #import "CDPNativeBridgeMsgUtils.h"
 
@@ -13,8 +6,9 @@
 
 @implementation FESUUID
 
-- (void)generate:(CDPMethodContext*)context
+- (void)generate
 {
+    CDPMethodContext* context = [self getContextWithSendResultStatus:NO];
     NSString* uuid = [[NSUUID UUID] UUIDString];
     [self resolveParams:context withParams:@[uuid]];
 }

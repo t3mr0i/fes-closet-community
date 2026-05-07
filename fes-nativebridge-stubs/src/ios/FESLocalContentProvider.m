@@ -1,11 +1,3 @@
-/**
- * FESLocalContentProvider.m
- * Stub for Sony FES NativeBridge LocalContentProvider on iOS.
- *
- * Returns an empty content list. The app handles zero local skins gracefully
- * and falls back to the store / generated catalog.
- */
-
 #import "CDPGate.h"
 #import "CDPNativeBridgeMsgUtils.h"
 
@@ -14,22 +6,25 @@
 
 @implementation FESLocalContentProvider
 
-- (void)queryLocalContents:(CDPMethodContext*)context withArg:(NSNumber*)queryIndex withArg:(NSNumber*)queryLimit
+// Called as queryLocalContents(queryIndex, queryLimit) — 2 JS args → selector queryLocalContents::
+- (void)queryLocalContents:(NSNumber*)queryIndex :(NSNumber*)queryLimit
 {
-    NSDictionary* payload = @{
-        @"totalContentCount": @0,
-        @"contents": @[]
-    };
+    CDPMethodContext* context = [self getContextWithSendResultStatus:NO];
+    NSDictionary* payload = @{ @"totalContentCount": @0, @"contents": @[] };
     [self resolveParams:context withParams:@[payload]];
 }
 
-- (void)queryThumbnailByKey:(CDPMethodContext*)context withArg:(NSString*)key
+// Called as queryThumbnailByKey(key) — 1 JS arg → selector queryThumbnailByKey:
+- (void)queryThumbnailByKey:(NSString*)key
 {
+    CDPMethodContext* context = [self getContextWithSendResultStatus:NO];
     [self resolveParams:context withParams:@[@""]];
 }
 
-- (void)queryImageSourceByKey:(CDPMethodContext*)context withArg:(NSString*)key
+// Called as queryImageSourceByKey(key) — 1 JS arg → selector queryImageSourceByKey:
+- (void)queryImageSourceByKey:(NSString*)key
 {
+    CDPMethodContext* context = [self getContextWithSendResultStatus:NO];
     [self resolveParams:context withParams:@[@""]];
 }
 
