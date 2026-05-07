@@ -15,3 +15,5 @@ node_modules/
 
 # Cordova build output (per-project gitignore also covers ios-app/)
 platforms/
+
+.lazyweb/

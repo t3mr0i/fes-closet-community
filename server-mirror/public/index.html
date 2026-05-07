@@ -437,6 +437,156 @@
     .gen-status.error { color: #b6452b; }
     .gen-status.ok { color: var(--accent-strong); }
 
+    /* Suggestion chips below the prompt */
+    .gen-suggest {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .gen-suggest .chip {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+
+    .gen-suggest .chip:hover {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      border-color: var(--accent);
+    }
+
+    /* Style tile carousel */
+    .gen-styles {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 6px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .gen-style-tile {
+      flex: 0 0 auto;
+      width: 64px;
+      border: 2px solid transparent;
+      background: #1d2024;
+      border-radius: 10px;
+      padding: 4px;
+      cursor: pointer;
+      display: grid;
+      gap: 4px;
+      transition: border-color .12s, transform .12s;
+    }
+
+    .gen-style-tile:hover {
+      transform: translateY(-1px);
+    }
+
+    .gen-style-tile[aria-pressed="true"] {
+      border-color: var(--accent);
+    }
+
+    .gen-style-tile .tile-img {
+      width: 100%;
+      aspect-ratio: 1 / 4.6;
+      background: #2a2d31;
+      border-radius: 6px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      color: #6c7278;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+    }
+
+    .gen-style-tile .tile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gen-style-tile .tile-label {
+      font-size: 10px;
+      text-align: center;
+      color: #d4d6c8;
+      text-transform: capitalize;
+    }
+
+    /* History strip */
+    .gen-history {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #2a2d31;
+    }
+
+    .gen-history-title {
+      font-size: 11px;
+      color: #6c7278;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .gen-history-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .gen-history-item {
+      flex: 0 0 auto;
+      width: 40px;
+      border: 2px solid transparent;
+      background: transparent;
+      padding: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color .12s;
+    }
+
+    .gen-history-item[aria-pressed="true"] {
+      border-color: var(--accent);
+    }
+
+    .gen-history-item .h-img {
+      width: 100%;
+      aspect-ratio: 1 / 4.6;
+      background: #2a2d31;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .gen-history-item .h-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Loading shimmer on the preview while generating */
+    .watch-screen.is-loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+      animation: shimmer 1.4s infinite linear;
+    }
+    .watch-screen.is-loading { position: relative; }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
     @media (max-width: 760px) {
       .topbar,
       .hero {
@@ -516,6 +666,28 @@
     const GEMINI_API_KEY = "__GEMINI_API_KEY__";
     // Nano Banana 2 = Gemini 3 Pro Image. Public API name:
     const GEMINI_MODEL = "gemini-3-pro-image-preview";
+
+    const STYLE_PRESETS = [
+      { id: "minimalist", label: "Minimalist" },
+      { id: "editorial", label: "Editorial" },
+      { id: "abstract", label: "Abstract" },
+      { id: "nature", label: "Nature" },
+      { id: "geometric", label: "Geometric" },
+      { id: "brutalist", label: "Brutalist" },
+      { id: "anime", label: "Anime" },
+    ];
+
+    const PROMPT_SUGGESTIONS = [
+      "minimal warm horizon at dusk",
+      "neon Tokyo skyline at night",
+      "misty mountain morning",
+      "deep ocean fade, blue to black",
+      "brutalist concrete with one orange seam",
+      "soft sunset gradient, pink to gold",
+    ];
+
+    const HISTORY_KEY = "fes-gen-history-v1";
+    const HISTORY_LIMIT = 8;
 
     const COMMUNITY_CREATOR_ID = "community-0000-0000-0000-000000000001";
     const root = location.pathname.endsWith("/")
@@ -760,13 +932,34 @@
         && !GEMINI_API_KEY.startsWith("__");
     }
 
+    function styleTileImg(styleId) {
+      // Try the pre-rendered tile from the workflow first; fall back to a solid placeholder.
+      return `<img src="${url(`img/style-tiles/${styleId}.png`)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${styleId}'}))">`;
+    }
+
     function generatorPanelHtml() {
       const localPath = hasLocalKey();
+
+      const styleTiles = STYLE_PRESETS.map((s, i) => `
+        <button type="button" class="gen-style-tile" data-style="${s.id}" aria-pressed="${i === 0}" ${localPath ? "" : "disabled"}>
+          <div class="tile-img">${styleTileImg(s.id)}</div>
+          <div class="tile-label">${s.label}</div>
+        </button>
+      `).join("");
+
+      const suggestions = PROMPT_SUGGESTIONS.map((p) => `
+        <button type="button" class="chip" data-prompt="${escapeHtml(p)}" ${localPath ? "" : "disabled"}>${escapeHtml(p)}</button>
+      `).join("");
+
       const cta = localPath
         ? `
             <div class="actions row-2">
               <button class="button" id="gen-go" type="button">Generate</button>
+              <button class="button secondary" id="gen-variation" type="button" disabled>Try variation</button>
+            </div>
+            <div class="actions row-2">
               <button class="button secondary" id="gen-download" type="button" disabled>Download skin.zip</button>
+              <a class="button secondary" id="gen-submit" target="_blank" rel="noopener" style="pointer-events:none;opacity:0.5">Submit to community</a>
             </div>
             <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
             <p style="font-size:12px;color:var(--muted);margin:0">
@@ -799,19 +992,14 @@
               Watchface concept
               <textarea id="gen-prompt" ${disabled} placeholder="e.g. minimal warm desert at dusk, soft horizon line, large minute markers"></textarea>
             </label>
+            <div class="gen-suggest" id="gen-suggest">${suggestions}</div>
+
+            <div>
+              <label style="display:block;margin-bottom:4px">Style</label>
+              <div class="gen-styles" id="gen-styles" role="radiogroup" aria-label="Style preset">${styleTiles}</div>
+            </div>
+
             <div class="form-row">
-              <label>
-                Style preset
-                <select id="gen-style" ${disabled}>
-                  <option value="minimalist">Minimalist</option>
-                  <option value="editorial">Editorial / typographic</option>
-                  <option value="abstract">Abstract gradient</option>
-                  <option value="nature">Nature photo</option>
-                  <option value="geometric">Geometric pattern</option>
-                  <option value="brutalist">Brutalist mono</option>
-                  <option value="anime">Anime / illustrative</option>
-                </select>
-              </label>
               <label>
                 Mood
                 <select id="gen-mood" ${disabled}>
@@ -822,15 +1010,22 @@
                   <option value="nostalgic">Nostalgic</option>
                 </select>
               </label>
+              <label>
+                Display name
+                <input id="gen-name" type="text" ${disabled} placeholder="My watchface">
+              </label>
             </div>
-            <label>
-              Display name
-              <input id="gen-name" type="text" ${disabled} placeholder="My watchface">
-            </label>
+
             ${cta}
           </div>
-          <div class="gen-preview" id="gen-preview">
-            <div class="watch"><div class="watch-screen"><span>preview</span></div></div>
+          <div>
+            <div class="gen-preview" id="gen-preview">
+              <div class="watch"><div class="watch-screen"><span>preview</span></div></div>
+            </div>
+            <div class="gen-history" id="gen-history" hidden>
+              <div class="gen-history-title">Recent in this session</div>
+              <div class="gen-history-strip" id="gen-history-strip"></div>
+            </div>
           </div>
         </div>
       `;
@@ -839,7 +1034,7 @@
     function buildPrompt(opts) {
       // Watch screen aspect: 152x704 (very tall, narrow vertical strip)
       // Reading top-to-bottom on the wrist.
-      return [
+      const lines = [
         `Design a watchface artwork for a vertical narrow display, exact pixel size 152x704 (aspect ratio 1:4.6).`,
         `Style: ${opts.style}. Mood: ${opts.mood}.`,
         `Concept: ${opts.concept}.`,
@@ -850,7 +1045,11 @@
         `- Sharp at small render sizes (final image will be displayed only ~30 mm wide on the wrist).`,
         `- Edge-to-edge artwork, no white border, no padding.`,
         `Render only the artwork as a single PNG/JPEG image.`,
-      ].join("\n");
+      ];
+      if (opts.vary) {
+        lines.push(`Generate a fresh variation: keep the concept and style, change the specific composition, color accents, and details.`);
+      }
+      return lines.join("\n");
     }
 
     async function callGemini(prompt) {
@@ -1005,65 +1204,212 @@
       return new Blob([out], { type: "application/zip" });
     }
 
-    let lastGenerated = null; // { pngBlob, name }
+    let lastGenerated = null; // { pngBlob, name, concept, style, mood, dataUrl }
 
     function setStatus(msg, kind = "") {
       const el = document.getElementById("gen-status");
+      if (!el) return;
       el.className = `gen-status ${kind}`;
       el.textContent = msg;
     }
 
+    // ---------- history (localStorage of recent generations) ----------
+
+    function readHistory() {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    }
+
+    function writeHistory(items) {
+      try { localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, HISTORY_LIMIT))); }
+      catch { /* quota exceeded — drop oldest */ }
+    }
+
+    function pushHistory(entry) {
+      const items = readHistory();
+      items.unshift(entry);
+      writeHistory(items);
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const wrap = document.getElementById("gen-history");
+      const strip = document.getElementById("gen-history-strip");
+      if (!wrap || !strip) return;
+      const items = readHistory();
+      if (!items.length) { wrap.hidden = true; return; }
+      wrap.hidden = false;
+      strip.innerHTML = items.map((it, i) => `
+        <button type="button" class="gen-history-item" data-idx="${i}" aria-pressed="false" title="${escapeHtml(it.concept || "")}">
+          <div class="h-img"><img src="${it.dataUrl}" alt=""></div>
+        </button>
+      `).join("");
+    }
+
+    function restoreFromHistory(idx) {
+      const items = readHistory();
+      const it = items[idx];
+      if (!it) return;
+      document.getElementById("gen-prompt").value = it.concept || "";
+      const styleBtn = document.querySelector(`.gen-style-tile[data-style="${it.style}"]`);
+      if (styleBtn) selectStyleTile(styleBtn);
+      const moodSel = document.getElementById("gen-mood");
+      if (moodSel && it.mood) moodSel.value = it.mood;
+      // Repaint preview
+      document.getElementById("gen-preview").innerHTML =
+        `<div class="watch"><div class="watch-screen"><img src="${it.dataUrl}" alt=""></div></div>`;
+      // Mark active history item
+      document.querySelectorAll(".gen-history-item").forEach((b, i) => {
+        b.setAttribute("aria-pressed", String(i === idx));
+      });
+      // Mark this as lastGenerated so download/submit/variation work without re-running
+      // (we stored a dataURL — convert back to blob lazily on download)
+      lastGenerated = {
+        pngBlob: null, // will be regenerated from dataUrl if needed
+        dataUrl: it.dataUrl,
+        name: slugify(it.name || it.concept || "my-watchface"),
+        concept: it.concept,
+        style: it.style,
+        mood: it.mood,
+      };
+      const dlBtn = document.getElementById("gen-download");
+      const subBtn = document.getElementById("gen-submit");
+      const varBtn = document.getElementById("gen-variation");
+      if (dlBtn) dlBtn.disabled = false;
+      if (varBtn) varBtn.disabled = false;
+      enableSubmit(subBtn, it);
+    }
+
+    function slugify(s) {
+      return String(s || "my-watchface")
+        .replace(/[^a-z0-9-]+/gi, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase()
+        .slice(0, 48) || "my-watchface";
+    }
+
+    async function dataUrlToBlob(dataUrl) {
+      const res = await fetch(dataUrl);
+      return await res.blob();
+    }
+
+    function enableSubmit(subBtn, entry) {
+      if (!subBtn) return;
+      const title = `Skin submission: ${entry.concept || entry.name || "my-watchface"}`.slice(0, 80);
+      const body = [
+        "Generated with the FES Closet AI generator (Gemini 3 Pro Image).",
+        "",
+        "**Concept:** " + (entry.concept || ""),
+        "**Style:** " + (entry.style || ""),
+        "**Mood:** " + (entry.mood || ""),
+        "",
+        "Drop the generated `skin.zip` file in the box below to attach it. A preview image is also welcome.",
+      ].join("\n");
+      const href = "https://github.com/t3mr0i/fes-closet-community/issues/new"
+        + "?labels=skin-submission"
+        + "&title=" + encodeURIComponent(title)
+        + "&body=" + encodeURIComponent(body);
+      subBtn.href = href;
+      subBtn.style.pointerEvents = "auto";
+      subBtn.style.opacity = "1";
+    }
+
+    function selectStyleTile(button) {
+      document.querySelectorAll(".gen-style-tile").forEach((b) =>
+        b.setAttribute("aria-pressed", String(b === button))
+      );
+    }
+
+    function currentStyle() {
+      const active = document.querySelector('.gen-style-tile[aria-pressed="true"]');
+      return active ? active.dataset.style : STYLE_PRESETS[0].id;
+    }
+
+    async function runGeneration({ varyOnly = false } = {}) {
+      const goBtn = document.getElementById("gen-go");
+      const varBtn = document.getElementById("gen-variation");
+      const dlBtn = document.getElementById("gen-download");
+      const subBtn = document.getElementById("gen-submit");
+      const previewWrap = document.getElementById("gen-preview");
+
+      const concept = document.getElementById("gen-prompt").value.trim();
+      const style = currentStyle();
+      const mood = document.getElementById("gen-mood").value;
+      const name = document.getElementById("gen-name").value.trim();
+
+      if (!concept) { setStatus("Describe what you want first.", "error"); return; }
+
+      goBtn.disabled = true; varBtn.disabled = true; dlBtn.disabled = true;
+      // shimmer
+      const screen = previewWrap.querySelector(".watch-screen");
+      if (screen) screen.classList.add("is-loading");
+      setStatus("Calling Gemini…");
+
+      try {
+        const promptText = buildPrompt({ concept, style, mood, vary: varyOnly });
+        const inline = await callGemini(promptText);
+        const sourceDataUrl = dataUrlFromInline(inline);
+
+        setStatus("Rasterizing to 152×704…");
+        const pngBlob = await rasterizeTo152x704(sourceDataUrl);
+
+        // Convert blob to dataUrl for history persistence
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(pngBlob);
+        });
+
+        previewWrap.innerHTML =
+          `<div class="watch"><div class="watch-screen"><img src="${dataUrl}" alt=""></div></div>`;
+
+        const entry = {
+          name: slugify(name || concept),
+          concept, style, mood, dataUrl,
+          createdAt: new Date().toISOString(),
+        };
+        lastGenerated = { ...entry, pngBlob };
+
+        pushHistory(entry);
+        dlBtn.disabled = false;
+        varBtn.disabled = false;
+        enableSubmit(subBtn, entry);
+        setStatus("Ready. Download the skin.zip or try a variation.", "ok");
+      } catch (err) {
+        console.error(err);
+        setStatus(err.message || String(err), "error");
+        if (screen) screen.classList.remove("is-loading");
+      } finally {
+        goBtn.disabled = false;
+        const screen2 = document.querySelector("#gen-preview .watch-screen");
+        if (screen2) screen2.classList.remove("is-loading");
+      }
+    }
+
     function wireGenerator() {
       const goBtn = document.getElementById("gen-go");
+      if (!goBtn) return; // workflow-fallback panel — nothing to wire
+
+      goBtn.addEventListener("click", () => runGeneration({ varyOnly: false }));
+
+      const varBtn = document.getElementById("gen-variation");
+      if (varBtn) varBtn.addEventListener("click", () => runGeneration({ varyOnly: true }));
+
       const dlBtn = document.getElementById("gen-download");
-      if (!goBtn || !dlBtn) return; // workflow-fallback panel — nothing to wire
-
-      goBtn.addEventListener("click", async () => {
-        const concept = document.getElementById("gen-prompt").value.trim();
-        const style = document.getElementById("gen-style").value;
-        const mood = document.getElementById("gen-mood").value;
-        const name = document.getElementById("gen-name").value.trim() || "my-watchface";
-        if (!concept) {
-          setStatus("Describe what you want first.", "error");
-          return;
-        }
-        goBtn.disabled = true;
-        dlBtn.disabled = true;
-        setStatus("Calling Gemini…");
-
-        try {
-          const prompt = buildPrompt({ concept, style, mood });
-          const inline = await callGemini(prompt);
-          const sourceDataUrl = dataUrlFromInline(inline);
-
-          setStatus("Rasterizing to 152×704…");
-          const pngBlob = await rasterizeTo152x704(sourceDataUrl);
-
-          // Show preview
-          const preview = document.getElementById("gen-preview");
-          const previewUrl = URL.createObjectURL(pngBlob);
-          preview.innerHTML = `<div class="watch"><div class="watch-screen"><img src="${previewUrl}" alt=""></div></div>`;
-
-          lastGenerated = { pngBlob, name: name.replace(/[^a-z0-9-]+/gi, "-").toLowerCase() };
-          dlBtn.disabled = false;
-          setStatus("Ready. Click Download skin.zip to save.", "ok");
-        } catch (err) {
-          console.error(err);
-          setStatus(err.message || String(err), "error");
-        } finally {
-          goBtn.disabled = false;
-        }
-      });
-
-      dlBtn.addEventListener("click", async () => {
+      if (dlBtn) dlBtn.addEventListener("click", async () => {
         if (!lastGenerated) return;
-        const pngBytes = new Uint8Array(await lastGenerated.pngBlob.arrayBuffer());
+        let pngBlob = lastGenerated.pngBlob;
+        if (!pngBlob && lastGenerated.dataUrl) {
+          pngBlob = await dataUrlToBlob(lastGenerated.dataUrl);
+        }
+        if (!pngBlob) return;
+        const pngBytes = new Uint8Array(await pngBlob.arrayBuffer());
         const config = {
           version: "1.0.0",
           revision: Date.now(),
-          components: [
-            { type: "background", image: "bg.png", layout: { size: [152, 704] } },
-          ],
+          components: [{ type: "background", image: "bg.png", layout: { size: [152, 704] } }],
         };
         const configBytes = new TextEncoder().encode(JSON.stringify(config, null, 2));
         const zip = makeStoreZip([
@@ -1077,6 +1423,29 @@
         a.click();
         a.remove();
       });
+
+      // Suggestion chips
+      document.querySelectorAll(".gen-suggest .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const promptEl = document.getElementById("gen-prompt");
+          promptEl.value = chip.dataset.prompt;
+          promptEl.focus();
+        });
+      });
+
+      // Style tiles
+      document.querySelectorAll(".gen-style-tile").forEach((tile) => {
+        tile.addEventListener("click", () => selectStyleTile(tile));
+      });
+
+      // History strip clicks
+      document.getElementById("gen-history-strip")?.addEventListener("click", (e) => {
+        const btn = e.target.closest(".gen-history-item");
+        if (!btn) return;
+        restoreFromHistory(Number(btn.dataset.idx));
+      });
+
+      renderHistory();
     }
 
     boot();
