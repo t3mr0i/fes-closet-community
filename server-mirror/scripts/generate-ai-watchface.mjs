@@ -15,7 +15,7 @@ const mood = process.env.AI_MOOD || "calm";
 const displayName = (process.env.AI_NAME || "").trim() || concept;
 const requestedSlug = (process.env.AI_SLUG || "").trim();
 const apiKey = process.env.GEMINI_API_KEY;
-const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-image-preview";
+const model = process.env.GEMINI_MODEL || "gemini-3-pro-image-preview";
 
 if (!apiKey) {
   console.error("GEMINI_API_KEY is required.");

@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..", "..");
 
 const apiKey = process.env.GEMINI_API_KEY;
-const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-image-preview";
+const model = process.env.GEMINI_MODEL || "gemini-3-pro-image-preview";
 if (!apiKey) {
   console.error("GEMINI_API_KEY is required.");
   process.exit(1);

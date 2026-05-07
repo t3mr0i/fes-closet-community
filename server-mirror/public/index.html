@@ -731,9 +731,9 @@
     // sign of quota abuse.
     // ============================================================
     const GEMINI_API_KEY = "__GEMINI_API_KEY__";
-    // Gemini 2.5 Flash Image — free tier allows ~10 image gens/min.
-    // (gemini-3-pro-image-preview / Nano Banana 2 requires paid billing.)
-    const GEMINI_MODEL = "gemini-2.5-flash-image-preview";
+    // Gemini 3 Pro Image (Nano Banana 2). Requires paid billing on the
+    // GCP project that owns the API key — the free tier is hard-capped at 0.
+    const GEMINI_MODEL = "gemini-3-pro-image-preview";
 
     const STYLE_PRESETS = [
       { id: "minimalist", label: "Minimalist" },
@@ -1079,7 +1079,7 @@
             </div>
             <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
             <p style="font-size:12px;color:var(--muted);margin:0">
-              Runs locally in your browser using Gemini 2.5 Flash Image. The resulting <code>skin.zip</code> works
+              Runs locally in your browser using Gemini 3 Pro Image (Nano Banana 2). The resulting <code>skin.zip</code> works
               directly with the patched FES Closet app.
             </p>
           `
