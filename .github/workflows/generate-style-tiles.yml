@@ -26,6 +26,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install ImageMagick
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends imagemagick
+
       - name: Generate style tiles
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
