@@ -187,6 +187,14 @@
         return STYLE_PRESETS[0].desc;
     }
 
+    function currentStyleLabel() {
+        var id = currentStyle();
+        for (var i = 0; i < STYLE_PRESETS.length; i++) {
+            if (STYLE_PRESETS[i].id === id) return STYLE_PRESETS[i].label;
+        }
+        return STYLE_PRESETS[0].label;
+    }
+
     function wire(modal) {
         modal.querySelector(".aigen-close").addEventListener("click", close);
         modal.querySelector("#aigen-go").addEventListener("click", function () { runGeneration(false); });
@@ -217,23 +225,96 @@
 
     /* ---------- prompt + OpenAI ---------- */
 
-    function buildPrompt(opts) {
+    /* Per-style art-direction packet that goes into the structured prompt.
+       Light, depth, negative space, contrast — concrete, image-makeable. */
+    var STYLE_DIRECTION = {
+        minimalist: {
+            light:        "diffuse soft light from the upper edge",
+            depth:        "essentially flat, one or two value layers",
+            negativeSpace:"~70% empty space, the subject anchored low",
+            contrast:     "low to medium contrast, gentle midtones",
+            extras:       "single thin focal element, no decorative noise"
+        },
+        editorial: {
+            light:        "directional studio light, hard edge",
+            depth:        "two clear planes, foreground subject + flat background",
+            negativeSpace:"asymmetric — strong vertical column of empty space on one side",
+            contrast:     "high contrast, deep blacks and clean whites, magazine-cover feel",
+            extras:       "graphic-design composition, no fine textures"
+        },
+        abstract: {
+            light:        "no obvious light source, ambient gradient",
+            depth:        "atmospheric depth, soft glow front-to-back",
+            negativeSpace:"smooth gradient fields, no hard divisions",
+            contrast:     "medium contrast, smooth tonal transitions, no hard edges",
+            extras:       "painterly value washes, suggestive rather than literal"
+        },
+        nature: {
+            light:        "golden-hour rim light or moody overcast",
+            depth:        "deep atmospheric perspective, three planes (foreground / mid / sky)",
+            negativeSpace:"upper third = sky, lower third = horizon detail",
+            contrast:     "broad tonal range, deep shadows + bright highlights",
+            extras:       "organic textures (grass, water, mist, rock)"
+        },
+        geometric: {
+            light:        "flat lighting, no cast shadows",
+            depth:        "completely flat, pure 2D shapes",
+            negativeSpace:"precise grid alignment, repeating intervals",
+            contrast:     "high contrast between figure and ground",
+            extras:       "circles, lines, triangles, repeating motifs, mathematical precision"
+        },
+        brutalist: {
+            light:        "harsh single-direction light from above-left",
+            depth:        "shallow but textural, raw material surface",
+            negativeSpace:"dominated by a heavy mass, small slice of negative space",
+            contrast:     "very high contrast, deep crushed blacks",
+            extras:       "concrete or rough stone texture, single intense focal accent"
+        },
+        anime: {
+            light:        "dramatic backlight or rim light, lens-flare stylisation",
+            depth:        "three planes with clear silhouettes, sky / silhouette / foreground",
+            negativeSpace:"upper half = sky / cloud, lower half = silhouette",
+            contrast:     "high contrast cel-shading, ink-line emphasis",
+            extras:       "painterly illustrative style, no photorealism"
+        }
+    };
+
+    function structuredPrompt(opts) {
+        /* Build a concrete art-direction prompt the image model can
+           execute on. Each line is a directive; the model handles them
+           better as labelled bullets than as one paragraph. */
+        var dir = STYLE_DIRECTION[opts.styleId] || STYLE_DIRECTION.minimalist;
         var lines = [
-            "Design a watchface artwork for a vertical narrow display, exact pixel size 152x704 (aspect ratio 1:4.6).",
-            "VERY IMPORTANT: render in pure greyscale / black-and-white only. NO colour. The display is monochrome.",
-            "Style: " + opts.styleDesc + ".",
-            "Mood: " + opts.mood + ".",
-            "Concept: " + opts.concept + ".",
-            "Composition rules:",
-            "- Vertical reading order top to bottom.",
-            "- Leave the upper third visually quiet so a digital time readout remains legible (the watch overlays digits separately).",
-            "- High contrast greyscale tones with strong blacks and clean whites.",
-            "- No text, no logos, no watermarks.",
-            "- Sharp at small render sizes (~30 mm wide on the wrist).",
-            "- Edge-to-edge artwork, no border or padding.",
-            "Render only the artwork as a single greyscale image."
+            "Design watchface artwork for a vertical narrow strap-screen display.",
+            "Exact pixel size: 152x704 (aspect ratio 1:4.6, very tall and thin).",
+            "",
+            "FORMAT: pure greyscale / black-and-white only. NO colour, no tinting, no sepia. The watch display is physically monochrome.",
+            "",
+            "CONCEPT: " + opts.concept,
+            "MOOD: " + opts.mood,
+            "STYLE: " + (opts.styleLabel || opts.styleId).toLowerCase(),
+            "",
+            "ART DIRECTION:",
+            "- Light: " + dir.light + ".",
+            "- Depth: " + dir.depth + ".",
+            "- Negative space: " + dir.negativeSpace + ".",
+            "- Contrast: " + dir.contrast + ".",
+            "- Extras: " + dir.extras + ".",
+            "",
+            "COMPOSITION RULES (non-negotiable):",
+            "- Vertical reading order, top-to-bottom story.",
+            "- Upper third is visually QUIET — the watch overlays a digital time readout there. Reserve it for low-detail, low-contrast space.",
+            "- Greyscale tones must be punchy: deep blacks, clean whites, full midtone range. The screen is small (~30mm wide on a wrist) so weak contrast disappears.",
+            "- Edge-to-edge artwork. NO white border, NO padding, NO frame.",
+            "- NO text, NO numbers, NO logos, NO watermarks (the watch supplies its own time).",
+            "- Sharp, legible silhouettes that read at thumbnail size.",
+            "",
+            "OUTPUT: a single greyscale image, full bleed, ready to wrap onto a watch strap."
         ];
-        if (opts.vary) lines.push("Generate a fresh greyscale variation: keep the concept and style, change composition, value structure, and details.");
+        if (opts.vary) {
+            lines.push("");
+            lines.push("VARIATION: keep concept, mood, and style direction. Change the specific composition, the value distribution, and the silhouette of the focal element.");
+        }
         return lines.join("\n");
     }
 
@@ -242,13 +323,60 @@
         return {
             key: s.OPENAI_API_KEY || "",
             model: s.OPENAI_MODEL || "gpt-image-2",
-            size: s.OPENAI_SIZE || "1024x3072"
+            size: s.OPENAI_SIZE || "1024x3072",
+            rephraseModel: s.OPENAI_REPHRASE_MODEL || "gpt-5.4-nano"
         };
+    }
+
+    function isPromptKey(s) {
+        return s && typeof s === "string" && s.indexOf("__") !== 0;
+    }
+
+    /* Pre-process the user's raw concept text through gpt-5-nano so a
+       lazy "cool image" turns into a concrete subject + setting + mood
+       phrase the image model can actually render. The structured prompt
+       above wraps this. */
+    async function rephraseConcept(rawConcept, styleLabel, mood) {
+        var sec = getSecrets();
+        if (!isPromptKey(sec.key)) throw new Error("OPENAI_API_KEY missing");
+        var system = "You rewrite watchface design concepts into vivid, concrete image-generation briefs. Output is one or two sentences, present-tense, sensory and specific. NO meta talk, NO 'Sure!', NO quotes, NO explanation. Just the rewritten concept. Maximum 40 words.";
+        var user = [
+            "Style: " + styleLabel + ".",
+            "Mood: " + mood + ".",
+            "User concept: " + rawConcept,
+            "",
+            "Rewrite as a vivid, specific watchface concept brief. Greyscale-friendly subject. Vertical composition (the canvas is 1:4.6 portrait)."
+        ].join("\n");
+
+        var res = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + sec.key,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                model: sec.rephraseModel,
+                messages: [
+                    { role: "system", content: system },
+                    { role: "user",   content: user }
+                ]
+            })
+        });
+        if (!res.ok) {
+            // fall back to raw concept on rephrase failure — don't kill the run
+            console.warn("[aigen] rephrase failed, using raw concept:", res.status);
+            return rawConcept;
+        }
+        var data = await res.json();
+        var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        if (!content || !content.trim()) return rawConcept;
+        // trim any surrounding quotes the model might add
+        return content.trim().replace(/^["“”']+|["“”']+$/g, "");
     }
 
     async function callOpenAI(promptText) {
         var sec = getSecrets();
-        if (!sec.key || sec.key.indexOf("__") === 0) {
+        if (!isPromptKey(sec.key)) {
             throw new Error("OPENAI_API_KEY missing — set it in scripts/secrets.js");
         }
         var res = await fetch("https://api.openai.com/v1/images/generations", {
@@ -326,21 +454,38 @@
         var modal = state.modal;
         var goBtn = modal.querySelector("#aigen-go");
         var acceptBtn = modal.querySelector("#aigen-accept");
-        var concept = modal.querySelector("#aigen-prompt").value.trim();
-        var style = currentStyle();
-        var styleDesc = currentStyleDesc();
+        var rawConcept = modal.querySelector("#aigen-prompt").value.trim();
+        var styleId = currentStyle();
+        var styleLabel = currentStyleLabel();
         var mood = modal.querySelector("#aigen-mood").value;
 
-        if (!concept) { setStatus("Describe what you want first.", "error"); return; }
+        if (!rawConcept) { setStatus("Describe what you want first.", "error"); return; }
 
         goBtn.disabled = true; acceptBtn.disabled = true;
         var screen = modal.querySelector(".aigen-watch-screen");
         if (screen) screen.classList.add("is-loading");
-        setStatus("Generating greyscale watchface…");
 
         try {
-            var promptText = buildPrompt({ concept: concept, styleDesc: styleDesc, mood: mood, vary: varyOnly });
+            // Phase 1: rephrase the user's concept into a vivid brief.
+            // Cheap (gpt-5.4-nano), ~1-2s, dramatically improves image quality.
+            setStatus("Refining your concept…");
+            var refinedConcept = await rephraseConcept(rawConcept, styleLabel, mood);
+            console.log("[aigen] rephrased:", JSON.stringify(refinedConcept));
+
+            // Phase 2: build the structured art-direction prompt around it.
+            var promptText = structuredPrompt({
+                concept: refinedConcept,
+                styleId: styleId,
+                styleLabel: styleLabel,
+                mood: mood,
+                vary: varyOnly
+            });
+
+            // Phase 3: image generation.
+            setStatus("Generating greyscale watchface (~20s)…");
             var sourceDataUrl = await callOpenAI(promptText);
+
+            // Phase 4: crop + grayscale-bake.
             setStatus("Converting to monochrome 152×704…");
             var result = await rasterizeToWatch(sourceDataUrl);
 
@@ -350,10 +495,12 @@
 
             state.currentDataUrl = result.dataUrl;
             state.currentBlob = result.blob;
-            state.currentMeta = { concept: concept, style: style, mood: mood };
+            state.currentMeta = { concept: rawConcept, refinedConcept: refinedConcept, style: styleId, mood: mood };
 
             pushHistory({
-                concept: concept, style: style, mood: mood,
+                concept: rawConcept,
+                refinedConcept: refinedConcept,
+                style: styleId, mood: mood,
                 dataUrl: result.dataUrl, createdAt: new Date().toISOString()
             });
 
