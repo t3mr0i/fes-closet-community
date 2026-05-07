@@ -89,6 +89,19 @@ A `skin.zip` is `config.json` + PNG layer assets. Display target is **152×704**
 - `main` — primary
 - `codex/fes-community-offline` — current working branch (also a Pages deploy trigger)
 
+## Secrets handling
+
+API keys live in `scripts/secrets.js`, present in three copies:
+- `raw-apk/assets/www/scripts/secrets.js` — committed with placeholders, real values protected by `git update-index --skip-worktree`
+- `ios-app/www/scripts/secrets.js` — same
+- `ios-app/platforms/ios/www/scripts/secrets.js` — gitignored under `platforms/`, always carries the live values
+
+`./scripts/setup-secrets.sh` is the only thing that should touch these files outside of normal app code edits. It prompts for an OpenAI key (`sk-…`) and a GitHub fine-grained PAT (`github_pat_…`) and handles the skip-worktree juggling. `--status` shows current state, `--release` resets back to placeholders so you can commit a structural change to `secrets.js`.
+
+If you need to add a new key (e.g. a future Anthropic key), edit `secrets.js` while skip-worktree is OFF (run `--release` first), commit the new placeholder, run setup-secrets again to re-inject your local values. **Never** edit secrets.js with skip-worktree ON and try to commit — git will silently drop the change because the file is intentionally invisible.
+
+The OpenAI key is used by the in-app AI watchface generator (`fes.aigen.js`) and by two server-mirror scripts. The GitHub PAT is used only by the in-app community submission flow which PUTs to `submissions/pending/` via the Contents API.
+
 ## Patching conventions
 
 - When patching `raw-apk/assets/www/scripts/app.js` (or any minified Cordova source), keep a sibling `*.before-offline-patch` backup the first time you touch it. Existing backups already exist for `app.js` and `init.js` — do not overwrite them.

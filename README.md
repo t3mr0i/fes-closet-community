@@ -55,6 +55,34 @@ npm install
 npx cordova build ios
 ```
 
+## Local secrets (OpenAI + GitHub PAT)
+
+The in-app **AI watchface generator** and **Share with community** flow need
+two API keys. They live in `scripts/secrets.js`, which is *checked in with
+placeholder values* so a fresh clone builds without errors. Real values are
+held only in your local copy and protected via `git update-index --skip-worktree`.
+
+Set them up once:
+
+```sh
+./scripts/setup-secrets.sh
+```
+
+The helper prompts for an OpenAI API key (used by the AI generator and a
+gpt-5.4-nano prompt-rephraser) and a GitHub fine-grained PAT (scoped to
+**Contents: write** on this repo, used by the in-app submission flow). It
+writes the values into the three `secrets.js` copies and marks them
+skip-worktree so you can never accidentally commit them.
+
+If you ever want to push a secrets.js change (e.g. add a new placeholder
+key), `./scripts/setup-secrets.sh --release` flips skip-worktree off, drops
+back to the placeholder values, and prepares the file for commit. Run it
+again without flags afterwards to re-inject your real keys.
+
+The committed `scripts/secrets.js` is itself the example file — there's no
+separate `secrets.example.js`. Look at it if you ever need to know which
+keys are expected.
+
 ## Status
 
 See `DECOMPILE_NOTES.md` for what's already patched. Open issues / known gaps:

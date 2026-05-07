@@ -34,15 +34,18 @@ const STYLES = [
 
 function buildPrompt(style) {
   return [
-    `Design a watchface artwork for a vertical narrow display, exact pixel size 152x704 (aspect ratio 1:4.6).`,
+    `Design a decorative background artwork for a vertical narrow display, exact pixel size 152x704 (aspect ratio 1:4.6).`,
     `Style: ${style.desc}.`,
     `Concept: ${CANONICAL_CONCEPT}.`,
     `Composition rules:`,
-    `- Vertical reading order top to bottom.`,
-    `- Leave the upper third visually quiet so a digital time readout remains legible against the artwork.`,
-    `- High contrast, no text, no logos, no watermarks.`,
-    `- Sharp at small render sizes.`,
-    `- Edge-to-edge artwork, no white border, no padding.`,
+    `- This is a BACKGROUND only. The watch hardware overlays time, date, battery, and watch hands on top — do NOT draw any of those.`,
+    `- ABSOLUTELY NO watches, clocks, dials, watch faces, clock hands, hour markers, numerals, digits, time readouts, or timepieces of any kind in the image.`,
+    `- NO text, letters, numbers, logos, signatures, or watermarks anywhere.`,
+    `- Fill the entire 152x704 canvas with rich, varied artwork from top to bottom — every region should have visual interest, texture, color, or pattern.`,
+    `- Avoid large empty/flat areas (no plain sky, no blank gradient panels, no monochrome backgrounds taking up a third or more).`,
+    `- Vertical composition that flows naturally from top to bottom, with detail throughout the full height.`,
+    `- High contrast, sharp at small render sizes.`,
+    `- Edge-to-edge artwork, no white border, no padding, no frame.`,
     `Render only the artwork as a single PNG/JPEG image.`,
   ].join("\n");
 }
