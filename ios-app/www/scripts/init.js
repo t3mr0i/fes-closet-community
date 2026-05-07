@@ -24,16 +24,7 @@ var FES;
                 };
             }
             CDP.Framework.initialize().done(function () {
-                require(["app"], function (a) {
-                    try {
-                        console.log("[init] calling app.main, type:", typeof a.main);
-                        a.main();
-                    } catch(e) {
-                        console.error("[init] app.main() threw:", e && e.message, e && e.stack);
-                    }
-                });
-            }).fail(function (err) {
-                console.error("[init] CDP.Framework.initialize() FAILED:", JSON.stringify(err));
+                require(["app"], function (a) { a.main(); });
             });
         });
     });
