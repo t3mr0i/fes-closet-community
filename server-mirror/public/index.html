@@ -754,18 +754,55 @@
     // ============================================================
     // Gemini AI generator
     // ============================================================
+    function hasLocalKey() {
+      return typeof GEMINI_API_KEY === "string"
+        && GEMINI_API_KEY.length > 0
+        && !GEMINI_API_KEY.startsWith("__");
+    }
+
     function generatorPanelHtml() {
+      const localPath = hasLocalKey();
+      const cta = localPath
+        ? `
+            <div class="actions row-2">
+              <button class="button" id="gen-go" type="button">Generate</button>
+              <button class="button secondary" id="gen-download" type="button" disabled>Download skin.zip</button>
+            </div>
+            <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
+            <p style="font-size:12px;color:var(--muted);margin:0">
+              Runs locally in your browser using Gemini 3 Pro Image (Nano Banana 2). The resulting <code>skin.zip</code> works
+              directly with the patched FES Closet app.
+            </p>
+          `
+        : `
+            <div class="actions">
+              <a class="button" target="_blank" rel="noopener"
+                 href="https://github.com/t3mr0i/fes-closet-community/actions/workflows/generate-ai-watchface.yml">
+                 Run GitHub Action to generate
+              </a>
+            </div>
+            <div class="gen-status">
+              The hosted catalog generates AI watchfaces server-side. Trigger the workflow above with your prompt;
+              the resulting skin.zip will appear in the Generated tab automatically once the action commits.
+            </div>
+            <p style="font-size:12px;color:var(--muted);margin:0">
+              Running locally? Set <code>GEMINI_API_KEY</code> at the top of <code>index.html</code> to enable the
+              browser-side generator and skip the round-trip.
+            </p>
+          `;
+      const disabled = localPath ? "" : "disabled";
+
       return `
         <div class="gen-panel">
           <div class="gen-form">
             <label>
               Watchface concept
-              <textarea id="gen-prompt" placeholder="e.g. minimal warm desert at dusk, soft horizon line, large minute markers"></textarea>
+              <textarea id="gen-prompt" ${disabled} placeholder="e.g. minimal warm desert at dusk, soft horizon line, large minute markers"></textarea>
             </label>
             <div class="form-row">
               <label>
                 Style preset
-                <select id="gen-style">
+                <select id="gen-style" ${disabled}>
                   <option value="minimalist">Minimalist</option>
                   <option value="editorial">Editorial / typographic</option>
                   <option value="abstract">Abstract gradient</option>
@@ -777,7 +814,7 @@
               </label>
               <label>
                 Mood
-                <select id="gen-mood">
+                <select id="gen-mood" ${disabled}>
                   <option value="calm">Calm</option>
                   <option value="energetic">Energetic</option>
                   <option value="dark">Dark / moody</option>
@@ -788,17 +825,9 @@
             </div>
             <label>
               Display name
-              <input id="gen-name" type="text" placeholder="My watchface">
+              <input id="gen-name" type="text" ${disabled} placeholder="My watchface">
             </label>
-            <div class="actions row-2">
-              <button class="button" id="gen-go" type="button">Generate</button>
-              <button class="button secondary" id="gen-download" type="button" disabled>Download skin.zip</button>
-            </div>
-            <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
-            <p style="font-size:12px;color:var(--muted);margin:0">
-              Generated locally in your browser using Gemini 2.5 Flash Image. The resulting <code>skin.zip</code> is identical
-              to a community-submitted skin and works directly with the patched FES Closet app.
-            </p>
+            ${cta}
           </div>
           <div class="gen-preview" id="gen-preview">
             <div class="watch"><div class="watch-screen"><span>preview</span></div></div>
@@ -987,6 +1016,7 @@
     function wireGenerator() {
       const goBtn = document.getElementById("gen-go");
       const dlBtn = document.getElementById("gen-download");
+      if (!goBtn || !dlBtn) return; // workflow-fallback panel — nothing to wire
 
       goBtn.addEventListener("click", async () => {
         const concept = document.getElementById("gen-prompt").value.trim();

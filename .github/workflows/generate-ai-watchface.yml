@@ -1,0 +1,82 @@
+name: Generate AI Watchface
+
+on:
+  workflow_dispatch:
+    inputs:
+      concept:
+        description: "What should the watchface look like? (free text)"
+        required: true
+        default: "minimal warm horizon at dusk"
+        type: string
+      style:
+        description: "Style preset"
+        required: false
+        default: "minimalist"
+        type: choice
+        options:
+          - minimalist
+          - editorial
+          - abstract
+          - nature
+          - geometric
+          - brutalist
+          - anime
+      mood:
+        description: "Mood"
+        required: false
+        default: "calm"
+        type: choice
+        options:
+          - calm
+          - energetic
+          - dark
+          - bright
+          - nostalgic
+      name:
+        description: "Display name (optional)"
+        required: false
+        default: ""
+        type: string
+      slug:
+        description: "Stable slug (optional, auto-generated if empty)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: generate-ai-watchface
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate AI watchface
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          AI_CONCEPT: ${{ inputs.concept }}
+          AI_STYLE: ${{ inputs.style }}
+          AI_MOOD: ${{ inputs.mood }}
+          AI_NAME: ${{ inputs.name }}
+          AI_SLUG: ${{ inputs.slug }}
+        run: node server-mirror/scripts/generate-ai-watchface.mjs
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add server-mirror/public/generated
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+            exit 0
+          fi
+          git commit -m "ai watchface: ${{ inputs.concept }}"
+          git push
