@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import zlib from "zlib";
 import { fileURLToPath } from "url";
 import { execFileSync } from "child_process";
 
@@ -183,6 +184,94 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`);
 }
 
+function hexToGray(hex) {
+  const m = String(hex || "").match(/^#?([0-9a-fA-F]{6})$/);
+  if (!m) return 0;
+  const v = parseInt(m[1], 16);
+  const r = (v >> 16) & 0xff;
+  const g = (v >> 8) & 0xff;
+  const b = v & 0xff;
+  return Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b);
+}
+
+function encodeFlatGrayPng(width, height, gray) {
+  const sig = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+
+  const ihdr = Buffer.alloc(13);
+  ihdr.writeUInt32BE(width, 0);
+  ihdr.writeUInt32BE(height, 4);
+  ihdr[8] = 8;     // bit depth
+  ihdr[9] = 0;     // color type: grayscale
+  ihdr[10] = 0;    // compression
+  ihdr[11] = 0;    // filter
+  ihdr[12] = 0;    // interlace
+
+  const rowLen = 1 + width;
+  const raw = Buffer.alloc(rowLen * height);
+  for (let y = 0; y < height; y += 1) {
+    raw[y * rowLen] = 0; // filter: None
+    raw.fill(gray, y * rowLen + 1, y * rowLen + 1 + width);
+  }
+  const idatData = zlib.deflateSync(raw, { level: 9 });
+
+  return Buffer.concat([sig, makeChunk("IHDR", ihdr), makeChunk("IDAT", idatData), makeChunk("IEND", Buffer.alloc(0))]);
+}
+
+function makeChunk(type, data) {
+  const len = Buffer.alloc(4);
+  len.writeUInt32BE(data.length, 0);
+  const typeBuf = Buffer.from(type, "ascii");
+  const crc = Buffer.alloc(4);
+  crc.writeInt32BE(crc32(Buffer.concat([typeBuf, data])), 0);
+  return Buffer.concat([len, typeBuf, data, crc]);
+}
+
+const CRC_TABLE = (() => {
+  const t = new Int32Array(256);
+  for (let n = 0; n < 256; n += 1) {
+    let c = n;
+    for (let k = 0; k < 8; k += 1) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    t[n] = c;
+  }
+  return t;
+})();
+
+function crc32(buf) {
+  let c = ~0;
+  for (let i = 0; i < buf.length; i += 1) c = CRC_TABLE[(c ^ buf[i]) & 0xff] ^ (c >>> 8);
+  return ~c;
+}
+
+function buildInstallableSkin(outDir, slug, palette) {
+  const bgGray = hexToGray(palette.background);
+  const skinDir = path.join(outDir, "skin");
+  fs.mkdirSync(skinDir, { recursive: true });
+
+  const png = encodeFlatGrayPng(WIDTH, HEIGHT, bgGray);
+  fs.writeFileSync(path.join(skinDir, "bg.png"), png);
+
+  const skinConfig = {
+    version: "1.0.0",
+    revision: Date.now(),
+    components: [
+      {
+        type: "background",
+        image: "bg.png",
+        layout: { size: [WIDTH, HEIGHT] },
+      },
+    ],
+  };
+  writeJson(path.join(skinDir, "config.json"), skinConfig);
+
+  try {
+    execFileSync("zip", ["-q", "-j", path.join(outDir, "skin.zip"), path.join(skinDir, "config.json"), path.join(skinDir, "bg.png")]);
+  } catch (error) {
+    console.warn("zip unavailable; skipping skin.zip:", error.message);
+    return null;
+  }
+  return "skin.zip";
+}
+
 function main() {
   const request = {
     direction: process.env.WATCHFACE_DIRECTION || "",
@@ -248,6 +337,8 @@ function main() {
     console.warn("zip unavailable or failed; skipping package zip:", error.message);
   }
 
+  const skinArtifact = buildInstallableSkin(outDir, slugBase, palette);
+
   const generatedIndexPath = path.join(repoRoot, "server-mirror", "public", "generated", "index.json");
   const currentIndex = readJson(generatedIndexPath, { watchfaces: [] });
   currentIndex.watchfaces = [
@@ -257,6 +348,7 @@ function main() {
       spec: `/generated/watchfaces/${slugBase}/spec.json`,
       preview: `/generated/watchfaces/${slugBase}/preview.svg`,
       package: `/generated/watchfaces/${slugBase}/watchface-package.zip`,
+      skin: skinArtifact ? `/generated/watchfaces/${slugBase}/skin.zip` : null,
       createdAt: new Date().toISOString(),
       request,
       theme,

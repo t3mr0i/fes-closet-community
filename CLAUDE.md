@@ -21,7 +21,7 @@ The watch hardware is unchanged — only the BLE skin-transfer path is needed at
 - `decompiled/` — JADX output from the original APK (Java sources + resources).
 - `analysis-js/` — pretty-printed copies of the four important minified JS files. **Read these, not the minified ones**, when reasoning about app/BLE logic.
 - `server-mirror/public/` — static site deployed to GitHub Pages. URL paths the app calls: `/api/store/skins-<locale>.json`, `/api/store/creators-<locale>.json`, `/storage/<creatorId>/<skinId>/skin.zip`, `/fw/version.json`.
-- `server-mirror/scripts/generate-watchface.mjs` — Node script that turns prompt inputs into a generated watchface package under `public/generated/`.
+- `server-mirror/scripts/generate-watchface.mjs` — Node script that turns prompt inputs into a generated watchface under `public/generated/`. Emits two zips: `watchface-package.zip` (design bundle, not installable) and `skin.zip` (watch-installable; flat-color background only — time/date/battery layers shown in `preview.svg` are not rasterized).
 - `ios-app/` — Cordova iOS project mirroring the Android app. Uses `cordova-ios@^8`, `cordova-plugin-bluetoothle`, plus `fes-nativebridge-stubs/` (local file dep) which stubs the Sony-internal Cordova plugins so the JS layer loads.
 - `fes-nativebridge-stubs/` — local Cordova plugin providing iOS Objective-C stubs (`FESBatteryStatus`, `FESLocalContentProvider`, `FESNotificationHandler`, `FESUUID`, `FESMisc`) for plugins that don't exist outside Sony's build.
 - `test-skins/minimal-bg/` — minimal hand-built skin (one 152×704 background) for testing the conversion + BLE transfer path independently of the store.

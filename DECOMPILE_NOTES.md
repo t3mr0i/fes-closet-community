@@ -232,3 +232,32 @@ The same metadata/assets were added to `server-mirror/public/`.
 Updated APK:
 
 - `FES Closet_1.13.0_OFFLINE_PATCH_debugsigned.apk`
+
+## Watchface generator output
+
+The Actions workflow `generate-watchface.yml` produces two artifacts per run under
+`server-mirror/public/generated/watchfaces/<slug>/`:
+
+- `watchface-package.zip` - design bundle: `request.json`, `spec.json`,
+  `preview.svg`, `README.md`. For browsing/editing only. Not installable.
+- `skin.zip` - watch-installable skin matching the format in
+  `test-skins/minimal-bg/`: a single 152x704 8-bit grayscale `bg.png` filled
+  with the requested background color, plus a minimal `config.json` with one
+  `background` component.
+
+PNG is generated in pure Node via a small encoder (`encodeFlatGrayPng` in
+`server-mirror/scripts/generate-watchface.mjs`). No imagemagick/sharp dependency.
+
+Limitation: generated skins are flat backgrounds only. Time/date/battery layers
+shown in the SVG preview are not rasterized into the installable skin -
+those need digit-strip PNGs (`hh-0.png`...`hh-9.png`, `mm-0.png`...`mm-9.png`)
+which is a separate piece of work.
+
+## Mirror cleanup (2026-05-07)
+
+- Removed `server-mirror/public/_headers` - GitHub Pages does not honor
+  Cloudflare/Netlify-style `_headers` syntax, so the file was dead config.
+- Removed `server-mirror/public/api/store/extstoreskins.json` - not referenced
+  by any app code (`raw-apk/assets/www/`, `analysis-js/`, `ios-app/www/`) and
+  one of its three skin IDs (`f9c462bf980e41df918b27da3db4f313`) had no
+  corresponding metadata or storage entries.
