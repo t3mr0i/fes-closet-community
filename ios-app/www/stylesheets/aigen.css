@@ -1,0 +1,346 @@
+/* In-app AI watchface generator modal.
+   Loaded by edit-background page only. Mounts as full-screen overlay so it
+   feels like a dedicated screen without needing a routed page. */
+
+#aigen-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: none;
+    flex-direction: column;
+    background: #14171a;
+    color: #e8e7e1;
+    font: 15px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+#aigen-modal.is-open {
+    display: flex;
+}
+
+#aigen-modal .aigen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #232629;
+    flex: 0 0 auto;
+}
+
+#aigen-modal .aigen-header h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+#aigen-modal .aigen-close,
+#aigen-modal .aigen-action-btn {
+    appearance: none;
+    border: 1px solid #2e3438;
+    background: transparent;
+    color: #d8d4c9;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+#aigen-modal .aigen-close { padding: 6px 10px; font-size: 18px; line-height: 1; }
+
+#aigen-modal .aigen-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 18px 16px 24px;
+    display: grid;
+    gap: 18px;
+    -webkit-overflow-scrolling: touch;
+}
+
+#aigen-modal .aigen-prompt-wrap label,
+#aigen-modal .aigen-mood-wrap label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #c5c1b6;
+}
+
+#aigen-modal textarea#aigen-prompt {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid #2e3438;
+    background: #0e1113;
+    color: #e8e7e1;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font: inherit;
+    resize: vertical;
+}
+
+#aigen-modal .aigen-suggest {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+#aigen-modal .aigen-suggest button {
+    appearance: none;
+    border: 1px solid #2e3438;
+    background: #1a1d20;
+    color: #c5c1b6;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#aigen-modal .aigen-suggest button:active,
+#aigen-modal .aigen-suggest button:hover {
+    background: #21695f;
+    color: #fff;
+    border-color: #21695f;
+}
+
+/* Style tile carousel */
+#aigen-modal .aigen-styles {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+}
+
+#aigen-modal .aigen-style-tile {
+    appearance: none;
+    border: 2px solid transparent;
+    background: #0e1113;
+    border-radius: 10px;
+    padding: 4px;
+    cursor: pointer;
+    flex: 0 0 auto;
+    width: 64px;
+    display: grid;
+    gap: 4px;
+}
+
+#aigen-modal .aigen-style-tile[aria-pressed="true"] {
+    border-color: #3aa491;
+}
+
+#aigen-modal .aigen-style-tile .tile-img {
+    width: 100%;
+    aspect-ratio: 1 / 4.6;
+    background: #2a2d31;
+    border-radius: 6px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    color: #6c7278;
+    font-size: 9px;
+}
+
+#aigen-modal .aigen-style-tile .tile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#aigen-modal .aigen-style-tile .tile-label {
+    font-size: 10px;
+    text-align: center;
+    color: #d4d6c8;
+    text-transform: capitalize;
+}
+
+/* Mood select */
+#aigen-modal select#aigen-mood {
+    width: 100%;
+    border: 1px solid #2e3438;
+    background: #0e1113;
+    color: #e8e7e1;
+    border-radius: 10px;
+    padding: 9px 12px;
+    font: inherit;
+}
+
+/* Preview area: large dark device mockup */
+#aigen-modal .aigen-preview {
+    position: relative;
+    display: grid;
+    place-items: center;
+    padding: 22px 0 14px;
+    min-height: 360px;
+    background:
+        radial-gradient(circle at 50% 38%, var(--ambient, #2a2d31) 0%, transparent 60%),
+        #0e1113;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#aigen-modal .aigen-preview::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 200px;
+    height: 360px;
+    transform: translate(-50%, -50%);
+    background: var(--ambient, transparent);
+    filter: blur(50px);
+    opacity: 0.32;
+    pointer-events: none;
+    z-index: 0;
+}
+
+#aigen-modal .aigen-watch {
+    position: relative;
+    z-index: 1;
+    width: 86px;
+    height: 400px;
+    background: #050608;
+    border: 1px solid #1f2225;
+    border-radius: 20px;
+    padding: 7px;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 0 4px #0c0e10,
+        0 18px 36px rgba(0, 0, 0, 0.55);
+    display: grid;
+    place-items: center;
+}
+
+#aigen-modal .aigen-watch-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1d20;
+    display: grid;
+    place-items: center;
+    color: #6c7278;
+    font-size: 10px;
+}
+
+#aigen-modal .aigen-watch-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Loading shimmer */
+#aigen-modal .aigen-watch-screen.is-loading { position: relative; }
+#aigen-modal .aigen-watch-screen.is-loading::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+    animation: aigen-shimmer 1.4s infinite linear;
+}
+
+@keyframes aigen-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* History strip */
+#aigen-modal .aigen-history {
+    border-top: 1px solid #2a2d31;
+    padding-top: 12px;
+}
+
+#aigen-modal .aigen-history-title {
+    font-size: 11px;
+    color: #6c7278;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+#aigen-modal .aigen-history-strip {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+}
+
+#aigen-modal .aigen-history-item {
+    appearance: none;
+    background: transparent;
+    border: 2px solid transparent;
+    padding: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    flex: 0 0 auto;
+    width: 44px;
+}
+
+#aigen-modal .aigen-history-item[aria-pressed="true"] {
+    border-color: #3aa491;
+}
+
+#aigen-modal .aigen-history-item .h-img {
+    width: 100%;
+    aspect-ratio: 1 / 4.6;
+    background: #2a2d31;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#aigen-modal .aigen-history-item .h-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Status line */
+#aigen-modal .aigen-status {
+    font-size: 12px;
+    color: #9aa1a8;
+    min-height: 16px;
+}
+
+#aigen-modal .aigen-status.error { color: #ef8b6b; }
+#aigen-modal .aigen-status.ok { color: #7fd6c1; }
+
+/* Bottom action bar */
+#aigen-modal .aigen-actions {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0));
+    border-top: 1px solid #232629;
+    background: #14171a;
+}
+
+#aigen-modal .aigen-actions .aigen-btn {
+    appearance: none;
+    border: 1px solid #f4f1ea;
+    background: #f4f1ea;
+    color: #14171a;
+    border-radius: 10px;
+    padding: 12px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#aigen-modal .aigen-actions .aigen-btn.secondary {
+    background: transparent;
+    color: #d8d4c9;
+    border-color: rgba(244, 241, 234, 0.22);
+}
+
+#aigen-modal .aigen-actions .aigen-btn[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* The trigger button on the edit-background footer */
+.command-aigen-open {
+    /* matches sibling fes-button-regular sizing */
+}

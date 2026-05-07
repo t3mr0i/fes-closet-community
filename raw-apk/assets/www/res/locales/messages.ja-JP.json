@@ -1,414 +1,415 @@
 {
-    "app": {
-        "name": "FES Closet",
-        "namecn": "FES Closet (China)",
+  "app": {
+    "name": "FES Closet",
+    "namecn": "FES Closet (China)",
+    "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+    "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+    "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+    "common": {
+      "backAllCaps": "BACK",
+      "nextAllCaps": "NEXT",
+      "doneAllCaps": "DONE",
+      "startAllCaps": "START",
+      "skipAllCaps": "SKIP",
+      "cancelAllCaps": "CANCEL",
+      "ok": "OK",
+      "back": "戻る",
+      "next": "次へ",
+      "done": "完了",
+      "skip": "スキップ",
+      "cancel": "キャンセル",
+      "close": "閉じる",
+      "transfer": "送信",
+      "preparing": "準備中",
+      "save": "保存",
+      "delete": "削除",
+      "remove": "削除",
+      "unregister": "解除",
+      "refresh": "更新",
+      "select": "選択",
+      "reset": "初期化",
+      "retry": "再試行",
+      "restore": "復元",
+      "settings": "設定",
+      "support": "Community Catalog",
+      "update": "アップデート",
+      "later": "後で",
+      "share": "共有"
+    },
+    "utility": {
+      "fraction": "{{count}}/{{total}}",
+      "bracket": "({{content}})",
+      "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+    },
+    "url": {
+      "eula": "https://t3mr0i.github.io/fes-closet-community/",
+      "tos": "https://t3mr0i.github.io/fes-closet-community/",
+      "pp": "https://t3mr0i.github.io/fes-closet-community/",
+      "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+      "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+      "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+    },
+    "os": {
+      "cameraUsageDescription": "柄の作成に使用します。",
+      "libraryUsageDescription": "柄の作成に使用します。",
+      "bluetoothUsageDescription": "ウォッチとの通信に使用します。",
+      "contactsUsageDescription": "連絡先に画像を設定します。",
+      "photoLibraryAddUsageDescription": "柄の画像を保存します。"
+    }
+  },
+  "store": {
+    "title": "CATALOG",
+    "common": {
+      "moneyUnit": "\\",
+      "moneyDelimiter": ",",
+      "buy": "BUY",
+      "buyFor": "for",
+      "buyPrice": "{{price}}",
+      "buyTransaction": "ADDING…",
+      "install": "ADD TO CLOSET",
+      "getAgain": "ADD AGAIN",
+      "try": "TRY",
+      "purchased": "IN CLOSET",
+      "designer": "DESIGNER"
+    },
+    "information": {
+      "offline": "オフライン",
+      "offlineDetail": "インターネット接続がありません。",
+      "serverAccessLimitation": "ただいま、アクセス集中により繋がりにくくなっております。\nしばらく時間が経ってから、もう一度お試しください。",
+      "serverMaintenance": "ただいま、メンテナンス中のためStoreをご利用いただけません。\nサービス再開予定日時: {{time}}",
+      "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+      "support": "Community Catalog",
+      "notAvailable": "あなたの国/地域ではご利用になれません。",
+      "closeout": "Storeサービスは終了させていただきました。"
+    }
+  },
+  "closet": {
+    "title": "CLOSET",
+    "common": {
+      "delete": "DELETE",
+      "share": "SHARE",
+      "install": "SEND",
+      "installed": "IN USE"
+    },
+    "information": {
+      "empty": "No patterns"
+    }
+  },
+  "edit": {
+    "background": {
+      "title": "CREATE",
+      "selectLibrary": "LIBRARY",
+      "selectGallery": "GALLERY",
+      "launchCamera": "CAMERA",
+      "aiGenerate": "AI"
+    },
+    "pattern": {
+      "title": "EDIT",
+      "selectWatchFace": "FACE",
+      "applyFilters": "FILTER"
+    },
+    "save": {
+      "title": "SAVE",
+      "description": "柄の名前",
+      "unavailable": "{{param}}は使用できません。",
+      "unavailableCharacter": "使用できない文字が含まれています。",
+      "limitString": "{{numOfString}}文字以内で入力してください。"
+    },
+    "selectContent": {
+      "title": "ALL PHOTOS"
+    }
+  },
+  "dialog": {
+    "settingsUpdated": "設定しました",
+    "skipSettings": {
+      "title": "スキップしますか？",
+      "description": "ウォッチの設定は、このアプリの設定画面からも変更できます。"
+    },
+    "deletePattern": {
+      "title": "削除しますか？",
+      "description": "Storeでダウンロードした柄は、StoreからClosetへ再度保存できます。"
+    },
+    "unregisterWatch": {
+      "title": "登録を解除しますか？"
+    },
+    "restorePurchase": {
+      "title": "復元しますか？"
+    },
+    "selectRemove": {
+      "title": "柄を削除",
+      "description_plural": "ウォッチには柄を{{count}}個までしか保存できません。\n他の柄を削除してください。"
+    },
+    "progress": {
+      "title": "柄を送信中…",
+      "titleTry": "試着柄を送信中…",
+      "description": "この画面を表示したまま、スマートフォンをウォッチの裏蓋に近づけてお待ちください。",
+      "estimateTimePrefix": "残り時間",
+      "done": {
+        "title": "送信が完了しました",
+        "descriptionTry": "3分経過するか、ウォッチのボタンを押すと、試着柄は削除されます。",
+        "descriptionShare": "柄の画像を共有できます。\n#feswatchu",
+        "descriptionShareCN": "柄の画像を共有できます。\n#FesWatch#"
+      }
+    },
+    "install": {
+      "titleStart": "柄をウォッチに送りますか？",
+      "descriptionAfterSave": "柄をClosetに保存しました。今すぐに柄をウォッチに送ることもできます。",
+      "description": "送信中は、スマートフォンをウォッチの裏蓋に近づけてお待ちください。",
+      "estimateTimePrefix": "送信にかかる推定時間"
+    },
+    "error": {
+      "title": {
+        "general": "エラーが発生しました",
+        "authentication": "認証できません",
+        "purchase": "購入できません",
+        "save": "保存できません",
+        "delete": "削除できません",
+        "remove": "削除できません",
+        "restorePurchase": "復元できません",
+        "needNotToRestorePurchase": "復元の必要はありません",
+        "resetFi": "ウォッチの初期化に失敗しました",
+        "skinCorrupted": "柄のデータが壊れています",
+        "transferPattern": "柄の送信に失敗しました",
+        "transferUpdate": "本体ソフトウェアのアップデートに失敗しました",
+        "transfer": "送信できません",
+        "bluetooth": "\"{{appName}}\" がウォッチに接続できるように、スマートフォンのBluetooth機能をオンにしてください。",
+        "location": "\"{{appName}}\" がウォッチに接続できるように、スマートフォンの位置情報をオンにしてください。",
+        "connectionToWatch": "接続できません",
+        "registration": "登録できません",
+        "setting": "設定できません",
+        "sd_connection": "エラーが発生しました",
+        "sd_download": "エラーが発生しました",
+        "sd_duplication": "ダウンロード中断"
+      },
+      "message": {
+        "sd_download": "Check the community catalog or try again.",
+        "sd_duplication": "すでにダウンロードされています。Closetをご確認ください。",
+        "errorCode": "エラーコード: {{errorCode}}",
+        "serverGeneral": "しばらく時間が経ってから、もう一度お試しください。",
+        "internetAccess": "ネットワークの接続を確認し、もう一度お試しください。",
+        "account": "アカウントを確認し、もう一度お試しください。",
+        "save": "スマートフォンに十分な空き容量がありません。ストレージは\"設定\"から管理できます。",
+        "restorePurchase": "スマートフォンに十分な空き容量がありません。ストレージは\"設定\"から管理できます。",
+        "needNotToRestorePurchase": "復元可能な柄はありませんでした。",
+        "hasRestoreFailedProducts": "一部の柄は復元に失敗しました。\nしばらく時間が経ってから、もう一度お試しください。",
+        "resetFi": "Check the community catalog or try again.",
+        "skinCorrupted": "Check the community catalog or try again.",
+        "transfer": "送信中はこのアプリの画面を表示したままにし、もう一度お試しください。",
+        "compatibility": "サポート対象外のウォッチです。",
+        "batteryFi": "ウォッチの電池が十分にありません。充電してから、もう一度お試しください。",
+        "batteryApp": "スマートフォンの電池が十分にありません。充電してから、もう一度お試しください。",
+        "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
+        "connectionToWatch": "以下を確認して、もう一度お試しください。\nウォッチの電池が十分にあること\nスマートフォンがウォッチの近くにあること\nスマートフォンのBluetooth機能がオンになっていること",
+        "registrationFull": "アプリにはウォッチを{{count}}台までしか登録できません。他のウォッチをアプリから解除してください。",
+        "registrationFull_plural": "アプリにはウォッチを{{count}}台までしか登録できません。他のウォッチをアプリから解除してください。",
+        "registrationAnotherApp": "このウォッチはすでに別のスマートフォンに登録されています。ウォッチを初期化してください。",
+        "disconnected": "ウォッチとの接続が切れました。ウォッチに接続し、もう一度お試しください。",
+        "location": "位置情報がオフになっています。位置情報をオンにしてから、もう一度お試しください。"
+      },
+      "install": {
+        "title": "送信できません",
+        "description": "Check the community catalog or try again.",
+        "titleAlready": "再送信しますか？",
+        "descriptionAlready": "この柄はすでにウォッチへ送信されています。"
+      }
+    },
+    "update": {
+      "title": "アプリの更新",
+      "description": "最新のアプリが見つかりました。アップデートしますか？",
+      "detail": "更新内容："
+    },
+    "updateinfo": {
+      "title": "お知らせ",
+      "description": "■本体取り扱い上のご注意\n力を加えてウォッチをつぶしたり、ベルトを腕に装着する以上の角度で曲げたり、ひねったり、広げたりしないで下さい。"
+    },
+    "systemupdate": {
+      "title": "お知らせ",
+      "description": "本体ソフトウェアを新しいバージョン{{version}}へアップデートして下さい。"
+    },
+    "remove": {
+      "title": "柄を削除",
+      "description": "削除した柄はClosetからウォッチへ再度送信できます。"
+    }
+  },
+  "fi": {
+    "common": {
+      "update": "設定中…",
+      "search": "ウォッチを検索中…"
+    }
+  },
+  "settings": {
+    "general": {
+      "title": "SETTINGS",
+      "fi": {
+        "section": "ウォッチ",
+        "setting": "ウォッチの設定",
+        "registration": "ウォッチの登録"
+      },
+      "app": {
+        "section": "アプリケーション",
+        "storeSettings": "Community Catalog",
+        "support": "Community Catalog",
         "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
         "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
-        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
-        "common": {
-            "backAllCaps": "BACK",
-            "nextAllCaps": "NEXT",
-            "doneAllCaps": "DONE",
-            "startAllCaps": "START",
-            "skipAllCaps": "SKIP",
-            "cancelAllCaps": "CANCEL",
-            "ok": "OK",
-            "back": "戻る",
-            "next": "次へ",
-            "done": "完了",
-            "skip": "スキップ",
-            "cancel": "キャンセル",
-            "close": "閉じる",
-            "transfer": "送信",
-            "preparing": "準備中",
-            "save": "保存",
-            "delete": "削除",
-            "remove": "削除",
-            "unregister": "解除",
-            "refresh": "更新",
-            "select": "選択",
-            "reset": "初期化",
-            "retry": "再試行",
-            "restore": "復元",
-            "settings": "設定",
-            "support": "Community Catalog",
-            "update": "アップデート",
-            "later": "後で",
-            "share": "共有"
-        },
-        "utility": {
-            "fraction": "{{count}}/{{total}}",
-            "bracket": "({{content}})",
-            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
-        },
-        "url": {
-            "eula": "https://t3mr0i.github.io/fes-closet-community/",
-            "tos": "https://t3mr0i.github.io/fes-closet-community/",
-            "pp": "https://t3mr0i.github.io/fes-closet-community/",
-            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
-            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
-            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
-        },
-        "os": {
-            "cameraUsageDescription": "柄の作成に使用します。",
-            "libraryUsageDescription": "柄の作成に使用します。",
-            "bluetoothUsageDescription": "ウォッチとの通信に使用します。",
-            "contactsUsageDescription": "連絡先に画像を設定します。",
-            "photoLibraryAddUsageDescription": "柄の画像を保存します。"
-        }
-    },
-    "store": {
-        "title": "CATALOG",
-        "common": {
-            "moneyUnit": "\\",
-            "moneyDelimiter": ",",
-            "buy": "BUY",
-            "buyFor": "for",
-            "buyPrice": "{{price}}",
-            "buyTransaction": "GET FREE",
-            "install": "GET FREE",
-            "getAgain": "GET AGAIN",
-            "try": "TRY",
-            "purchased": "DOWNLOADED",
-            "designer": "DESIGNER"
-        },
-        "information": {
-            "offline": "オフライン",
-            "offlineDetail": "インターネット接続がありません。",
-            "serverAccessLimitation": "ただいま、アクセス集中により繋がりにくくなっております。\nしばらく時間が経ってから、もう一度お試しください。",
-            "serverMaintenance": "ただいま、メンテナンス中のためStoreをご利用いただけません。\nサービス再開予定日時: {{time}}",
-            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
-            "support": "Community Catalog",
-            "notAvailable": "あなたの国/地域ではご利用になれません。",
-            "closeout": "Storeサービスは終了させていただきました。"
-        }
-    },
-    "closet": {
-        "title": "CLOSET",
-        "common": {
-            "delete": "DELETE",
-            "share": "SHARE",
-            "install": "SEND",
-            "installed": "IN USE"
-        },
-        "information": {
-            "empty": "柄がありません"
-        }
-    },
-    "edit": {
-        "background": {
-            "title": "CREATE",
-            "selectLibrary": "LIBRARY",
-            "selectGallery": "GALLERY",
-            "launchCamera": "CAMERA"
-        },
-        "pattern": {
-            "title": "EDIT",
-            "selectWatchFace": "FACE",
-            "applyFilters": "FILTER"
-        },
-        "save": {
-            "title": "SAVE",
-            "description": "柄の名前",
-            "unavailable": "{{param}}は使用できません。",
-            "unavailableCharacter": "使用できない文字が含まれています。",
-            "limitString": "{{numOfString}}文字以内で入力してください。"
-        },
-        "selectContent": {
-            "title": "ALL PHOTOS"
-        }
-    },
-    "dialog": {
-        "settingsUpdated": "設定しました",
-        "skipSettings": {
-            "title": "スキップしますか？",
-            "description": "ウォッチの設定は、このアプリの設定画面からも変更できます。"
-        },
-        "deletePattern": {
-            "title": "削除しますか？",
-            "description": "Storeでダウンロードした柄は、StoreからClosetへ再度保存できます。"
-        },
-        "unregisterWatch": {
-            "title": "登録を解除しますか？"
-        },
-        "restorePurchase": {
-            "title": "復元しますか？"
-        },
-        "selectRemove": {
-            "title": "柄を削除",
-            "description_plural": "ウォッチには柄を{{count}}個までしか保存できません。\n他の柄を削除してください。"
-        },
-        "progress": {
-            "title": "柄を送信中…",
-            "titleTry": "試着柄を送信中…",
-            "description": "この画面を表示したまま、スマートフォンをウォッチの裏蓋に近づけてお待ちください。",
-            "estimateTimePrefix": "残り時間",
-            "done": {
-                "title": "送信が完了しました",
-                "descriptionTry": "3分経過するか、ウォッチのボタンを押すと、試着柄は削除されます。",
-                "descriptionShare": "柄の画像を共有できます。\n#feswatchu",
-                "descriptionShareCN": "柄の画像を共有できます。\n#FesWatch#"
-            }
-        },
-        "install": {
-            "titleStart": "柄をウォッチに送りますか？",
-            "descriptionAfterSave": "柄をClosetに保存しました。今すぐに柄をウォッチに送ることもできます。",
-            "description": "送信中は、スマートフォンをウォッチの裏蓋に近づけてお待ちください。",
-            "estimateTimePrefix": "送信にかかる推定時間"
-        },
-        "error": {
-            "title": {
-                "general": "エラーが発生しました",
-                "authentication": "認証できません",
-                "purchase": "購入できません",
-                "save": "保存できません",
-                "delete": "削除できません",
-                "remove": "削除できません",
-                "restorePurchase": "復元できません",
-                "needNotToRestorePurchase": "復元の必要はありません",
-                "resetFi": "ウォッチの初期化に失敗しました",
-                "skinCorrupted": "柄のデータが壊れています",
-                "transferPattern": "柄の送信に失敗しました",
-                "transferUpdate": "本体ソフトウェアのアップデートに失敗しました",
-                "transfer": "送信できません",
-                "bluetooth": "\"{{appName}}\" がウォッチに接続できるように、スマートフォンのBluetooth機能をオンにしてください。",
-                "location": "\"{{appName}}\" がウォッチに接続できるように、スマートフォンの位置情報をオンにしてください。",
-                "connectionToWatch": "接続できません",
-                "registration": "登録できません",
-                "setting": "設定できません",
-                "sd_connection": "エラーが発生しました",
-                "sd_download": "エラーが発生しました",
-                "sd_duplication": "ダウンロード中断"
-            },
-            "message": {
-                "sd_download": "Check the community catalog or try again.",
-                "sd_duplication": "すでにダウンロードされています。Closetをご確認ください。",
-                "errorCode": "エラーコード: {{errorCode}}",
-                "serverGeneral": "しばらく時間が経ってから、もう一度お試しください。",
-                "internetAccess": "ネットワークの接続を確認し、もう一度お試しください。",
-                "account": "アカウントを確認し、もう一度お試しください。",
-                "save": "スマートフォンに十分な空き容量がありません。ストレージは\"設定\"から管理できます。",
-                "restorePurchase": "スマートフォンに十分な空き容量がありません。ストレージは\"設定\"から管理できます。",
-                "needNotToRestorePurchase": "復元可能な柄はありませんでした。",
-                "hasRestoreFailedProducts": "一部の柄は復元に失敗しました。\nしばらく時間が経ってから、もう一度お試しください。",
-                "resetFi": "Check the community catalog or try again.",
-                "skinCorrupted": "Check the community catalog or try again.",
-                "transfer": "送信中はこのアプリの画面を表示したままにし、もう一度お試しください。",
-                "compatibility": "サポート対象外のウォッチです。",
-                "batteryFi": "ウォッチの電池が十分にありません。充電してから、もう一度お試しください。",
-                "batteryApp": "スマートフォンの電池が十分にありません。充電してから、もう一度お試しください。",
-                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
-                "connectionToWatch": "以下を確認して、もう一度お試しください。\nウォッチの電池が十分にあること\nスマートフォンがウォッチの近くにあること\nスマートフォンのBluetooth機能がオンになっていること",
-                "registrationFull": "アプリにはウォッチを{{count}}台までしか登録できません。他のウォッチをアプリから解除してください。",
-                "registrationFull_plural": "アプリにはウォッチを{{count}}台までしか登録できません。他のウォッチをアプリから解除してください。",
-                "registrationAnotherApp": "このウォッチはすでに別のスマートフォンに登録されています。ウォッチを初期化してください。",
-                "disconnected": "ウォッチとの接続が切れました。ウォッチに接続し、もう一度お試しください。",
-                "location": "位置情報がオフになっています。位置情報をオンにしてから、もう一度お試しください。"
-            },
-            "install": {
-                "title": "送信できません",
-                "description": "Check the community catalog or try again.",
-                "titleAlready": "再送信しますか？",
-                "descriptionAlready": "この柄はすでにウォッチへ送信されています。"
-            }
-        },
-        "update": {
-            "title": "アプリの更新",
-            "description": "最新のアプリが見つかりました。アップデートしますか？",
-            "detail": "更新内容："
-        },
-        "updateinfo": {
-            "title": "お知らせ",
-            "description": "■本体取り扱い上のご注意\n力を加えてウォッチをつぶしたり、ベルトを腕に装着する以上の角度で曲げたり、ひねったり、広げたりしないで下さい。"
-        },
-        "systemupdate": {
-            "title": "お知らせ",
-            "description": "本体ソフトウェアを新しいバージョン{{version}}へアップデートして下さい。"
-        },
-        "remove": {
-            "title": "柄を削除",
-            "description": "削除した柄はClosetからウォッチへ再度送信できます。"
-        }
+        "version": "アプリバージョン",
+        "legal": "Licenses"
+      }
     },
     "fi": {
-        "common": {
-            "update": "設定中…",
-            "search": "ウォッチを検索中…"
-        }
+      "title": "WATCH SETTINGS",
+      "setting": {
+        "section": "設定",
+        "time": "日付と時刻",
+        "timeDisplayMode": "時刻表示モード",
+        "skinAutoChange": "柄のオート着せ替え",
+        "skinManage": "ウォッチの柄を管理",
+        "unregistration": "ウォッチの登録を解除",
+        "reset": "ウォッチを初期化"
+      },
+      "information": {
+        "section": "情報",
+        "fwUpdate": "本体ソフトウェアのアップデート",
+        "fwLatest": "最新",
+        "fwVersion": "本体ソフトウェアバージョン",
+        "modelName": "モデル",
+        "serialNo": "シリアル番号"
+      }
     },
-    "settings": {
-        "general": {
-            "title": "SETTINGS",
-            "fi": {
-                "section": "ウォッチ",
-                "setting": "ウォッチの設定",
-                "registration": "ウォッチの登録"
-            },
-            "app": {
-                "section": "アプリケーション",
-                "storeSettings": "Community Catalog",
-                "support": "Community Catalog",
-                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
-                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
-                "version": "アプリバージョン",
-                "legal": "Licenses"
-            }
-        },
-        "fi": {
-            "title": "WATCH SETTINGS",
-            "setting": {
-                "section": "設定",
-                "time": "日付と時刻",
-                "timeDisplayMode": "時刻表示モード",
-                "skinAutoChange": "柄のオート着せ替え",
-                "skinManage": "ウォッチの柄を管理",
-                "unregistration": "ウォッチの登録を解除",
-                "reset": "ウォッチを初期化"
-            },
-            "information": {
-                "section": "情報",
-                "fwUpdate": "本体ソフトウェアのアップデート",
-                "fwLatest": "最新",
-                "fwVersion": "本体ソフトウェアバージョン",
-                "modelName": "モデル",
-                "serialNo": "シリアル番号"
-            }
-        },
-        "skinManage": {
-            "title": "PATTERNS",
-            "titleSelectingNone": "SELECT",
-            "titleSelecting": "{{count}} SELECTED",
-            "titleSelecting_plural": "{{count}} SELECTED",
-            "remove": "削除",
-            "unknownContent": "Closetにない柄"
-        },
-        "dateTime": {
-            "title": "DATE & TIME",
-            "sync": "スマートフォンと同じ日時を設定"
-        },
-        "timeDisplayMode": {
-            "title": "TIME DISPLAY MODE",
-            "always": "常時表示",
-            "alwaysBatteryInfo": "電池の持ち時間　短い",
-            "watchAction": "オート表示",
-            "watchActionBatteryInfo": "電池の持ち時間　短い",
-            "buttonPush": "ボタンを押したときに表示",
-            "buttonPushBatteryInfo": "電池の持ち時間　標準",
-            "description": "時刻を表示するタイミングを設定します。",
-            "descriptionDetailTitle": "オート表示とは:\n・腕を下ろした状態から時計を見る動作をしたときに表示。\n・腕をひねる動作をしたときに表示。"
-        },
-        "skinAutoChange": {
-            "title": "AUTO STYLE CHANGE",
-            "off": "オフ",
-            "byDay": "1日ごと",
-            "byHour": "1時間ごと",
-            "byMinute10": "10分ごと",
-            "byMinute": "1分ごと",
-            "byMinimumDuration": "5秒ごと",
-            "description": "ウォッチの柄を定期的に切り替えられます。"
-        },
-        "store": {
-            "title": "CLOSET SETTINGS",
-            "setting": {
-                "restorePurchase": "プリインストール柄を復元"
-            },
-            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
-        },
-        "resetFi": {
-            "title": "INITIALIZE WATCH",
-            "start": "ウォッチの初期化を開始",
-            "description": "ウォッチを初期化しますか？",
-            "descriptionDetail1": "ウォッチを初期状態に戻します。\nこの操作は取り消せません。",
-            "descriptionDetail2": "ウォッチを検索中…",
-            "descriptionDetail3": "10秒以内にウォッチのボタンを2秒間長押ししてください。",
-            "estimateTimePrefix": "残り時間"
-        },
-        "legal": {
-            "title": "法律に基づく情報",
-            "eula": "ソフトウェア使用許諾契約書",
-            "tos": "利用規約",
-            "pp": "プライバシーポリシー",
-            "oss": "オープンソースライセンス",
-            "sendInformation": "非個人情報の提供",
-            "sendInformationDescription": "お客様の本アプリケーション並びに本アプリケーション上登録された機器の利用状況につき、お客様個人が特定識別されないように合成・加工処理し非個人情報化された状態で第三者に提供されることにつき同意する"
-        },
-        "fwUpdate": {
-            "title": "SOFTWARE UPDATE",
-            "start": "本体ソフトウェアのアップデートを開始",
-            "description": "本体ソフトウェアをアップデートしますか？",
-            "descriptionDetail1": "アップデートにより、ウォッチの機能を改善します。\n最大10分程度かかり、途中で中断することはできません。",
-            "descriptionDetail2": "データをウォッチへ送信中…",
-            "descriptionDetail3": "この画面を表示したまま、スマートフォンをウォッチの裏蓋に近づけてお待ちください。",
-            "descriptionDetail4": "10秒以内にウォッチのボタンを2秒間長押ししてください。"
-        },
-        "restorePurchase": {
-            "title": "復元中…",
-            "progress": "({{count}}/{{max}})"
-        },
-        "oss": {
-            "title": "オープンソースライセンス"
-        }
+    "skinManage": {
+      "title": "PATTERNS",
+      "titleSelectingNone": "SELECT",
+      "titleSelecting": "{{count}} SELECTED",
+      "titleSelecting_plural": "{{count}} SELECTED",
+      "remove": "削除",
+      "unknownContent": "Closetにない柄"
     },
-    "connection": {
-        "title": "CONNECT",
-        "description": "スマートフォンとウォッチを接続します",
-        "descriptionDetail1": "ウォッチにBluetoothアイコンが表示されていない場合は、ウォッチのボタンを2秒間長押ししてください。",
-        "descriptionDetail2": "ウォッチとスマートフォンを近づけると、接続が安定します。"
+    "dateTime": {
+      "title": "DATE & TIME",
+      "sync": "スマートフォンと同じ日時を設定"
     },
-    "oobe": {
-        "registration": {
-            "title": "CONNECT",
-            "description": "スマートフォンとウォッチを接続します",
-            "descriptionDetail1": "ウォッチにBluetoothアイコンが表示されていない場合は、ウォッチのボタンを2秒間長押ししてください。",
-            "descriptionDetail2": "ウォッチとスマートフォンを近づけると、接続が安定します。",
-            "descriptionDetail3": "接続後、スマートフォンからウォッチへの操作が5分間ない場合は、自動的に切断されます。"
-        },
-        "dateTime": {
-            "title": "DATE & TIME",
-            "sync": "スマートフォンと同じ日時を設定",
-            "description": "日付と時刻を設定します"
-        },
-        "welcome": {
-            "title": "WELCOME",
-            "description": "FES Watch U の設定や、新しい柄のダウンロード・作成ができます。\n好きなデザインへの着替えをお楽しみください！",
-            "agreement": "次の内容をお読みいただき、ご同意の上、本サービスをご使用ください。",
-            "eula": "ソフトウェア使用許諾契約書",
-            "tos": "利用規約",
-            "pp": "プライバシーポリシー",
-            "start": "同意する",
-            "moreInfo": "LEARN MORE"
-        },
-        "timeDisplayMode": {
-            "title": "TIME DISPLAY MODE",
-            "always": "常時表示",
-            "alwaysBatteryInfo": "電池の持ち時間　短い",
-            "watchAction": "オート表示",
-            "watchActionBatteryInfo": "電池の持ち時間　短い",
-            "buttonPush": "ボタンを押したときに表示",
-            "buttonPushBatteryInfo": "電池の持ち時間　標準",
-            "description": "時刻を表示するタイミングを設定します",
-            "descriptionDetailTitle": "オート表示とは:\n・腕を下ろした状態から時計を見る動作をしたときに表示。\n・腕をひねる動作をしたときに表示。"
-        },
-        "skinAutoChange": {
-            "title": "AUTO STYLE CHANGE",
-            "off": "オフ",
-            "byDay": "1日ごと",
-            "byHour": "1時間ごと",
-            "byMinute10": "10分ごと",
-            "byMinute": "1分ごと",
-            "byMinimumDuration": "5秒ごと",
-            "description": "ウォッチの柄を定期的に切り替えられます。"
-        }
+    "timeDisplayMode": {
+      "title": "TIME DISPLAY MODE",
+      "always": "常時表示",
+      "alwaysBatteryInfo": "電池の持ち時間　短い",
+      "watchAction": "オート表示",
+      "watchActionBatteryInfo": "電池の持ち時間　短い",
+      "buttonPush": "ボタンを押したときに表示",
+      "buttonPushBatteryInfo": "電池の持ち時間　標準",
+      "description": "時刻を表示するタイミングを設定します。",
+      "descriptionDetailTitle": "オート表示とは:\n・腕を下ろした状態から時計を見る動作をしたときに表示。\n・腕をひねる動作をしたときに表示。"
     },
-    "sd": {
-        "download": {
-            "title": "ダウンロード中",
-            "description": "スペシャルデザインをダウンロードしています。"
-        },
-        "complete": {
-            "title": "ダウンロード完了",
-            "description": "スペシャルデザインがCLOSETに追加されました。"
-        }
+    "skinAutoChange": {
+      "title": "AUTO STYLE CHANGE",
+      "off": "オフ",
+      "byDay": "1日ごと",
+      "byHour": "1時間ごと",
+      "byMinute10": "10分ごと",
+      "byMinute": "1分ごと",
+      "byMinimumDuration": "5秒ごと",
+      "description": "ウォッチの柄を定期的に切り替えられます。"
     },
-    "EOF": "EOF"
+    "store": {
+      "title": "CLOSET SETTINGS",
+      "setting": {
+        "restorePurchase": "プリインストール柄を復元"
+      },
+      "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
+    },
+    "resetFi": {
+      "title": "INITIALIZE WATCH",
+      "start": "ウォッチの初期化を開始",
+      "description": "ウォッチを初期化しますか？",
+      "descriptionDetail1": "ウォッチを初期状態に戻します。\nこの操作は取り消せません。",
+      "descriptionDetail2": "ウォッチを検索中…",
+      "descriptionDetail3": "10秒以内にウォッチのボタンを2秒間長押ししてください。",
+      "estimateTimePrefix": "残り時間"
+    },
+    "legal": {
+      "title": "法律に基づく情報",
+      "eula": "ソフトウェア使用許諾契約書",
+      "tos": "利用規約",
+      "pp": "プライバシーポリシー",
+      "oss": "オープンソースライセンス",
+      "sendInformation": "非個人情報の提供",
+      "sendInformationDescription": "お客様の本アプリケーション並びに本アプリケーション上登録された機器の利用状況につき、お客様個人が特定識別されないように合成・加工処理し非個人情報化された状態で第三者に提供されることにつき同意する"
+    },
+    "fwUpdate": {
+      "title": "SOFTWARE UPDATE",
+      "start": "本体ソフトウェアのアップデートを開始",
+      "description": "本体ソフトウェアをアップデートしますか？",
+      "descriptionDetail1": "アップデートにより、ウォッチの機能を改善します。\n最大10分程度かかり、途中で中断することはできません。",
+      "descriptionDetail2": "データをウォッチへ送信中…",
+      "descriptionDetail3": "この画面を表示したまま、スマートフォンをウォッチの裏蓋に近づけてお待ちください。",
+      "descriptionDetail4": "10秒以内にウォッチのボタンを2秒間長押ししてください。"
+    },
+    "restorePurchase": {
+      "title": "復元中…",
+      "progress": "({{count}}/{{max}})"
+    },
+    "oss": {
+      "title": "オープンソースライセンス"
+    }
+  },
+  "connection": {
+    "title": "CONNECT",
+    "description": "スマートフォンとウォッチを接続します",
+    "descriptionDetail1": "ウォッチにBluetoothアイコンが表示されていない場合は、ウォッチのボタンを2秒間長押ししてください。",
+    "descriptionDetail2": "ウォッチとスマートフォンを近づけると、接続が安定します。"
+  },
+  "oobe": {
+    "registration": {
+      "title": "CONNECT",
+      "description": "スマートフォンとウォッチを接続します",
+      "descriptionDetail1": "ウォッチにBluetoothアイコンが表示されていない場合は、ウォッチのボタンを2秒間長押ししてください。",
+      "descriptionDetail2": "ウォッチとスマートフォンを近づけると、接続が安定します。",
+      "descriptionDetail3": "接続後、スマートフォンからウォッチへの操作が5分間ない場合は、自動的に切断されます。"
+    },
+    "dateTime": {
+      "title": "DATE & TIME",
+      "sync": "スマートフォンと同じ日時を設定",
+      "description": "日付と時刻を設定します"
+    },
+    "welcome": {
+      "title": "WELCOME",
+      "description": "FES Watch U の設定や、新しい柄のダウンロード・作成ができます。\n好きなデザインへの着替えをお楽しみください！",
+      "agreement": "次の内容をお読みいただき、ご同意の上、本サービスをご使用ください。",
+      "eula": "ソフトウェア使用許諾契約書",
+      "tos": "利用規約",
+      "pp": "プライバシーポリシー",
+      "start": "同意する",
+      "moreInfo": "LEARN MORE"
+    },
+    "timeDisplayMode": {
+      "title": "TIME DISPLAY MODE",
+      "always": "常時表示",
+      "alwaysBatteryInfo": "電池の持ち時間　短い",
+      "watchAction": "オート表示",
+      "watchActionBatteryInfo": "電池の持ち時間　短い",
+      "buttonPush": "ボタンを押したときに表示",
+      "buttonPushBatteryInfo": "電池の持ち時間　標準",
+      "description": "時刻を表示するタイミングを設定します",
+      "descriptionDetailTitle": "オート表示とは:\n・腕を下ろした状態から時計を見る動作をしたときに表示。\n・腕をひねる動作をしたときに表示。"
+    },
+    "skinAutoChange": {
+      "title": "AUTO STYLE CHANGE",
+      "off": "オフ",
+      "byDay": "1日ごと",
+      "byHour": "1時間ごと",
+      "byMinute10": "10分ごと",
+      "byMinute": "1分ごと",
+      "byMinimumDuration": "5秒ごと",
+      "description": "ウォッチの柄を定期的に切り替えられます。"
+    }
+  },
+  "sd": {
+    "download": {
+      "title": "ダウンロード中",
+      "description": "スペシャルデザインをダウンロードしています。"
+    },
+    "complete": {
+      "title": "ダウンロード完了",
+      "description": "スペシャルデザインがCLOSETに追加されました。"
+    }
+  },
+  "EOF": "EOF"
 }
