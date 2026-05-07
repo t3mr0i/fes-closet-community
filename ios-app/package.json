@@ -2,15 +2,17 @@
   "name": "jp.co.sony.fescloset",
   "displayName": "FESCloset",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "Community iOS rebuild of the Sony FES Closet companion app.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "ecosystem:cordova"
+    "ecosystem:cordova",
+    "fes-closet",
+    "sony-fes-watch"
   ],
-  "author": "Apache Cordova Team",
+  "author": "FES Closet Community",
   "license": "Apache-2.0",
   "devDependencies": {
     "cordova-ios": "^8.0.1",

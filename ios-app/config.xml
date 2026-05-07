@@ -2,10 +2,10 @@
 <widget id="jp.co.sony.fescloset" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>FESCloset</name>
     <description>
-        A sample Apache Cordova application that responds to the deviceready event.
+        Community iOS rebuild of the Sony FES Closet companion app.
     </description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <author href="https://github.com/t3mr0i/fes-closet-community">
+        FES Closet Community
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
