@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="jp.co.sony.fescloset" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>FESCloset</name>
+<widget id="community.feswatch.app" version="1.0.0" ios-CFBundleVersion="1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>FES Community</name>
     <description>
-        Community iOS rebuild of the Sony FES Closet companion app.
+        Community-built companion app for the Sony FES U Watch. Not affiliated with, endorsed by, or sponsored by Sony.
     </description>
     <author href="https://github.com/t3mr0i/fes-closet-community">
-        FES Closet Community
+        FES Community Project
     </author>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
@@ -13,21 +13,37 @@
     <platform name="ios">
         <preference name="scheme" value="app" />
         <preference name="hostname" value="localhost" />
-        <access origin="*" />
+        <preference name="deployment-target" value="14.0" />
+        <preference name="target-device" value="universal" />
+        <preference name="WKWebViewOnly" value="true" />
+        <access origin="https://t3mr0i.github.io" />
+        <access origin="https://*.github.io" />
+        <access origin="https://api.openai.com" />
         <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="overwrite">
-            <string>FES Closet imports photos to use as backgrounds for your custom watchfaces.</string>
+            <string>FES Community imports photos to use as backgrounds for your custom watchfaces.</string>
         </edit-config>
         <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="overwrite">
-            <string>FES Closet saves generated and shared watchface designs to your photo library.</string>
+            <string>FES Community saves generated and shared watchface designs to your photo library.</string>
         </edit-config>
         <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="overwrite">
-            <string>FES Closet uses the camera so you can capture a photo and turn it into a watchface design.</string>
+            <string>FES Community uses the camera so you can capture a photo and turn it into a watchface design.</string>
         </edit-config>
         <edit-config target="NSBluetoothAlwaysUsageDescription" file="*-Info.plist" mode="overwrite">
-            <string>FES Closet uses Bluetooth to connect to your FES U Watch and install watchfaces.</string>
+            <string>FES Community uses Bluetooth to connect to your FES U Watch and install watchfaces.</string>
         </edit-config>
         <edit-config target="NSBluetoothPeripheralUsageDescription" file="*-Info.plist" mode="overwrite">
-            <string>FES Closet uses Bluetooth to connect to your FES U Watch and install watchfaces.</string>
+            <string>FES Community uses Bluetooth to connect to your FES U Watch and install watchfaces.</string>
+        </edit-config>
+        <edit-config target="ITSAppUsesNonExemptEncryption" file="*-Info.plist" mode="overwrite">
+            <false/>
+        </edit-config>
+        <edit-config target="UIBackgroundModes" file="*-Info.plist" mode="overwrite">
+            <array>
+                <string>bluetooth-central</string>
+            </array>
+        </edit-config>
+        <edit-config target="LSApplicationCategoryType" file="*-Info.plist" mode="overwrite">
+            <string>public.app-category.lifestyle</string>
         </edit-config>
     </platform>
 </widget>
