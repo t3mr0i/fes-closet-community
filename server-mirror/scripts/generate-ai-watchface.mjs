@@ -14,11 +14,12 @@ const style = process.env.AI_STYLE || "minimalist";
 const mood = process.env.AI_MOOD || "calm";
 const displayName = (process.env.AI_NAME || "").trim() || concept;
 const requestedSlug = (process.env.AI_SLUG || "").trim();
-const apiKey = process.env.GEMINI_API_KEY;
-const model = process.env.GEMINI_MODEL || "gemini-3-pro-image-preview";
+const apiKey = process.env.OPENAI_API_KEY;
+const model = process.env.OPENAI_MODEL || "gpt-image-2";
+const size = process.env.OPENAI_SIZE || "1024x3072";
 
 if (!apiKey) {
-  console.error("GEMINI_API_KEY is required.");
+  console.error("OPENAI_API_KEY is required.");
   process.exit(1);
 }
 
@@ -47,33 +48,28 @@ function buildPrompt() {
   ].join("\n");
 }
 
-async function callGemini() {
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-  const body = {
-    contents: [{ role: "user", parts: [{ text: buildPrompt() }] }],
-    generationConfig: { responseModalities: ["IMAGE"] },
-  };
-  const res = await fetch(endpoint, {
+async function callOpenAI() {
+  const res = await fetch("https://api.openai.com/v1/images/generations", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ model, prompt: buildPrompt(), size, n: 1 }),
   });
   if (!res.ok) {
     const errText = await res.text();
-    throw new Error(`Gemini ${res.status}: ${errText.slice(0, 500)}`);
+    throw new Error(`OpenAI ${res.status}: ${errText.slice(0, 500)}`);
   }
   const data = await res.json();
-  const parts = data?.candidates?.[0]?.content?.parts || [];
-  const imgPart = parts.find((p) => p.inlineData && p.inlineData.data);
-  if (!imgPart) {
-    throw new Error("Gemini response had no image. Try a different prompt.");
-  }
-  return Buffer.from(imgPart.inlineData.data, "base64");
+  const b64 = data?.data?.[0]?.b64_json;
+  if (!b64) throw new Error("OpenAI response had no image.");
+  return Buffer.from(b64, "base64");
 }
 
 // PNG decode/encode using sharp would be ideal, but we want zero deps.
 // Instead, we ask sips (macOS) or netpbm (linux), and fall back to writing the raw image as bg.png if it's already a PNG.
-// Simpler: write Gemini's output as bg-source.<ext>, then use ImageMagick (available in ubuntu-latest) for the resize+crop.
+// Simpler: write the model's output as bg-source.<ext>, then use ImageMagick (available in ubuntu-latest) for the resize+crop.
 
 async function rasterize(sourceBuffer) {
   // Detect format via magic bytes
@@ -146,7 +142,7 @@ function buildOutput(pngBuffer) {
     skin: `/generated/ai-watchfaces/${slug}/skin.zip`,
     preview: `/generated/ai-watchfaces/${slug}/preview.png`,
     request: { concept, style, mood, displayName },
-    creator: "Gemini · GitHub Actions",
+    creator: "OpenAI gpt-image-2 · GitHub Actions",
     createdAt: new Date().toISOString(),
   };
 }
@@ -164,8 +160,8 @@ function appendToIndex(entry) {
 
 (async function main() {
   console.log(`Generating AI watchface "${displayName}" (slug=${slug}, model=${model})`);
-  const sourceBuffer = await callGemini();
-  console.log(`Got ${sourceBuffer.length} bytes from Gemini, rasterizing to ${WIDTH}x${HEIGHT}...`);
+  const sourceBuffer = await callOpenAI();
+  console.log(`Got ${sourceBuffer.length} bytes from OpenAI, rasterizing to ${WIDTH}x${HEIGHT}...`);
   const pngBuffer = await rasterize(sourceBuffer);
   console.log(`Rasterized to ${pngBuffer.length} bytes`);
   const entry = buildOutput(pngBuffer);

@@ -726,14 +726,16 @@
 
   <script>
     // ============================================================
-    // Gemini key (HARDCODED PER USER REQUEST — see CLAUDE.md note).
+    // OpenAI key (HARDCODED PER USER REQUEST — see CLAUDE.md note).
     // This is public the moment Pages serves it. Rotate at first
     // sign of quota abuse.
     // ============================================================
-    const GEMINI_API_KEY = "__GEMINI_API_KEY__";
-    // Gemini 3 Pro Image (Nano Banana 2). Requires paid billing on the
-    // GCP project that owns the API key — the free tier is hard-capped at 0.
-    const GEMINI_MODEL = "gemini-3-pro-image-preview";
+    const OPENAI_API_KEY = "__OPENAI_API_KEY__";
+    const OPENAI_MODEL = "gpt-image-2";
+    // gpt-image-2 supports any size with aspect ratio <= 3:1. The watchface
+    // is 152x704 (1:4.6) — taller than allowed — so we request 1024x3072
+    // (1:3) and crop the top/bottom in the rasterizer.
+    const OPENAI_SIZE = "1024x3072";
 
     const STYLE_PRESETS = [
       { id: "minimalist", label: "Minimalist" },
@@ -1040,12 +1042,12 @@
     });
 
     // ============================================================
-    // Gemini AI generator
+    // OpenAI AI generator
     // ============================================================
     function hasLocalKey() {
-      return typeof GEMINI_API_KEY === "string"
-        && GEMINI_API_KEY.length > 0
-        && !GEMINI_API_KEY.startsWith("__");
+      return typeof OPENAI_API_KEY === "string"
+        && OPENAI_API_KEY.length > 0
+        && !OPENAI_API_KEY.startsWith("__");
     }
 
     function styleTileImg(styleId) {
@@ -1079,7 +1081,7 @@
             </div>
             <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
             <p style="font-size:12px;color:var(--muted);margin:0">
-              Runs locally in your browser using Gemini 3 Pro Image (Nano Banana 2). The resulting <code>skin.zip</code> works
+              Runs locally in your browser using OpenAI gpt-image-2. The resulting <code>skin.zip</code> works
               directly with the patched FES Closet app.
             </p>
           `
@@ -1095,7 +1097,7 @@
               the resulting skin.zip will appear in the Generated tab automatically once the action commits.
             </div>
             <p style="font-size:12px;color:var(--muted);margin:0">
-              Running locally? Set <code>GEMINI_API_KEY</code> at the top of <code>index.html</code> to enable the
+              Running locally? Set <code>OPENAI_API_KEY</code> at the top of <code>index.html</code> to enable the
               browser-side generator and skip the round-trip.
             </p>
           `;
@@ -1168,31 +1170,28 @@
       return lines.join("\n");
     }
 
-    async function callGemini(prompt) {
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-      const body = {
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { responseModalities: ["IMAGE"] },
-      };
-      const res = await fetch(endpoint, {
+    async function callOpenAI(prompt) {
+      const res = await fetch("https://api.openai.com/v1/images/generations", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        headers: {
+          "Authorization": `Bearer ${OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: OPENAI_MODEL,
+          prompt,
+          size: OPENAI_SIZE,
+          n: 1,
+        }),
       });
       if (!res.ok) {
         const errText = await res.text();
-        throw new Error(`Gemini ${res.status}: ${errText.slice(0, 200)}`);
+        throw new Error(`OpenAI ${res.status}: ${errText.slice(0, 300)}`);
       }
       const data = await res.json();
-      const parts = data?.candidates?.[0]?.content?.parts || [];
-      const imgPart = parts.find(p => p.inlineData && p.inlineData.data);
-      if (!imgPart) {
-        throw new Error("Gemini response had no image. Try a different prompt.");
-      }
-      return {
-        data: imgPart.inlineData.data,           // base64
-        mime: imgPart.inlineData.mimeType || "image/png",
-      };
+      const b64 = data?.data?.[0]?.b64_json;
+      if (!b64) throw new Error("OpenAI response had no image. Try a different prompt.");
+      return { data: b64, mime: "image/png" };
     }
 
     function dataUrlFromInline(inline) {
@@ -1200,7 +1199,7 @@
     }
 
     async function rasterizeTo152x704(dataUrl) {
-      // Gemini won't honor exact pixel size — re-rasterize via canvas
+      // The model won't deliver exact 152×704 pixel size — re-rasterize via canvas
       // to 152x704, cover-fit, then re-encode as PNG.
       const img = new Image();
       img.crossOrigin = "anonymous";
@@ -1415,7 +1414,7 @@
       if (!subBtn) return;
       const title = `Skin submission: ${entry.concept || entry.name || "my-watchface"}`.slice(0, 80);
       const body = [
-        "Generated with the FES Closet AI generator (Gemini 3 Pro Image).",
+        "Generated with the FES Closet AI generator (OpenAI gpt-image-2).",
         "",
         "**Concept:** " + (entry.concept || ""),
         "**Style:** " + (entry.style || ""),
@@ -1461,11 +1460,11 @@
       // shimmer
       const screen = previewWrap.querySelector(".watch-screen");
       if (screen) screen.classList.add("is-loading");
-      setStatus("Calling Gemini…");
+      setStatus("Calling OpenAI…");
 
       try {
         const promptText = buildPrompt({ concept, style, mood, vary: varyOnly });
-        const inline = await callGemini(promptText);
+        const inline = await callOpenAI(promptText);
         const sourceDataUrl = dataUrlFromInline(inline);
 
         setStatus("Rasterizing to 152×704…");

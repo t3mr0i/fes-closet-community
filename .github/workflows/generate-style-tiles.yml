@@ -28,7 +28,7 @@ jobs:
 
       - name: Generate style tiles
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           FORCE: ${{ inputs.force }}
         run: node server-mirror/scripts/generate-style-tiles.mjs
 

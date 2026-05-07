@@ -10,10 +10,11 @@ import { execFileSync } from "child_process";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..", "..");
 
-const apiKey = process.env.GEMINI_API_KEY;
-const model = process.env.GEMINI_MODEL || "gemini-3-pro-image-preview";
+const apiKey = process.env.OPENAI_API_KEY;
+const model = process.env.OPENAI_MODEL || "gpt-image-2";
+const size = process.env.OPENAI_SIZE || "1024x3072";
 if (!apiKey) {
-  console.error("GEMINI_API_KEY is required.");
+  console.error("OPENAI_API_KEY is required.");
   process.exit(1);
 }
 
@@ -46,26 +47,23 @@ function buildPrompt(style) {
   ].join("\n");
 }
 
-async function callGemini(prompt) {
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-  const body = {
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    generationConfig: { responseModalities: ["IMAGE"] },
-  };
-  const res = await fetch(endpoint, {
+async function callOpenAI(prompt) {
+  const res = await fetch("https://api.openai.com/v1/images/generations", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ model, prompt, size, n: 1 }),
   });
   if (!res.ok) {
     const errText = await res.text();
-    throw new Error(`Gemini ${res.status}: ${errText.slice(0, 500)}`);
+    throw new Error(`OpenAI ${res.status}: ${errText.slice(0, 500)}`);
   }
   const data = await res.json();
-  const parts = data?.candidates?.[0]?.content?.parts || [];
-  const imgPart = parts.find((p) => p.inlineData && p.inlineData.data);
-  if (!imgPart) throw new Error("Gemini response had no image.");
-  return Buffer.from(imgPart.inlineData.data, "base64");
+  const b64 = data?.data?.[0]?.b64_json;
+  if (!b64) throw new Error("OpenAI response had no image.");
+  return Buffer.from(b64, "base64");
 }
 
 async function rasterize(sourceBuffer) {
@@ -93,7 +91,7 @@ async function rasterize(sourceBuffer) {
     }
     console.log(`Generating ${style.id}…`);
     try {
-      const sourceBuffer = await callGemini(buildPrompt(style));
+      const sourceBuffer = await callOpenAI(buildPrompt(style));
       const pngBuffer = await rasterize(sourceBuffer);
       fs.writeFileSync(target, pngBuffer);
       console.log(`  -> ${target} (${pngBuffer.length} bytes)`);
