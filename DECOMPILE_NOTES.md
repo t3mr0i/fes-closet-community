@@ -364,3 +364,37 @@ API mapping notes:
   by any app code (`raw-apk/assets/www/`, `analysis-js/`, `ios-app/www/`) and
   one of its three skin IDs (`f9c462bf980e41df918b27da3db4f313`) had no
   corresponding metadata or storage entries.
+
+## "Add to Closet" flow (2026-05-07)
+
+Replaces the legacy "TRY → GET FREE → auto-transfer" store flow with
+"TRY → ADD TO CLOSET". Adding a skin downloads + registers it in the
+existing closet collection (skin-collection-2) but no longer transfers to
+the watch automatically. Install happens later via the closet's own
+"SEND" button.
+
+Patch sites:
+
+- `raw-apk/assets/www/scripts/app.js` — single edit inside
+  `StorePage.prototype.purchaseSkin`. The post-`register` `.then` chain
+  used to call `d.transferManager.runTransfer(a)`; now it only calls
+  `d.notifySkinStateChanged()` and resolves. Backup:
+  `app.js.before-closet-patch`. Eyeball locator:
+  `kinData(b,c).then(function(a){return k.register(b,1,a)}).then(...)`
+- `raw-apk/assets/www/res/locales/messages.*.json` — `store.common`:
+  `install` → `ADD TO CLOSET`, `buyTransaction` → `ADDING…`,
+  `purchased` → `IN CLOSET`, `getAgain` → `ADD AGAIN`, `try` → `TRY`.
+  `closet.title` → `CLOSET`, `closet.common.{delete,share,install,
+  installed}` → `DELETE`/`SHARE`/`SEND`/`IN USE`,
+  `closet.information.empty` → `No patterns`. Applied to all 9
+  locales (en/de/es/fr/it/ja/zh-CN/zh-HK/en-GB) so the Closet
+  vocabulary stays consistent regardless of device language.
+
+Purchase module (`fes.purchase`) is **left in place** — it still loads,
+`purchaseSkinData` still does its preinstalled-skin download, IAP code
+paths just never fire because every catalog skin has `price:"0", tier:0`.
+The `RestorePurchase` settings entry was already removed from
+`templates/settings-store.html` in an earlier cleanup; nothing to do
+there. If a future skin ever ships with `tier > 0`, the buy-button
+labels will reappear from the still-present `buy`/`buyFor`/`buyPrice`
+strings — by design.

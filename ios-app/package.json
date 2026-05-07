@@ -1,8 +1,8 @@
 {
-  "name": "jp.co.sony.fescloset",
-  "displayName": "FESCloset",
+  "name": "community.feswatch.app",
+  "displayName": "FES Community",
   "version": "1.0.0",
-  "description": "Community iOS rebuild of the Sony FES Closet companion app.",
+  "description": "Community-built companion app for the Sony FES U Watch. Not affiliated with Sony.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

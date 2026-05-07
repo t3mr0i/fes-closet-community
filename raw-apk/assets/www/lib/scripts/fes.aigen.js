@@ -144,6 +144,9 @@
             '<div class="aigen-actions">' +
                 '<button type="button" class="aigen-btn secondary" id="aigen-go">Generate</button>' +
                 '<button type="button" class="aigen-btn" id="aigen-accept" disabled>Use this design</button>' +
+            "</div>" +
+            '<div class="aigen-actions aigen-actions-secondary">' +
+                '<button type="button" class="aigen-btn ghost" id="aigen-submit" disabled>Share with community</button>' +
             "</div>";
     }
 
@@ -199,6 +202,8 @@
         modal.querySelector(".aigen-close").addEventListener("click", close);
         modal.querySelector("#aigen-go").addEventListener("click", function () { runGeneration(false); });
         modal.querySelector("#aigen-accept").addEventListener("click", accept);
+        var submitBtn = modal.querySelector("#aigen-submit");
+        if (submitBtn) submitBtn.addEventListener("click", submitToCommunity);
 
         var suggest = modal.querySelector(".aigen-suggest");
         suggest && suggest.addEventListener("click", function (e) {
@@ -505,6 +510,8 @@
             });
 
             acceptBtn.disabled = false;
+            var submitBtn = modal.querySelector("#aigen-submit");
+            if (submitBtn) submitBtn.disabled = false;
             setStatus("Ready. Tap Use this design to apply.", "ok");
         } catch (err) {
             console.error("[aigen]", err);
@@ -570,6 +577,225 @@
         state.currentBlob = null;
         state.currentMeta = { concept: it.concept, style: it.style, mood: it.mood };
         modal.querySelector("#aigen-accept").disabled = false;
+        var submitBtn2 = modal.querySelector("#aigen-submit");
+        if (submitBtn2) submitBtn2.disabled = false;
+    }
+
+    /* ---------- community submission ---------- */
+
+    /* Tiny ZIP (store-only, no compression) writer in pure JS. Produces
+       a Blob that is byte-identical to the existing community skin.zip
+       format expected by the watch firmware. Mirrors the implementation
+       in server-mirror/public/index.html so a lazy local edit there is
+       reflected here too. */
+    function makeStoreZip(files) {
+        var encoder = new TextEncoder();
+        var chunks = [];
+        var central = [];
+        var offset = 0;
+
+        var crcTable = (function () {
+            var t = new Uint32Array(256);
+            for (var i = 0; i < 256; i++) {
+                var c = i;
+                for (var k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+                t[i] = c >>> 0;
+            }
+            return t;
+        })();
+        function crc32(bytes) {
+            var c = 0xFFFFFFFF;
+            for (var i = 0; i < bytes.length; i++) c = crcTable[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+            return (c ^ 0xFFFFFFFF) >>> 0;
+        }
+        for (var fi = 0; fi < files.length; fi++) {
+            var f = files[fi];
+            var nameBytes = encoder.encode(f.name);
+            var data = f.data;
+            var crc = crc32(data);
+            var localHeader = new Uint8Array(30 + nameBytes.length);
+            var dv = new DataView(localHeader.buffer);
+            dv.setUint32(0, 0x04034b50, true);
+            dv.setUint16(4, 20, true);
+            dv.setUint16(6, 0, true);
+            dv.setUint16(8, 0, true);
+            dv.setUint16(10, 0, true);
+            dv.setUint16(12, 0, true);
+            dv.setUint32(14, crc, true);
+            dv.setUint32(18, data.length, true);
+            dv.setUint32(22, data.length, true);
+            dv.setUint16(26, nameBytes.length, true);
+            dv.setUint16(28, 0, true);
+            localHeader.set(nameBytes, 30);
+            chunks.push(localHeader, data);
+
+            var cdEntry = new Uint8Array(46 + nameBytes.length);
+            var cdv = new DataView(cdEntry.buffer);
+            cdv.setUint32(0, 0x02014b50, true);
+            cdv.setUint16(4, 20, true);
+            cdv.setUint16(6, 20, true);
+            cdv.setUint16(8, 0, true);
+            cdv.setUint16(10, 0, true);
+            cdv.setUint16(12, 0, true);
+            cdv.setUint16(14, 0, true);
+            cdv.setUint32(16, crc, true);
+            cdv.setUint32(20, data.length, true);
+            cdv.setUint32(24, data.length, true);
+            cdv.setUint16(28, nameBytes.length, true);
+            cdv.setUint16(30, 0, true);
+            cdv.setUint16(32, 0, true);
+            cdv.setUint16(34, 0, true);
+            cdv.setUint16(36, 0, true);
+            cdv.setUint32(38, 0, true);
+            cdv.setUint32(42, offset, true);
+            cdEntry.set(nameBytes, 46);
+            central.push(cdEntry);
+
+            offset += localHeader.length + data.length;
+        }
+        var cdSize = central.reduce(function (s, c) { return s + c.length; }, 0);
+        var cdOffset = offset;
+        for (var ci = 0; ci < central.length; ci++) { chunks.push(central[ci]); offset += central[ci].length; }
+
+        var eocd = new Uint8Array(22);
+        var edv = new DataView(eocd.buffer);
+        edv.setUint32(0, 0x06054b50, true);
+        edv.setUint16(4, 0, true);
+        edv.setUint16(6, 0, true);
+        edv.setUint16(8, files.length, true);
+        edv.setUint16(10, files.length, true);
+        edv.setUint32(12, cdSize, true);
+        edv.setUint32(16, cdOffset, true);
+        edv.setUint16(20, 0, true);
+        chunks.push(eocd);
+
+        var totalLen = 0;
+        for (var ti = 0; ti < chunks.length; ti++) totalLen += chunks[ti].length;
+        var out = new Uint8Array(totalLen);
+        var pos = 0;
+        for (var pi = 0; pi < chunks.length; pi++) { out.set(chunks[pi], pos); pos += chunks[pi].length; }
+        return new Blob([out], { type: "application/zip" });
+    }
+
+    function arrayBufferToBase64(ab) {
+        var bytes = new Uint8Array(ab);
+        var bin = "";
+        var chunk = 0x8000;
+        for (var i = 0; i < bytes.length; i += chunk) {
+            bin += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + chunk, bytes.length)));
+        }
+        return btoa(bin);
+    }
+
+    function makeSlug() {
+        // small, sortable, mostly-unique: timestamp + 4 random hex
+        var ts = Math.floor(Date.now() / 1000).toString(36);
+        var rnd = Math.floor(Math.random() * 0xFFFF).toString(16).padStart(4, "0");
+        return "ai-" + ts + "-" + rnd;
+    }
+
+    /* PUT one file via the GitHub Contents API. */
+    async function githubPut(token, repo, branch, path, contentB64, message) {
+        var url = "https://api.github.com/repos/" + repo + "/contents/" + encodeURI(path);
+        var res = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Authorization": "Bearer " + token,
+                "Accept": "application/vnd.github+json",
+                "Content-Type": "application/json",
+                "X-GitHub-Api-Version": "2022-11-28"
+            },
+            body: JSON.stringify({
+                message: message,
+                content: contentB64,
+                branch: branch
+            })
+        });
+        if (!res.ok) {
+            var err = await res.text();
+            throw new Error("GitHub PUT " + res.status + " " + path + ": " + err.slice(0, 200));
+        }
+        return await res.json();
+    }
+
+    async function submitToCommunity() {
+        var modal = state.modal;
+        var btn = modal.querySelector("#aigen-submit");
+        if (!state.currentDataUrl) return;
+
+        var sec = global.FES_SECRETS || {};
+        var token = sec.GITHUB_SUBMISSION_TOKEN;
+        var repo = sec.GITHUB_SUBMISSION_REPO || "t3mr0i/fes-closet-community";
+        var branch = sec.GITHUB_SUBMISSION_BRANCH || "main";
+        if (!isPromptKey(token)) {
+            setStatus("Submission not configured — token missing.", "error");
+            return;
+        }
+
+        btn.disabled = true;
+        setStatus("Packaging skin.zip…");
+
+        try {
+            // 1. Build the installable skin.zip (config.json + bg.png) from
+            //    the current 152x704 PNG dataURL.
+            var pngBlob;
+            if (state.currentBlob) {
+                pngBlob = state.currentBlob;
+            } else {
+                var resp = await fetch(state.currentDataUrl);
+                pngBlob = await resp.blob();
+            }
+            var pngBytes = new Uint8Array(await pngBlob.arrayBuffer());
+            var config = {
+                version: "1.0.0",
+                revision: Date.now(),
+                components: [
+                    { type: "background", image: "bg.png", layout: { size: [WIDTH, HEIGHT] } }
+                ]
+            };
+            var configBytes = new TextEncoder().encode(JSON.stringify(config, null, 2));
+            var skinZip = makeStoreZip([
+                { name: "config.json", data: configBytes },
+                { name: "bg.png",      data: pngBytes }
+            ]);
+            var skinZipBytes = new Uint8Array(await skinZip.arrayBuffer());
+
+            // 2. Build the metadata.json sidecar.
+            var meta = state.currentMeta || {};
+            var slug = makeSlug();
+            var metadata = {
+                slug: slug,
+                concept: meta.concept || "",
+                refinedConcept: meta.refinedConcept || "",
+                style: meta.style || "minimalist",
+                mood: meta.mood || "calm",
+                createdAt: new Date().toISOString(),
+                source: "in-app-aigen"
+            };
+            var metadataBytes = new TextEncoder().encode(JSON.stringify(metadata, null, 2));
+
+            // 3. PUT all three files into submissions/pending/<slug>/
+            var base = "submissions/pending/" + slug + "/";
+            setStatus("Uploading metadata…");
+            await githubPut(token, repo, branch, base + "metadata.json",
+                arrayBufferToBase64(metadataBytes.buffer), "submission " + slug + ": metadata");
+
+            setStatus("Uploading skin.zip (" + Math.round(skinZipBytes.length / 1024) + " KB)…");
+            await githubPut(token, repo, branch, base + "skin.zip",
+                arrayBufferToBase64(skinZipBytes.buffer), "submission " + slug + ": skin.zip");
+
+            setStatus("Uploading preview…");
+            await githubPut(token, repo, branch, base + "preview.png",
+                arrayBufferToBase64(pngBytes.buffer), "submission " + slug + ": preview");
+
+            setStatus("Submitted! Waiting for review.", "ok");
+            // re-enable so user can submit again if they want, after a short delay
+            setTimeout(function () { btn.disabled = false; }, 2000);
+        } catch (err) {
+            console.error("[aigen submit]", err);
+            setStatus(err.message || String(err), "error");
+            btn.disabled = false;
+        }
     }
 
     /* ---------- accept / open / close ---------- */

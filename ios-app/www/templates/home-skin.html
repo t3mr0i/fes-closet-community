@@ -44,6 +44,10 @@
                 <p class="creator-name">{{#creator}}{{name}}{{/creator}}{{^creator}}{{creatorName}}{{/creator}}</p>
                 <p class="skin-name">{{name}}</p>
                 {{#endDate}}<p class="skin-expire-date">{{endDate}}</p>{{/endDate}}
+                <div class="skin-meta-chips">
+                    {{#studio}}<span class="skin-meta-chip studio">{{.}}</span>{{/studio}}
+                    {{#tags}}<span class="skin-meta-chip">{{.}}</span>{{/tags}}
+                </div>
                 <p class="skin-description">{{#skinDetail}}{{description}}{{/skinDetail}}</p>
                 {{#creator}}
                 <h3 class="creator-introduction-headline" data-i18n="store.common.designer">store.common.designer</h3>

@@ -385,6 +385,31 @@
     cursor: not-allowed;
 }
 
+/* Secondary action row (Share with community) — single full-width button below
+   the main action pair, separated from the main bar visually. */
+#aigen-modal .aigen-actions-secondary {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    border-top: 0;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 0));
+}
+
+#aigen-modal .aigen-actions-secondary .aigen-btn.ghost {
+    background: transparent;
+    color: #9aa1a8;
+    border: 1px solid #2e3438;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 10px 8px;
+}
+
+#aigen-modal .aigen-actions-secondary .aigen-btn.ghost:hover:not([disabled]) {
+    color: #d8d4c9;
+    border-color: #4a4f55;
+}
+
 /* Smaller phones (≤340px) */
 @media (max-width: 340px) {
     #aigen-modal .aigen-watch { width: 68px; height: 312px; }
