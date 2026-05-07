@@ -3,8 +3,14 @@
 
 #aigen-modal {
     position: fixed;
-    inset: 0;
-    z-index: 1100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 99999;
     display: none;
     flex-direction: column;
     background: #0e1113;
@@ -78,7 +84,9 @@
     min-width: 0;
 }
 
-/* Preview = device mockup */
+/* Preview = device mockup. Compact by default (no image yet),
+   expanded once a design is rendered. The active state hooks: when an
+   <img> exists inside the screen, the watch grows. */
 #aigen-modal .aigen-preview {
     position: relative;
     align-self: center;
@@ -86,42 +94,94 @@
     place-items: center;
     width: 100%;
     max-width: 100%;
-    padding: 18px 0 12px;
-    background: radial-gradient(ellipse at 50% 40%, #1a1d20 0%, #0e1113 70%);
+    flex: 0 0 auto;
+    min-height: 320px;
+    padding: 22px 0 18px;
+    background: radial-gradient(ellipse at 50% 40%, #1c1f23 0%, #0e1113 75%);
     border-radius: 14px;
     overflow: hidden;
+    transition: min-height .35s cubic-bezier(.2,.8,.2,1);
+}
+
+#aigen-modal .aigen-preview.has-image {
+    min-height: 410px;
+}
+
+/* Aurora glow that pulses while loading — the radial gradient itself
+   becomes alive. Also lights up subtly when no image is present, so the
+   empty state still feels intentional. */
+#aigen-modal .aigen-preview::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 280px;
+    height: 280px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(120, 165, 235, 0.18) 0%, transparent 65%);
+    filter: blur(28px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease;
+    z-index: 0;
+}
+
+#aigen-modal .aigen-preview.is-loading::before {
+    opacity: 1;
+    animation: aigen-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes aigen-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.6; }
+    50%      { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
 }
 
 #aigen-modal .aigen-watch {
     position: relative;
-    width: 76px;
-    height: 352px;
+    z-index: 1;
+    /* Compact by default. */
+    width: 60px;
+    height: 278px;
     background: #050608;
     border: 1px solid #1f2225;
-    border-radius: 18px;
-    padding: 6px;
+    border-radius: 14px;
+    padding: 5px;
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 0 3px #0c0e10,
+        0 12px 26px rgba(0, 0, 0, 0.55);
+    display: grid;
+    place-items: center;
+    transition: width .35s cubic-bezier(.2,.8,.2,1), height .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+}
+
+/* When a design is shown, scale up. */
+#aigen-modal .aigen-preview.has-image .aigen-watch {
+    width: 80px;
+    height: 372px;
     box-shadow:
         inset 0 0 0 1px rgba(255, 255, 255, 0.05),
         0 0 0 4px #0c0e10,
-        0 14px 28px rgba(0, 0, 0, 0.55);
-    display: grid;
-    place-items: center;
+        0 18px 36px rgba(0, 0, 0, 0.6),
+        0 0 80px rgba(120, 165, 235, 0.25);
 }
 
 #aigen-modal .aigen-watch-screen {
     width: 100%;
     height: 100%;
-    border-radius: 11px;
+    border-radius: 9px;
     overflow: hidden;
     background: #1a1d20;
     display: grid;
     place-items: center;
     color: #6c7278;
     font-size: 9px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
     text-transform: uppercase;
     position: relative;
 }
+
+#aigen-modal .aigen-preview.has-image .aigen-watch-screen { border-radius: 11px; }
 
 #aigen-modal .aigen-watch-screen img {
     display: block;
@@ -131,15 +191,53 @@
     /* Force grayscale at the preview level so the user always sees the
        monochrome watch result even if the model returned colour. */
     filter: grayscale(1) contrast(1.05);
+    animation: aigen-fade-in .5s ease both;
 }
 
-/* Loading shimmer */
+@keyframes aigen-fade-in {
+    from { opacity: 0; transform: scale(1.04); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Empty-state placeholder text inside the watch screen. */
+#aigen-modal .aigen-watch-screen-placeholder {
+    color: #4a4f55;
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    line-height: 1.6;
+    text-align: center;
+    padding: 0 6px;
+}
+
+/* Loading state — sweep + scanline */
+#aigen-modal .aigen-watch-screen.is-loading {
+    background: linear-gradient(180deg, #1a1d20 0%, #14171a 100%);
+}
+
+#aigen-modal .aigen-watch-screen.is-loading::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 18%;
+    top: -18%;
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(120, 165, 235, 0.18) 50%,
+        transparent 100%);
+    animation: aigen-scan 2.2s ease-in-out infinite;
+}
+
+@keyframes aigen-scan {
+    0%   { top: -18%; }
+    100% { top: 110%; }
+}
+
 #aigen-modal .aigen-watch-screen.is-loading::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
-    animation: aigen-shimmer 1.4s infinite linear;
+    background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+    animation: aigen-shimmer 1.6s infinite linear;
 }
 
 @keyframes aigen-shimmer {

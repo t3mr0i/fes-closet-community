@@ -114,7 +114,9 @@
             "</div>" +
             '<div class="aigen-body">' +
                 '<div class="aigen-preview" id="aigen-preview">' +
-                    '<div class="aigen-watch"><div class="aigen-watch-screen"><span>preview</span></div></div>' +
+                    '<div class="aigen-watch"><div class="aigen-watch-screen">' +
+                        '<div class="aigen-watch-screen-placeholder">your<br>design<br>here</div>' +
+                    '</div></div>' +
                 "</div>" +
                 '<div class="aigen-prompt-wrap">' +
                     '<span class="aigen-section-label">Concept</span>' +
@@ -135,7 +137,7 @@
                         '<option value="nostalgic">Nostalgic</option>' +
                     "</select>" +
                 "</div>" +
-                '<div class="aigen-status" id="aigen-status">Designs render in monochrome — the FES watch display is greyscale.</div>' +
+                '<div class="aigen-status" id="aigen-status">Describe a vibe and tap Generate.</div>' +
                 '<div class="aigen-history" id="aigen-history" hidden>' +
                     '<span class="aigen-section-label">Recent</span>' +
                     '<div class="aigen-history-strip" id="aigen-history-strip"></div>' +
@@ -343,40 +345,49 @@
        above wraps this. */
     async function rephraseConcept(rawConcept, styleLabel, mood) {
         var sec = getSecrets();
-        if (!isPromptKey(sec.key)) throw new Error("OPENAI_API_KEY missing");
+        if (!isPromptKey(sec.key)) {
+            console.warn("[aigen] rephrase skipped: no key");
+            return rawConcept;
+        }
         var system = "You rewrite watchface design concepts into vivid, concrete image-generation briefs. Output is one or two sentences, present-tense, sensory and specific. NO meta talk, NO 'Sure!', NO quotes, NO explanation. Just the rewritten concept. Maximum 40 words.";
         var user = [
             "Style: " + styleLabel + ".",
             "Mood: " + mood + ".",
             "User concept: " + rawConcept,
             "",
-            "Rewrite as a vivid, specific watchface concept brief. Greyscale-friendly subject. Vertical composition (the canvas is 1:4.6 portrait)."
+            "Rewrite as a vivid, specific watchface concept brief. Strong tonal contrast. Vertical composition (the canvas is 1:4.6 portrait)."
         ].join("\n");
 
-        var res = await fetch("https://api.openai.com/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Authorization": "Bearer " + sec.key,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: sec.rephraseModel,
-                messages: [
-                    { role: "system", content: system },
-                    { role: "user",   content: user }
-                ]
-            })
-        });
-        if (!res.ok) {
-            // fall back to raw concept on rephrase failure — don't kill the run
-            console.warn("[aigen] rephrase failed, using raw concept:", res.status);
+        try {
+            var res = await fetch("https://api.openai.com/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + sec.key,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: sec.rephraseModel,
+                    messages: [
+                        { role: "system", content: system },
+                        { role: "user",   content: user }
+                    ]
+                })
+            });
+            if (!res.ok) {
+                // fall back to raw concept on rephrase failure — don't kill the run
+                var errBody = await res.text();
+                console.warn("[aigen] rephrase failed " + res.status + ", using raw concept:", errBody.slice(0, 200));
+                return rawConcept;
+            }
+            var data = await res.json();
+            var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+            if (!content || !content.trim()) return rawConcept;
+            // trim any surrounding quotes the model might add
+            return content.trim().replace(/^["“”']+|["“”']+$/g, "");
+        } catch (e) {
+            console.warn("[aigen] rephrase threw, using raw concept:", e && e.message);
             return rawConcept;
         }
-        var data = await res.json();
-        var content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        if (!content || !content.trim()) return rawConcept;
-        // trim any surrounding quotes the model might add
-        return content.trim().replace(/^["“”']+|["“”']+$/g, "");
     }
 
     async function callOpenAI(promptText) {
@@ -467,7 +478,9 @@
         if (!rawConcept) { setStatus("Describe what you want first.", "error"); return; }
 
         goBtn.disabled = true; acceptBtn.disabled = true;
+        var preview = modal.querySelector("#aigen-preview");
         var screen = modal.querySelector(".aigen-watch-screen");
+        if (preview) preview.classList.add("is-loading");
         if (screen) screen.classList.add("is-loading");
 
         try {
@@ -487,16 +500,17 @@
             });
 
             // Phase 3: image generation.
-            setStatus("Generating greyscale watchface (~20s)…");
+            setStatus("Generating your design (~20s)…");
             var sourceDataUrl = await callOpenAI(promptText);
 
             // Phase 4: crop + grayscale-bake.
-            setStatus("Converting to monochrome 152×704…");
+            setStatus("Preparing for the watch…");
             var result = await rasterizeToWatch(sourceDataUrl);
 
-            var preview = modal.querySelector("#aigen-preview");
             preview.innerHTML =
                 '<div class="aigen-watch"><div class="aigen-watch-screen"><img src="' + result.dataUrl + '" alt=""></div></div>';
+            preview.classList.add("has-image");
+            preview.classList.remove("is-loading");
 
             state.currentDataUrl = result.dataUrl;
             state.currentBlob = result.blob;
@@ -518,6 +532,8 @@
             setStatus(err.message || String(err), "error");
         } finally {
             goBtn.disabled = false;
+            var p2 = modal.querySelector("#aigen-preview");
+            if (p2) p2.classList.remove("is-loading");
             var s2 = modal.querySelector(".aigen-watch-screen");
             if (s2) s2.classList.remove("is-loading");
         }
@@ -569,6 +585,8 @@
         var preview = modal.querySelector("#aigen-preview");
         preview.innerHTML =
             '<div class="aigen-watch"><div class="aigen-watch-screen"><img src="' + it.dataUrl + '" alt=""></div></div>';
+        preview.classList.add("has-image");
+        preview.classList.remove("is-loading");
 
         var hItems = modal.querySelectorAll(".aigen-history-item");
         for (var i = 0; i < hItems.length; i++) hItems[i].setAttribute("aria-pressed", String(i === idx));
