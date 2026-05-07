@@ -375,9 +375,18 @@
       const image = item.image
         ? `<img src="${escapeHtml(item.image)}" alt="">`
         : `<div class="fallback">No preview</div>`;
-      const secondary = item.detail
-        ? `<a class="button secondary" href="${escapeHtml(item.detail)}">Details</a>`
-        : `<a class="button secondary" href="${escapeHtml(item.preview || item.zip)}">Preview</a>`;
+
+      const primaryHref = item.skin || item.zip;
+      const primaryLabel = item.skin ? "Install on watch" : "Download ZIP";
+      const extras = [];
+      if (item.skin && item.zip) {
+        extras.push(`<a class="button secondary" href="${escapeHtml(item.zip)}">Design bundle</a>`);
+      }
+      if (item.detail) {
+        extras.push(`<a class="button secondary" href="${escapeHtml(item.detail)}">Details</a>`);
+      } else if (item.preview && !item.skin) {
+        extras.push(`<a class="button secondary" href="${escapeHtml(item.preview)}">Preview</a>`);
+      }
 
       return `
         <article class="skin">
@@ -390,8 +399,8 @@
             <p class="creator">${escapeHtml(item.creator)}</p>
             <p class="desc">${escapeHtml(item.description || item.brief || "No description available.")}</p>
             <div class="actions">
-              <a class="button" href="${escapeHtml(item.zip)}">Download ZIP</a>
-              ${secondary}
+              <a class="button" href="${escapeHtml(primaryHref)}">${primaryLabel}</a>
+              ${extras.join("\n              ")}
             </div>
           </div>
         </article>
@@ -400,6 +409,7 @@
 
     function normalizeOfficialSkin(skin) {
       const creator = state.creators.get(skin.creatorId);
+      const zipUrl = storageUrl(skin.zip);
       return {
         id: skin.id,
         kind: skin.creatorId === COMMUNITY_CREATOR_ID ? "Community" : "Official",
@@ -410,7 +420,8 @@
         image: storageUrl(skin.thumbnail || skin.storeImage || skin.detailImage),
         preview: storageUrl(skin.storeImage || skin.detailImage || skin.thumbnail),
         detail: skin.detailImage ? storageUrl(skin.detailImage) : "",
-        zip: storageUrl(skin.zip),
+        zip: "",
+        skin: zipUrl,
         source: skin.creatorId === COMMUNITY_CREATOR_ID ? "community" : "official",
       };
     }
@@ -427,6 +438,7 @@
         preview: url(entry.preview),
         detail: url(entry.spec),
         zip: url(entry.package),
+        skin: entry.skin ? url(entry.skin) : "",
         source: "generated",
       };
     }
