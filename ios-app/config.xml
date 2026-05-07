@@ -19,6 +19,7 @@
         <access origin="https://t3mr0i.github.io" />
         <access origin="https://*.github.io" />
         <access origin="https://api.openai.com" />
+        <access origin="https://images.unsplash.com" />
         <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="overwrite">
             <string>FES Community imports photos to use as backgrounds for your custom watchfaces.</string>
         </edit-config>
