@@ -225,48 +225,97 @@
     }
 
     .skin {
+      position: relative;
       display: grid;
       grid-template-rows: auto 1fr;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      border-radius: 10px;
+      border: 1px solid #232629;
+      background: #14171a;
+      color: #e8e7e1;
+      border-radius: 12px;
       overflow: hidden;
-      transition: transform .15s ease, box-shadow .15s ease;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
+
+    /* Source-of-skin accent strip at the top of each card */
+    .skin::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, transparent);
+      z-index: 2;
+    }
+
+    .skin[data-source="community"] { --card-accent: linear-gradient(90deg, #21695f, #3aa491); }
+    .skin[data-source="official"]  { --card-accent: linear-gradient(90deg, #c9a86a, #e2c98e); }
+    .skin[data-source="generated"] { --card-accent: linear-gradient(90deg, #6a4ed1, #b58cff); }
 
     .skin:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(20, 30, 25, .07);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+      border-color: #2e3438;
     }
 
+    /* Ambient background per card. The accent is set inline via --ambient
+       extracted from the watchface preview (skin-card-ambient.js). */
     .preview {
       position: relative;
       display: grid;
       place-items: center;
-      background: #1d2024;
-      padding: 18px 0;
-      min-height: 240px;
+      padding: 22px 0 14px;
+      min-height: 270px;
+      background:
+        radial-gradient(circle at 50% 38%, var(--ambient, #2a2d31) 0%, transparent 65%),
+        #14171a;
+      transition: background .25s ease;
+      overflow: hidden;
     }
 
-    /* 152:704 -> 1:4.63. Render at fixed width 60px so card stays compact. */
+    /* Soft glow around the watch */
+    .preview::before {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 180px;
+      height: 320px;
+      transform: translate(-50%, -50%);
+      background: var(--ambient, transparent);
+      filter: blur(45px);
+      opacity: 0.32;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 152:704 -> 1:4.63. Larger now to make the watch feel hero. */
     .watch {
-      width: 64px;
-      height: 296px;
-      background: #0a0c0e;
-      border: 1px solid #2a2f33;
-      border-radius: 14px;
-      padding: 6px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 0 0 4px #16191c;
+      position: relative;
+      z-index: 1;
+      width: 78px;
+      height: 360px;
+      background: #050608;
+      border: 1px solid #1f2225;
+      border-radius: 18px;
+      padding: 7px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 0 4px #0c0e10,
+        0 18px 36px rgba(0, 0, 0, 0.55),
+        0 0 60px var(--ambient, transparent);
       display: grid;
       place-items: center;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .skin:hover .watch {
+      transform: scale(1.03);
     }
 
     .watch-screen {
       width: 100%;
       height: 100%;
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      background: #2a2d31;
+      background: #1a1d20;
       display: grid;
       place-items: center;
       color: #6c7278;
@@ -283,8 +332,8 @@
 
     .body {
       display: grid;
-      gap: 8px;
-      padding: 14px;
+      gap: 6px;
+      padding: 14px 14px 16px;
     }
 
     .title {
@@ -300,37 +349,38 @@
       line-height: 1.25;
       letter-spacing: 0;
       text-transform: capitalize;
+      color: #f4f1ea;
     }
 
     .badge {
       flex: 0 0 auto;
       border-radius: 999px;
       padding: 3px 8px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
     .badge-community {
-      background: var(--accent-soft);
-      color: var(--accent-strong);
+      background: rgba(58, 164, 145, 0.14);
+      color: #7fd6c1;
     }
 
     .badge-official {
-      background: #efece2;
-      color: #5a4a1d;
+      background: rgba(226, 201, 142, 0.14);
+      color: #e2c98e;
     }
 
     .badge-generated {
-      background: #ece6f5;
-      color: #4a318a;
+      background: rgba(181, 140, 255, 0.14);
+      color: #c8a8ff;
     }
 
     .creator,
     .desc {
       margin: 0;
-      color: var(--muted);
+      color: #9aa1a8;
       font-size: 13px;
     }
 
@@ -345,10 +395,27 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 6px;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .actions.row-2 { grid-template-columns: 1fr 1fr; }
+
+    /* Buttons inside dark cards need a dark-theme override */
+    .skin .actions .button {
+      background: #f4f1ea;
+      border-color: #f4f1ea;
+      color: #14171a;
+    }
+
+    .skin .actions .button.secondary {
+      background: transparent;
+      border-color: rgba(244, 241, 234, 0.22);
+      color: #d8d4c9;
+    }
+
+    .skin .actions .button:hover {
+      filter: brightness(0.95);
+    }
 
     .actions .button { padding: 7px 8px; font-size: 12px; min-height: 32px; }
 
@@ -664,8 +731,9 @@
     // sign of quota abuse.
     // ============================================================
     const GEMINI_API_KEY = "__GEMINI_API_KEY__";
-    // Nano Banana 2 = Gemini 3 Pro Image. Public API name:
-    const GEMINI_MODEL = "gemini-3-pro-image-preview";
+    // Gemini 2.5 Flash Image — free tier allows ~10 image gens/min.
+    // (gemini-3-pro-image-preview / Nano Banana 2 requires paid billing.)
+    const GEMINI_MODEL = "gemini-2.5-flash-image-preview";
 
     const STYLE_PRESETS = [
       { id: "minimalist", label: "Minimalist" },
@@ -749,9 +817,10 @@
         extras.push(`<a class="button secondary" href="${escapeHtml(item.detail)}">Details</a>`);
       }
       const actionsClass = extras.length ? "actions row-2" : "actions";
+      const dataImage = item.image ? ` data-image="${escapeHtml(item.image)}"` : "";
 
       return `
-        <article class="skin">
+        <article class="skin" data-source="${escapeHtml(item.source || "")}"${dataImage}>
           <div class="preview">${watchPreview(item.image)}</div>
           <div class="body">
             <div class="title">
@@ -767,6 +836,52 @@
           </div>
         </article>
       `;
+    }
+
+    // Sample the average color of each card's preview image and apply it as
+    // an --ambient CSS variable so the card can paint a halo of the
+    // watchface's dominant tone behind the watch mockup.
+    const ambientCache = new Map();
+
+    function applyAmbient(card, image) {
+      if (!image) return;
+      if (ambientCache.has(image)) {
+        card.style.setProperty("--ambient", ambientCache.get(image));
+        return;
+      }
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.referrerPolicy = "no-referrer";
+      img.onload = () => {
+        try {
+          const c = document.createElement("canvas");
+          // small thumb is enough for an average
+          const w = 16, h = 70;
+          c.width = w; c.height = h;
+          const ctx = c.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          const data = ctx.getImageData(0, 0, w, h).data;
+          let r = 0, g = 0, b = 0, n = 0;
+          for (let i = 0; i < data.length; i += 4) {
+            r += data[i]; g += data[i + 1]; b += data[i + 2]; n++;
+          }
+          r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+          // Mute very dark / very bright averages so the halo always reads
+          const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          if (lum < 30) { r += 40; g += 40; b += 40; }
+          if (lum > 220) { r -= 40; g -= 40; b -= 40; }
+          const col = `rgba(${r}, ${g}, ${b}, 0.55)`;
+          ambientCache.set(image, col);
+          card.style.setProperty("--ambient", col);
+        } catch { /* tainted canvas / CORS — skip ambient */ }
+      };
+      img.src = image;
+    }
+
+    function applyAmbientToAllCards() {
+      document.querySelectorAll(".skin[data-image]").forEach((card) => {
+        applyAmbient(card, card.dataset.image);
+      });
     }
 
     function normalizeOfficialSkin(skin) {
@@ -875,6 +990,7 @@
       grid.innerHTML = items.length
         ? items.map(skinCard).join("")
         : `<div class="empty">No skins match the current filter.</div>`;
+      applyAmbientToAllCards();
     }
 
     async function loadJson(path, fallback) {
@@ -963,7 +1079,7 @@
             </div>
             <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
             <p style="font-size:12px;color:var(--muted);margin:0">
-              Runs locally in your browser using Gemini 3 Pro Image (Nano Banana 2). The resulting <code>skin.zip</code> works
+              Runs locally in your browser using Gemini 2.5 Flash Image. The resulting <code>skin.zip</code> works
               directly with the patched FES Closet app.
             </p>
           `
