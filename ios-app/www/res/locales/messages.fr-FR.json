@@ -1,0 +1,414 @@
+{
+    "app": {
+        "name": "FES Closet",
+        "namecn": "FES Closet (China)",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "common": {
+            "backAllCaps": "RETOUR",
+            "nextAllCaps": "SUIVANT",
+            "doneAllCaps": "TERMINÉ",
+            "startAllCaps": "COMMENCER",
+            "skipAllCaps": "PASSER",
+            "cancelAllCaps": "ANNULER",
+            "ok": "OK",
+            "back": "Retour",
+            "next": "Suivant",
+            "done": "Terminé",
+            "skip": "Passer",
+            "cancel": "Annuler",
+            "close": "Fermer",
+            "transfer": "Envoyer",
+            "preparing": "Préparation",
+            "save": "Enregistrer",
+            "delete": "Effacer",
+            "remove": "Supprimer",
+            "unregister": "Désenregistrer",
+            "refresh": "Recharger",
+            "select": "Sélectionner",
+            "reset": "Réinitialiser",
+            "retry": "Réessayer",
+            "restore": "Restaurer",
+            "settings": "Paramètres",
+            "support": "Community Catalog",
+            "update": "Mise à jour",
+            "later": "Plus tard",
+            "share": "Partager"
+        },
+        "utility": {
+            "fraction": "{{count}}/{{total}}",
+            "bracket": "({{content}})",
+            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+        },
+        "url": {
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+        },
+        "os": {
+            "cameraUsageDescription": "Utilisé pour la création de motifs",
+            "libraryUsageDescription": "Utilisé pour la création de motifs",
+            "bluetoothUsageDescription": "Utilisé pour la connexion à la montre.",
+            "contactsUsageDescription": "Affecter l’image au contact.",
+            "photoLibraryAddUsageDescription": "Enregistrer l’image du motif."
+        }
+    },
+    "store": {
+        "title": "CATALOG",
+        "common": {
+            "moneyUnit": "€",
+            "moneyDelimiter": ",",
+            "buy": "ACHETER",
+            "buyFor": "pour",
+            "buyPrice": "{{price}}",
+            "buyTransaction": "OBTENIR GRATUITEMENT",
+            "install": "OBTENIR GRATUITEMENT",
+            "getAgain": "OBTENIR DE NOUVEAU",
+            "try": "ESSAYER",
+            "purchased": "TÉLÉCHARGER",
+            "designer": "DESIGNER"
+        },
+        "information": {
+            "offline": "Hors ligne",
+            "offlineDetail": "Pas de connexion à internet",
+            "serverAccessLimitation": "Les serveurs sont actuellement surchargés.\nVeuillez réessayer ultérieurement.",
+            "serverMaintenance": "Provisoirement indisponible pour maintenance.\nHeure de reprise prévue du service : {{time]]",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
+            "notAvailable": "Non disponible dans votre pays/région.",
+            "closeout": "Le service de la boutique a pris fin."
+        }
+    },
+    "closet": {
+        "title": "PANIER",
+        "common": {
+            "delete": "EFFACER",
+            "share": "PARTAGER",
+            "install": "ENVOYER",
+            "installed": "UTILISÉ"
+        },
+        "information": {
+            "empty": "Aucun motif"
+        }
+    },
+    "edit": {
+        "background": {
+            "title": "CRÉER",
+            "selectLibrary": "BIBLIOTHÈQUE",
+            "selectGallery": "GALERIE",
+            "launchCamera": "CAMÉRA"
+        },
+        "pattern": {
+            "title": "MODIFIER",
+            "selectWatchFace": "FACE",
+            "applyFilters": "FILTRE"
+        },
+        "save": {
+            "title": "ENREGISTRER",
+            "description": "Nom du motif",
+            "unavailable": "{{param}} ne peut pas être utilisé.",
+            "unavailableCharacter": "Des caractères indisponibles sont utilisés.",
+            "limitString": "Veuillez saisir {{numOfString}} caractères maximum."
+        },
+        "selectContent": {
+            "title": "TOUTES LES PHOTOS"
+        }
+    },
+    "dialog": {
+        "settingsUpdated": "Paramètres actualisés",
+        "skipSettings": {
+            "title": "Passer les paramètres ?",
+            "description": "La montre peut également être paramétrée à partir de l’écran des paramètres de cette application."
+        },
+        "deletePattern": {
+            "title": "Effacer le motif ?",
+            "description": "Les motifs téléchargés depuis la Boutique peuvent être enregistrés de nouveau dans le placard"
+        },
+        "unregisterWatch": {
+            "title": "Désenregistrer la montre ?"
+        },
+        "restorePurchase": {
+            "title": "Restaurer des motifs ?"
+        },
+        "selectRemove": {
+            "title": "Supprimer des motifs",
+            "description_plural": "La montre ne peut conserver que {{count}} motifs enregistrés.\nVeuillez supprimer d’autres motifs."
+        },
+        "progress": {
+            "title": "Envoi du motif...",
+            "titleTry": "Envoi du motif pour essai...",
+            "description": "Maintenez votre smartphone proche du couvercle arrière de la montre tant que cet écran est affiché.",
+            "estimateTimePrefix": "Durée restante",
+            "done": {
+                "title": "Envoi terminé",
+                "descriptionTry": "Le motif pour essai sera supprimer dans 3 minutes, ou si vous pressez le bouton de la montre.",
+                "descriptionShare": "Vous pouvez partager une image du motif.\n#feswatchu",
+                "descriptionShareCN": "Vous pouvez partager une image du motif.\n#FesWatch#"
+            }
+        },
+        "install": {
+            "titleStart": "Envoyer le motif vers la montre ?",
+            "descriptionAfterSave": "Le motif a été enregistré dans votre placard. Vous pouvez également le transmettre à la montre immédiatement.",
+            "description": "Maintenez votre smartphone proche du couvercle arrière de la montre pendant l’envoi",
+            "estimateTimePrefix": "Durée estimée d'envoyer"
+        },
+        "error": {
+            "title": {
+                "general": "Erreur",
+                "authentication": "Impossible d'authentifier",
+                "purchase": "Impossible d’acheter le motif",
+                "save": "Impossible d’enregistrer le motif",
+                "delete": "Impossible d'effacer le motif",
+                "remove": "Impossible de supprimer le motif",
+                "restorePurchase": "Impossible de restaurer",
+                "needNotToRestorePurchase": "Pas besoin de restaurer",
+                "resetFi": "Impossible de réinitialiser la montre",
+                "skinCorrupted": "Motif corrompu",
+                "transferPattern": "Impossible d'envoyer le motif",
+                "transferUpdate": "Impossible de mettre à jour le logiciel système",
+                "transfer": "Impossible d'envoyer",
+                "bluetooth": "Activez la fonction Bluetooth pour permettre à \"{{appName}}\" de se connecter à la montre.",
+                "location": "Activez les services de localisation sur le smartphone pour permettre à \"{{appName}}\" de se connecter à la montre.",
+                "connectionToWatch": "Impossible de se connecter",
+                "registration": "Impossible de s'inscrire",
+                "setting": "Impossible de mettre à jour les paramètres",
+                "sd_connection": "Erreur",
+                "sd_download": "Erreur",
+                "sd_duplication": "Téléchargement interrompu"
+            },
+            "message": {
+                "sd_download": "Check the community catalog or try again.",
+                "sd_duplication": "Téléchargement déjà effectué. Vérifiez le placard.",
+                "errorCode": "Code d’erreur : {{errorCode}}",
+                "serverGeneral": "Veuillez réessayer ultérieurement.",
+                "internetAccess": "Veuillez vérifier la connexion au réseau et réessayer.",
+                "account": "Veuillez vérifier le compte et réessayer.",
+                "save": "Espace de stockage insuffisant. Vous pouvez gérer votre stockage dans les paramètres.",
+                "restorePurchase": "Espace de stockage insuffisant. Vous pouvez gérer votre stockage dans les paramètres.",
+                "needNotToRestorePurchase": "Aucun motif à restaurer.",
+                "hasRestoreFailedProducts": "La restauration de certains motifs a échoué.\nVeuillez réessayer ultérieurement.",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
+                "transfer": "Veuillez afficher cette page de l’application pendant l’envoi et réessayer.",
+                "compatibility": "Cette montre n’est pas prise en charge.",
+                "batteryFi": "Le niveau de la batterie de la montre est bas. Veuillez charger la batterie et réessayer.",
+                "batteryApp": "Le niveau de la batterie du smartphone est bas. Veuillez charger la batterie et réessayer.",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
+                "connectionToWatch": "Veuillez vérifier les éléments suivants et réessayer :\nLa montre est suffisamment chargée.\nLe smartphone est assez proche de la montre.\nLe Bluetooth est activé sur le smartphone.",
+                "registrationFull": "Cette application ne peut s'inscrire que {{count}} montres. Veuillez désenregistrer les autres montres de cette application.",
+                "registrationFull_plural": "Cette application ne peut s'inscrire que {{count}} montres. Veuillez désenregistrer les autres montres de cette application.",
+                "registrationAnotherApp": "Cette montre est déjà inscrite à un autre smartphone. Veuillez réinitialiser la montre.",
+                "disconnected": "La connexion à la montre a été perdue. Veuillez se reconnecter à la montre et réessayer.",
+                "location": "Les services de localisation du smartphone sont désactivés. Veuillez activer les services de localisation et réessayer."
+            },
+            "install": {
+                "title": "Impossible d'envoyer le motif.",
+                "description": "Check the community catalog or try again.",
+                "titleAlready": "Envoyer de nouveau ?",
+                "descriptionAlready": "Ce motif a déjà été envoyé à la montre."
+            }
+        },
+        "update": {
+            "title": "Mettre à jour l’application ",
+            "description": "Une nouvelle version de l’application est disponible. Voulez-vous effectuer la mise à jour ?",
+            "detail": "Nouveautés :"
+        },
+        "updateinfo": {
+            "title": "Information",
+            "description": "Version de l’application : {{version}}"
+        },
+        "systemupdate": {
+            "title": "Information",
+            "description": "Veuillez mettre à jour le logiciel du système à la version {{version}}."
+        },
+        "remove": {
+            "title": "Supprimer les motifs",
+            "description": "Les motifs supprimés pourront de nouveau être envoyés du placard jusqu’à la montre."
+        }
+    },
+    "fi": {
+        "common": {
+            "update": "Mise à jour...",
+            "search": "Recherche de la montre..."
+        }
+    },
+    "settings": {
+        "general": {
+            "title": "PARAMÈTRES",
+            "fi": {
+                "section": "MONTRE",
+                "setting": "Paramètres de la montre",
+                "registration": "Inscription de la montre"
+            },
+            "app": {
+                "section": "APPLICATION",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+                "version": "Version de l’application",
+                "legal": "Licenses"
+            }
+        },
+        "fi": {
+            "title": "PARAMÈTRES DE LA MONTRE",
+            "setting": {
+                "section": "PARAMÈTRES",
+                "time": "Date et Heure",
+                "timeDisplayMode": "Mode d’affichage",
+                "skinAutoChange": "Changement automatique de style",
+                "skinManage": "Gérer les motifs dans la montre",
+                "unregistration": "Désenregistrer la montre",
+                "reset": "Réinitialiser la montre"
+            },
+            "information": {
+                "section": "À PROPOS",
+                "fwUpdate": "Mettre à jour le logiciel du système",
+                "fwLatest": "Plus récent",
+                "fwVersion": "Version du logiciel du système",
+                "modelName": "Modèle",
+                "serialNo": "Numéro de série"
+            }
+        },
+        "skinManage": {
+            "title": "MOTIFS",
+            "titleSelectingNone": "SÉLECTIONNER",
+            "titleSelecting": "{{count}} SELECTIONNÉ",
+            "titleSelecting_plural": "{{count}} SELECTIONNÉS",
+            "remove": "Supprimer",
+            "unknownContent": "Motifs non présents dans le placard"
+        },
+        "dateTime": {
+            "title": "DATE et HEURE",
+            "sync": "Régler l’heure avec la même heure/date du smartphone"
+        },
+        "timeDisplayMode": {
+            "title": "MODE D’AFFICHAGE",
+            "always": "Toujours affichée",
+            "alwaysBatteryInfo": "Autonomie de la batterie – réduite",
+            "watchAction": "Affichage automatique de l’heure",
+            "watchActionBatteryInfo": "Autonomie de la batterie – réduite",
+            "buttonPush": "Sur pression du bouton",
+            "buttonPushBatteryInfo": "Autonomie de la batterie – standard",
+            "description": "Régler le délai d’affichage de l’heure.",
+            "descriptionDetailTitle": "L’affichage automatique de l’heure se produit quand :\n- Votre bras est baissé, vous le relevez pour relever l’heure sur la montre..\n- Vous faites tourner votre poignet."
+        },
+        "skinAutoChange": {
+            "title": "CHANGEMENT AUTOMATIQUE DE STYLE",
+            "off": "DÉSACTIVÉ",
+            "byDay": "Chaque jour",
+            "byHour": "Toutes les heures",
+            "byMinute10": "Toutes les 10 minutes",
+            "byMinute": "Chaque minute",
+            "byMinimumDuration": "Toutes les 5 secondes",
+            "description": "Les motifs de la montre peuvent être modifiés à intervalle régulier."
+        },
+        "store": {
+            "title": "PARAMÈTRES DU PLACARD",
+            "setting": {
+                "restorePurchase": "Restaurer les motifs pré-installés"
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
+        },
+        "resetFi": {
+            "title": "RÉINITIALISER LA MONTRE",
+            "start": "Réinitialiser la montre",
+            "description": "Réinitialiser la montre ?",
+            "descriptionDetail1": "Les paramètres de la montre vont être réinitialisés à leurs valeurs d’usine.\nCette opération ne peut pas être annulée.",
+            "descriptionDetail2": "Recherche de la montre...",
+            "descriptionDetail3": "Presser et maintenir le bouton de la montre durant 2 secondes avant que 10 secondes ne se soient écoulées.",
+            "estimateTimePrefix": "Durée restante"
+        },
+        "legal": {
+            "title": "INFORMATIONS LÉGALES",
+            "eula": "Contrat de licence d’utilisateur final",
+            "tos": "Conditions générales d’utilisation",
+            "pp": "Politique de confidentialité",
+            "oss": "Licences Open Source",
+            "sendInformation": "Traitement des informations non-personnelles",
+            "sendInformationDescription": "Le client accepte que ses informations non-personnelles concernant l’état d’utilisation de cette application et des dispositifs enregistrés dans l’application puissent être transmises à un tiers à condition que les informations soient combinées/traitées de sorte à rendre impossible l’identification du client."
+        },
+        "fwUpdate": {
+            "title": "MISE À JOUR DU LOGICIELLE",
+            "start": "Commencer la mise à jour du logiciel système",
+            "description": "Mettre à jour le logiciel du système ?",
+            "descriptionDetail1": "Une mise à jour qui améliore les fonctionnalités de la montre est disponible.\nLa mise à jour peut prendre jusqu’à  10 minutes et ne peut pas être annulée une fois commencée.",
+            "descriptionDetail2": "Envoi des données vers la montre...",
+            "descriptionDetail3": "Maintenez cette fenêtre affichée et laissez le smartphone proche de la montre.",
+            "descriptionDetail4": "Presser et maintenir le bouton de la montre durant 2 secondes avant que 10 secondes ne se soient écoulées."
+        },
+        "restorePurchase": {
+            "title": "Retstauration des motifs...",
+            "progress": "({{count}}/{{max}})"
+        },
+        "oss": {
+            "title": "Licences Open Source"
+        }
+    },
+    "connection": {
+        "title": "CONNECTER",
+        "description": "Connecter le smartphone et la montre",
+        "descriptionDetail1": "Si l’icône Bluetooth ne s’affiche pas sur la montre, pressez et maintenez le bouton de la montre durant 2 secondes.",
+        "descriptionDetail2": "La connexion sera stable si vous rapprochez la montre du smartphone."
+    },
+    "oobe": {
+        "registration": {
+            "title": "CONNECTER",
+            "description": "Connecter le smartphone et la montre",
+            "descriptionDetail1": "Si l’icône Bluetooth ne s’affiche pas sur la montre, pressez et maintenez le bouton de la montre durant 2 secondes.",
+            "descriptionDetail2": "La connexion sera stable si vous rapprochez la montre du smartphone.",
+            "descriptionDetail3": "La connexion sera coupée 5 minutes après la dernière opération entre le smartphone et la montre."
+        },
+        "dateTime": {
+            "title": "DATE et HEURE",
+            "sync": "Régler l’heure avec la même heure/date du smartphone",
+            "description": "Régler l’heure et la date"
+        },
+        "welcome": {
+            "title": "BIENVENUE",
+            "description": "Vous pouvez configurer FES Watch U ou télécharger/créer de nouveaux motifs. \nEssayez de changer le motif pour un design qui vous plaît !",
+            "agreement": "Veuillez prendre connaissance et accepter les conditions générales d’utilisation ci-dessous pour utiliser ce service.",
+            "eula": "CONTRAT DE LICENCE D’UTILISATEUR FINAL",
+            "tos": "Conditions générales d’utilisation",
+            "pp": "Politique de confidentialité",
+            "start": "ACCEPTER",
+            "moreInfo": "PLUS D’INFORMATIONS"
+        },
+        "timeDisplayMode": {
+            "title": "MODE D’AFFICHAGE",
+            "always": "Toujours affichée",
+            "alwaysBatteryInfo": "Autonomie de la batterie – réduite",
+            "watchAction": "Affichage automatique de l’heure",
+            "watchActionBatteryInfo": "Autonomie de la batterie – réduite",
+            "buttonPush": "Sur pression du bouton",
+            "buttonPushBatteryInfo": "Autonomie de la batterie – standard",
+            "description": "Régler le délai d’affichage de l’heure.",
+            "descriptionDetailTitle": "L’affichage automatique de l’heure se produit quand :\n- Votre bras est baissé, vous le relevez pour relevez l’heure sur la montre..\n- Vous faites tourner votre poignet."
+        },
+        "skinAutoChange": {
+            "title": "CHANGEMENT AUTOMATIQUE DE STYLE",
+            "off": "DÉSACTIVÉ",
+            "byDay": "Chaque jour",
+            "byHour": "Toutes les heures",
+            "byMinute10": "Toutes les 10 minutes",
+            "byMinute": "Chaque minute",
+            "byMinimumDuration": "Toutes les 5 secondes",
+            "description": "Les motifs de la montre peuvent être modifiés à intervalle régulier."
+        }
+    },
+    "sd": {
+        "download": {
+            "title": "Téléchargement en cours",
+            "description": "Téléchargement du motif particulier en cours."
+        },
+        "complete": {
+            "title": "Téléchargement terminé.",
+            "description": "Le motif particulier est ajouté au panier."
+        }
+    },
+    "EOF": "EOF"
+}

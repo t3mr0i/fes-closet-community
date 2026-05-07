@@ -1,0 +1,414 @@
+{
+    "app": {
+        "name": "FES Closet",
+        "namecn": "FES Closet (China)",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "common": {
+            "backAllCaps": "INDIETRO",
+            "nextAllCaps": "AVANTI",
+            "doneAllCaps": "FATTO",
+            "startAllCaps": "AVVIO",
+            "skipAllCaps": "SALTA",
+            "cancelAllCaps": "ANNULLA",
+            "ok": "OK",
+            "back": "Indietro",
+            "next": "Avanti",
+            "done": "Fatto",
+            "skip": "Salta",
+            "cancel": "Annulla",
+            "close": "Chiudi",
+            "transfer": "Invia",
+            "preparing": "In preparazione",
+            "save": "Salva",
+            "delete": "Elimina",
+            "remove": "Rimuovi",
+            "unregister": "Cancella registrazione",
+            "refresh": "Aggiorna",
+            "select": "Seleziona",
+            "reset": "Avvia",
+            "retry": "Riprova ",
+            "restore": "Ripristina",
+            "settings": "Impostazioni",
+            "support": "Community Catalog",
+            "update": "Aggiorna",
+            "later": "Più tardi",
+            "share": "Condividi"
+        },
+        "utility": {
+            "fraction": "{{count}}/{{total}}",
+            "bracket": "({{content}})",
+            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+        },
+        "url": {
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+        },
+        "os": {
+            "cameraUsageDescription": "Utilizzato per la creazione di modelli.",
+            "libraryUsageDescription": "Utilizzato per la creazione di modelli.",
+            "bluetoothUsageDescription": "Utilizzato per la connessione all'orologio.",
+            "contactsUsageDescription": "Assegna l'immagine al contatto.",
+            "photoLibraryAddUsageDescription": "Salva l'immagine del modello."
+        }
+    },
+    "store": {
+        "title": "CATALOG",
+        "common": {
+            "moneyUnit": "€",
+            "moneyDelimiter": ",",
+            "buy": "ACQUISTA",
+            "buyFor": "per",
+            "buyPrice": "{{price}}",
+            "buyTransaction": "OTTIENI GRATIS",
+            "install": "OTTIENI GRATIS",
+            "getAgain": "OTTIENI NUOVAMENTE",
+            "try": "PROVA",
+            "purchased": "SCARICATO",
+            "designer": "DESIGNER"
+        },
+        "information": {
+            "offline": "Offline",
+            "offlineDetail": "Nessuna connessione internet.",
+            "serverAccessLimitation": "I server sono attualmente troppo occupati.\nRiprova più tardi.",
+            "serverMaintenance": "Temporaneamente non disponibile per la manutenzione.\nOrario di riavvio del servizio pianificato: {{time}}",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
+            "notAvailable": "Non disponibile nel tuo paese/regione.",
+            "closeout": "Il servizio di archiviazione è stato chiuso."
+        }
+    },
+    "closet": {
+        "title": "CLOSET",
+        "common": {
+            "delete": "ELIMINA",
+            "share": "CONDIVIDI",
+            "install": "INVIA",
+            "installed": "IN USO"
+        },
+        "information": {
+            "empty": "Nessun modello"
+        }
+    },
+    "edit": {
+        "background": {
+            "title": "CREA",
+            "selectLibrary": "CATALOGO",
+            "selectGallery": "GALLERIA",
+            "launchCamera": "FOTOCAMERA"
+        },
+        "pattern": {
+            "title": "MODIFICA",
+            "selectWatchFace": "FACCIA",
+            "applyFilters": "FILTRO"
+        },
+        "save": {
+            "title": "SALVA",
+            "description": "Nome del modello",
+            "unavailable": "{{param}} non può essere utilizzato.",
+            "unavailableCharacter": "Sono usati caratteri indisponibili.",
+            "limitString": "Inserisci massimo {{numOfString}} caratteri."
+        },
+        "selectContent": {
+            "title": "TUTTE LE FOTO"
+        }
+    },
+    "dialog": {
+        "settingsUpdated": "Impostazioni aggiornate",
+        "skipSettings": {
+            "title": "Ignora impostazioni?",
+            "description": "Le impostazioni dell'orologio possono anche essere modificate dalla schermata delle impostazioni in questa app."
+        },
+        "deletePattern": {
+            "title": "Elimina modello?",
+            "description": "I modelli scaricati dallo Store possono essere salvati nuovamente sul Closet."
+        },
+        "unregisterWatch": {
+            "title": "Annulla registrazione Orologio?"
+        },
+        "restorePurchase": {
+            "title": "Ripristina modelli?"
+        },
+        "selectRemove": {
+            "title": "Rimuovi modelli",
+            "description_plural": "L'orologio può avere solo {{count}} modelli salvati.\nRimuovi altri modelli."
+        },
+        "progress": {
+            "title": "Invio modello in corso...",
+            "titleTry": "Invio modello di prova in corso...",
+            "description": "Tieni lo smartphone vicino alla cover posteriore dell'orologio mentre è visualizzata questa schermata.",
+            "estimateTimePrefix": "Tempo rimanente",
+            "done": {
+                "title": "Invio completato",
+                "descriptionTry": "Il modello di prova verrà rimosso dopo 3 minuti o premere il pulsante sull'orologio.",
+                "descriptionShare": "L'immagine del modello può essere condivisa.\n#feswatchu",
+                "descriptionShareCN": "L'immagine del modello può essere condivisa.\n#FesWatch#"
+            }
+        },
+        "install": {
+            "titleStart": "Invia modello all'Orologio?",
+            "descriptionAfterSave": "Il modello è stato salvato sul Closet. Può anche essere inviato all'orologio ora.",
+            "description": "Tieni lo smartphone vicino alla cover posteriore dell'orologio durante l'invio.",
+            "estimateTimePrefix": "Tempo stimato per l'invio"
+        },
+        "error": {
+            "title": {
+                "general": "Errore",
+                "authentication": "Impossibile eseguire l'autenticazione",
+                "purchase": "Impossibile acquistare il modello",
+                "save": "Impossibile salvare il modello",
+                "delete": "Impossibile eliminare il modello",
+                "remove": "Impossibile rimuovere il modello",
+                "restorePurchase": "Impossibile ripristinare",
+                "needNotToRestorePurchase": "Nessuna necessità di ripristinare ",
+                "resetFi": "Impossibile avviare Orologio ",
+                "skinCorrupted": "Modello danneggiato",
+                "transferPattern": "Non è possibile inviare il modello",
+                "transferUpdate": "Non è possibile aggiornare il software di sistema ",
+                "transfer": "Impossibile inviare ",
+                "bluetooth": "Attiva la funzione Bluetooth per consentire a \"{{appName}}\" di connettersi all'orologio.",
+                "location": "Attiva i servizi di localizzazione sullo smartphone per consentire a \"{{appName}}\" di connettersi all'orologio.",
+                "connectionToWatch": "Impossibile connettersi",
+                "registration": "Impossibile registrarsi",
+                "setting": "Impossibile aggiornare le impostazioni",
+                "sd_connection": "Errore",
+                "sd_download": "Errore",
+                "sd_duplication": "Download interrotto"
+            },
+            "message": {
+                "sd_download": "Check the community catalog or try again.",
+                "sd_duplication": "File già scaricato. Controlla nel Closet.",
+                "errorCode": "Codice di errore: {{errorCode}}",
+                "serverGeneral": "Riprova più tardi.",
+                "internetAccess": "Controlla la connessione di rete e riprova.",
+                "account": "Controlla l'account e riprova.",
+                "save": "Non c'è abbastanza spazio disponibile. Puoi gestire il tuo spazio di archiviazione in Impostazioni.",
+                "restorePurchase": "Non c'è abbastanza spazio disponibile. Puoi gestire il tuo spazio di archiviazione in Impostazioni.",
+                "needNotToRestorePurchase": "Non ci sono modelli da ripristinare. ",
+                "hasRestoreFailedProducts": "Ripristino non riuscito per alcuni modelli.\nRiprova più tardi. ",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
+                "transfer": "Lascia aperta questa schermata dell'app durante l'invio e riprova.",
+                "compatibility": "Questo orologio non è supportato. ",
+                "batteryFi": "Il livello della batteria dell'orologio è basso. Carica la batteria e riprova. ",
+                "batteryApp": "Il livello della batteria dello smartphone è basso. Carica la batteria e riprova. ",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
+                "connectionToWatch": "Verifica quanto segue e riprova:\nL'orologio è carico sufficientemente.\nLo smartphone è abbastanza vicino all'orologio.\nIl Bluetooth sullo smartphone è acceso.",
+                "registrationFull": "Questa app può registrare solo {{count}} orologio. Annulla la registrazione di altri orologi da questa app.",
+                "registrationFull_plural": "Questa app può registrare solo {{count}} orologi. Annulla la registrazione di altri orologi da questa app.",
+                "registrationAnotherApp": "Questo orologio è già registrato su un altro smartphone. Avvia l'orologio.",
+                "disconnected": "La connessione all'orologio è stata persa. Collegati all'orologio e riprova.",
+                "location": "I servizi di localizzazione dello smartphone sono disattivati. Attiva i servizi di localizzazione e riprova.　"
+            },
+            "install": {
+                "title": "Non è possibile inviare il modello",
+                "description": "Check the community catalog or try again.",
+                "titleAlready": "Invia di nuovo?",
+                "descriptionAlready": "Questo modello è già stato inviato all'orologio."
+            }
+        },
+        "update": {
+            "title": "Aggiorna app",
+            "description": "È disponibile una nuova versione dell'app. Vuoi aggiornarla?",
+            "detail": "Novità: "
+        },
+        "updateinfo": {
+            "title": "Informazioni",
+            "description": "Versione dell'app : {{version}}"
+        },
+        "systemupdate": {
+            "title": "Informazioni",
+            "description": "Aggiorna il software di sistema alla versione {{version}}."
+        },
+        "remove": {
+            "title": "Rimuovi modelli",
+            "description": "I modelli rimossi possono essere inviati nuovamente da Closet all'orologio."
+        }
+    },
+    "fi": {
+        "common": {
+            "update": "Aggiornamento in corso...",
+            "search": "Ricerca dell'orologio in corso..."
+        }
+    },
+    "settings": {
+        "general": {
+            "title": "IMPOSTAZIONI",
+            "fi": {
+                "section": "OROLOGIO",
+                "setting": "Impostazioni dell'orologio",
+                "registration": "Registrazione dell'orologio"
+            },
+            "app": {
+                "section": "APP",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+                "version": "Versione dell'app",
+                "legal": "Licenses"
+            }
+        },
+        "fi": {
+            "title": "IMPOSTAZIONI DELL'OROLOGIO",
+            "setting": {
+                "section": "IMPOSTAZIONI",
+                "time": "Data e ora",
+                "timeDisplayMode": "Modalità di visualizzazione",
+                "skinAutoChange": "Cambio di stile automatico",
+                "skinManage": "Gestisci i modelli nell'Orologio",
+                "unregistration": "Annulla registrazione Orologio",
+                "reset": "Avvia Orologio"
+            },
+            "information": {
+                "section": "INFORMAZIONI",
+                "fwUpdate": "Aggiorna il software di sistema",
+                "fwLatest": "Più recente",
+                "fwVersion": "Versione del software di sistema",
+                "modelName": "Modello",
+                "serialNo": "Numero di serie"
+            }
+        },
+        "skinManage": {
+            "title": "MODELLI",
+            "titleSelectingNone": "SELEZIONA",
+            "titleSelecting": "{{count}} SELEZIONATO",
+            "titleSelecting_plural": "{{count}} SELEZIONATI",
+            "remove": "Rimuovi",
+            "unknownContent": "Modelli non su Closet "
+        },
+        "dateTime": {
+            "title": "DATA E ORA",
+            "sync": "Imposta l'ora con data/ora sullo smartphone"
+        },
+        "timeDisplayMode": {
+            "title": "MODALITÀ DI VISUALIZZAZIONE",
+            "always": "Sempre attivo",
+            "alwaysBatteryInfo": "Durata della batteria: breve",
+            "watchAction": "Visualizzazione ora automatica",
+            "watchActionBatteryInfo": "Durata della batteria: breve",
+            "buttonPush": "Quando si preme il pulsante",
+            "buttonPushBatteryInfo": "Durata della batteria: standard",
+            "description": "Impostare i tempi per la visualizzazione dell'ora.",
+            "descriptionDetailTitle": "La visualizzazione automatica dell'ora si verifica quando:\n- Il braccio è abbassato, lo si alza per vedere l'ora sull'orologio.\n- Torcendo il polso."
+        },
+        "skinAutoChange": {
+            "title": "CAMBIO DI STILE AUTOMATICO",
+            "off": "SPENTO",
+            "byDay": "Ogni giorno",
+            "byHour": "Ogni ora",
+            "byMinute10": "Ogni 10 minuti",
+            "byMinute": "Ogni 1 minuto",
+            "byMinimumDuration": "Ogni 5 secondi",
+            "description": "I modelli dell'orologio possono essere modificati a intervalli fissi."
+        },
+        "store": {
+            "title": "IMPOSTAZIONI DI CLOSET",
+            "setting": {
+                "restorePurchase": "Ripristina i modelli preinstallati"
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
+        },
+        "resetFi": {
+            "title": "AVVIA OROLOGIO",
+            "start": "Avvia Orologio ",
+            "description": "Avvia Orologio?",
+            "descriptionDetail1": "L'orologio verrà ripristinato ai valori predefiniti.\nQuesta operazione non può essere annullata.",
+            "descriptionDetail2": "Ricerca dell'orologio in corso...",
+            "descriptionDetail3": "Tieni premuto il pulsante sull'orologio per 2 secondi prima che siano trascorsi 10 secondi.",
+            "estimateTimePrefix": "Tempo rimanente"
+        },
+        "legal": {
+            "title": "INFORMAZIONI LEGALI",
+            "eula": "Contratto di licenza per l'utente",
+            "tos": "Termini di servizio",
+            "pp": "Politica sulla riservatezza",
+            "oss": "Licenze open source",
+            "sendInformation": "Gestione di informazioni non personali ",
+            "sendInformationDescription": "Per quanto riguarda lo stato di utilizzo di questa applicazione e il dispositivo registrato nell'applicazione, il cliente accetta che le proprie informazioni non personali possano essere fornite a terzi a condizione che queste siano combinate/trattate in modo tale che il cliente non possa essere identificato "
+        },
+        "fwUpdate": {
+            "title": "AGGIORNAMENTO DEL SOFTWARE",
+            "start": "Avvia l'aggiornamento del software di sistema ",
+            "description": "Aggiornare il software di sistema? ",
+            "descriptionDetail1": "È disponibile un aggiornamento per migliorare le funzioni dell'orologio. \nL'aggiornamento richiederà fino a 10 minuti e non può essere annullato dopo l'avvio.",
+            "descriptionDetail2": "Invio di dati all'orologio...",
+            "descriptionDetail3": "Continua a mostrare questa finestra di dialogo e tenere lo smartphone vicino all'orologio.",
+            "descriptionDetail4": "Tieni premuto il pulsante sull'orologio per 2 secondi prima che siano trascorsi 10 secondi."
+        },
+        "restorePurchase": {
+            "title": "Ripristino modelli in corso...",
+            "progress": "({{count}}/{{max}})"
+        },
+        "oss": {
+            "title": "Licenze open source"
+        }
+    },
+    "connection": {
+        "title": "CONNETTI",
+        "description": "Connetti lo smartphone e l'orologio",
+        "descriptionDetail1": "Se l'icona del Bluetooth non viene visualizzata nell'orologio, tieni premuto il pulsante sull'orologio per 2 secondi.",
+        "descriptionDetail2": "La connessione diventerà stabile se avvicini l'orologio allo smartphone."
+    },
+    "oobe": {
+        "registration": {
+            "title": "CONNETTI",
+            "description": "Connetti lo smartphone e l'orologio",
+            "descriptionDetail1": "Se l'icona del Bluetooth non viene visualizzata nell'orologio, tieni premuto il pulsante sull'orologio per 2 secondi.",
+            "descriptionDetail2": "La connessione diventerà stabile se avvicini l'orologio allo smartphone.",
+            "descriptionDetail3": "La connessione verrà persa 5 minuti dopo l'ultima operazione dallo smartphone all'orologio."
+        },
+        "dateTime": {
+            "title": "DATA E ORA",
+            "sync": "Imposta l'ora con data/ora sullo smartphone",
+            "description": "Imposta l'ora e la data. "
+        },
+        "welcome": {
+            "title": "BENVENUTO",
+            "description": "È possibile configurare FES Watch U o scaricare/creare nuovi modelli. \nProva a cambiare modello in un design che ti piace!",
+            "agreement": "Si prega di confermare e accettare i seguenti termini e condizioni al fine di utilizzare questo servizio.",
+            "eula": "CONTRATTO DI LICENZA PER L'UTENTE",
+            "tos": "Termini di servizio",
+            "pp": "Politica sulla riservatezza",
+            "start": "ACCETTO",
+            "moreInfo": "ULTERIORI INFORMAZIONI"
+        },
+        "timeDisplayMode": {
+            "title": "MODALITÀ DI VISUALIZZAZIONE",
+            "always": "Sempre attivo",
+            "alwaysBatteryInfo": "Durata della batteria: breve",
+            "watchAction": "Visualizzazione ora automatica",
+            "watchActionBatteryInfo": "Durata della batteria: breve",
+            "buttonPush": "Quando si preme il pulsante",
+            "buttonPushBatteryInfo": "Durata della batteria: standard",
+            "description": "Impostare i tempi per la visualizzazione dell'ora",
+            "descriptionDetailTitle": "La visualizzazione automatica dell'ora si verifica quando:\n- Il braccio è abbassato, lo si alza per vedere l'ora sull'orologio.\n- Torcendo il polso."
+        },
+        "skinAutoChange": {
+            "title": "CAMBIO DI STILE AUTOMATICO",
+            "off": "SPENTO",
+            "byDay": "Ogni giorno",
+            "byHour": "Ogni ora",
+            "byMinute10": "Ogni 10 minuti",
+            "byMinute": "Ogni 1 minuto",
+            "byMinimumDuration": "Ogni 5 secondi",
+            "description": "I modelli dell'orologio possono essere modificati a intervalli fissi."
+        }
+    },
+    "sd": {
+        "download": {
+            "title": "Download in corso",
+            "description": "Download del Design speciale in corso"
+        },
+        "complete": {
+            "title": "Download completato",
+            "description": "Il Design speciale è stato aggiunto al Closet."
+        }
+    },
+    "EOF": "EOF"
+}

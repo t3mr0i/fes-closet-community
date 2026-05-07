@@ -1,0 +1,59 @@
+{
+  "name": "jp.co.sony.fescloset",
+  "displayName": "FESCloset",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova-ios": "^8.0.1",
+    "cordova-plugin-battery-status": "^2.0.3",
+    "cordova-plugin-bluetoothle": "^6.7.4",
+    "cordova-plugin-camera": "^8.0.0",
+    "cordova-plugin-cdp-nativebridge": "^1.1.0",
+    "cordova-plugin-customurlscheme": "^5.0.2",
+    "cordova-plugin-file": "^8.1.3",
+    "cordova-plugin-inappbrowser": "^6.0.0",
+    "cordova-plugin-insomnia": "^4.3.0",
+    "cordova-plugin-vibration": "^3.1.1",
+    "cordova-plugin-x-socialsharing": "^6.0.4",
+    "es6-promise-plugin": "^4.2.2",
+    "fes-nativebridge-stubs": "file:../fes-nativebridge-stubs",
+    "nl-afas-cordova-plugin-securelocalstorage": "^0.1.18"
+  },
+  "cordova": {
+    "platforms": [
+      "ios"
+    ],
+    "plugins": {
+      "cordova-plugin-bluetoothle": {},
+      "cordova-plugin-camera": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-vibration": {},
+      "cordova-plugin-battery-status": {},
+      "cordova-plugin-insomnia": {},
+      "cordova-plugin-x-socialsharing": {
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      },
+      "es6-promise-plugin": {
+        "PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION": "This app requires photo library access to function properly.",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
+      },
+      "cordova-plugin-customurlscheme": {
+        "URL_SCHEME": "fescloset"
+      },
+      "nl-afas-cordova-plugin-securelocalstorage": {},
+      "cordova-plugin-cdp-nativebridge": {},
+      "fes-nativebridge-stubs": {}
+    }
+  }
+}

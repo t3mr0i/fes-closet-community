@@ -1,0 +1,414 @@
+{
+    "app": {
+        "name": "FES Closet",
+        "namecn": "FES Closet (China)",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "common": {
+            "backAllCaps": "BACK",
+            "nextAllCaps": "NEXT",
+            "doneAllCaps": "DONE",
+            "startAllCaps": "START",
+            "skipAllCaps": "SKIP",
+            "cancelAllCaps": "CANCEL",
+            "ok": "OK",
+            "back": "Back",
+            "next": "Next",
+            "done": "Done",
+            "skip": "Skip",
+            "cancel": "Cancel",
+            "close": "Close",
+            "transfer": "Send",
+            "preparing": "Preparing",
+            "save": "Save",
+            "delete": "Delete",
+            "remove": "Remove",
+            "unregister": "Unregister",
+            "refresh": "Refresh",
+            "select": "Select",
+            "reset": "Initialize",
+            "retry": "Retry ",
+            "restore": "Restore",
+            "settings": "Settings",
+            "support": "Community Catalog",
+            "update": "Update",
+            "later": "Later",
+            "share": "Share"
+        },
+        "utility": {
+            "fraction": "{{count}}/{{total}}",
+            "bracket": "({{content}})",
+            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+        },
+        "url": {
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+        },
+        "os": {
+            "cameraUsageDescription": "Used for creation of patterns.",
+            "libraryUsageDescription": "Used for creation of patterns.",
+            "bluetoothUsageDescription": "Used for connection to watch.",
+            "contactsUsageDescription": "Assign image to contact.",
+            "photoLibraryAddUsageDescription": "Save the image of pattern."
+        }
+    },
+    "store": {
+        "title": "CATALOG",
+        "common": {
+            "moneyUnit": "$",
+            "moneyDelimiter": ",",
+            "buy": "BUY",
+            "buyFor": "for",
+            "buyPrice": "{{price}}",
+            "buyTransaction": "GET FREE",
+            "install": "GET FREE",
+            "getAgain": "GET AGAIN",
+            "try": "TRY",
+            "purchased": "DOWNLOADED",
+            "designer": "DESIGNER"
+        },
+        "information": {
+            "offline": "Offline",
+            "offlineDetail": "No Internet connection.",
+            "serverAccessLimitation": "Servers are currently too busy.\nPlease try again later.",
+            "serverMaintenance": "Temporary unavailable for maintenance.\nScheduled service restart time :{{time}}",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
+            "notAvailable": "Not available in your country/region.",
+            "closeout": "Store service has been terminated."
+        }
+    },
+    "closet": {
+        "title": "CLOSET",
+        "common": {
+            "delete": "DELETE",
+            "share": "SHARE",
+            "install": "SEND",
+            "installed": "IN USE"
+        },
+        "information": {
+            "empty": "No Patterns"
+        }
+    },
+    "edit": {
+        "background": {
+            "title": "CREATE",
+            "selectLibrary": "LIBRARY",
+            "selectGallery": "GALLERY",
+            "launchCamera": "CAMERA"
+        },
+        "pattern": {
+            "title": "EDIT",
+            "selectWatchFace": "FACE",
+            "applyFilters": "FILTER"
+        },
+        "save": {
+            "title": "SAVE",
+            "description": "Pattern Name",
+            "unavailable": "{{param}} cannot be used.",
+            "unavailableCharacter": "Unavailable characters are used.",
+            "limitString": "Please enter {{numOfString}} characters or less."
+        },
+        "selectContent": {
+            "title": "ALL PHOTOS"
+        }
+    },
+    "dialog": {
+        "settingsUpdated": "Settings Updated",
+        "skipSettings": {
+            "title": "Skip Settings?",
+            "description": "Watch settings can also be changed from the settings screen in this app."
+        },
+        "deletePattern": {
+            "title": "Delete Pattern?",
+            "description": "Patterns downloaded from the Store can be saved to the Closet again."
+        },
+        "unregisterWatch": {
+            "title": "Unregister Watch?"
+        },
+        "restorePurchase": {
+            "title": "Restore Patterns?"
+        },
+        "selectRemove": {
+            "title": "Remove Patterns",
+            "description_plural": "The watch can have only {{count}} patterns saved.\nPlease remove other patterns."
+        },
+        "progress": {
+            "title": "Sending Pattern…",
+            "titleTry": "Sending Try-Pattern…",
+            "description": "Keep the smartphone close to the back cover of the watch while this screen is displayed.",
+            "estimateTimePrefix": "Remaining Time",
+            "done": {
+                "title": "Sending Completed",
+                "descriptionTry": "The try-pattern will be removed after 3 minutes or press the button on the watch.",
+                "descriptionShare": "Image of pattern can be shared.\n#feswatchu",
+                "descriptionShareCN": "Image of pattern can be shared.\n#FesWatch#"
+            }
+        },
+        "install": {
+            "titleStart": "Send Pattern to Watch?",
+            "descriptionAfterSave": "The pattern has been saved to the Closet. It can also be sent to the watch now.",
+            "description": "Keep the smartphone close to the back cover of the watch while sending.",
+            "estimateTimePrefix": "Estimated Time to Send"
+        },
+        "error": {
+            "title": {
+                "general": "Error",
+                "authentication": "Cannot Authenticate",
+                "purchase": "Cannot Buy Pattern",
+                "save": "Cannot Save Pattern",
+                "delete": "Cannot Delete Pattern",
+                "remove": "Cannot Remove Pattern",
+                "restorePurchase": "Cannot Restore",
+                "needNotToRestorePurchase": "No Need to Restore ",
+                "resetFi": "Cannot Initialize Watch ",
+                "skinCorrupted": "Pattern Corrupted",
+                "transferPattern": "Cannot Send Pattern",
+                "transferUpdate": "Cannot Update System Software ",
+                "transfer": "Cannot Send ",
+                "bluetooth": "Turn on the Bluetooth function to allow \"{{appName}}\" to connect to the watch.",
+                "location": "Turn on location services on the smartphone to allow \"{{appName}}\" to connect to the watch.",
+                "connectionToWatch": "Cannot Connect",
+                "registration": "Cannot Register",
+                "setting": "Cannot Update Settings",
+                "sd_connection": "Error",
+                "sd_download": "Error",
+                "sd_duplication": "Download stopped"
+            },
+            "message": {
+                "sd_download": "Check the community catalog or try again.",
+                "sd_duplication": "Already downloaded. Please check the Closet.",
+                "errorCode": "Error Code: {{errorCode}}",
+                "serverGeneral": "Please try again later.",
+                "internetAccess": "Please check the network connection and try again.",
+                "account": "Please check the account and try again.",
+                "save": "There is not enough available storage. You can manage your storage in Settings.",
+                "restorePurchase": "There is not enough available storage. You can manage your storage in Settings.",
+                "needNotToRestorePurchase": "There are not patterns to restore. ",
+                "hasRestoreFailedProducts": "Restore failed for some patterns.\nPlease try again later. ",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
+                "transfer": "Please have this screen of the app showing while sending and try again.",
+                "compatibility": "This watch is not supported. ",
+                "batteryFi": "The battery level of the watch is low. Please charge the battery and try again. ",
+                "batteryApp": "The battery level of the smartphone is low. Please charge the battery and try again. ",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
+                "connectionToWatch": "Please check the following and try again:\nThe watch is charged enough.\nThe smartphone is close enough to the watch.\nBluetooth on the smartphone is on.",
+                "registrationFull": "This app can register only {{count}} watch. Please unregister other watches from this app.",
+                "registrationFull_plural": "This app can register only {{count}} watches. Please unregister other watches from this app.",
+                "registrationAnotherApp": "This watch has already registered to another smartphone. Please initialize the watch.",
+                "disconnected": "The connection to the watch has been lost. Please connect to the watch and try again.",
+                "location": "The location services of the smartphone is turned off. Please turn on location services and try again.　"
+            },
+            "install": {
+                "title": "Cannot Send Pattern",
+                "description": "Check the community catalog or try again.",
+                "titleAlready": "Send Again?",
+                "descriptionAlready": "This pattern has already been sent to the watch."
+            }
+        },
+        "update": {
+            "title": "Update app",
+            "description": "A new version of the app is available. Do you want to update it?",
+            "detail": "What's New : "
+        },
+        "updateinfo": {
+            "title": "Information",
+            "description": "App Version : {{version}}"
+        },
+        "systemupdate": {
+            "title": "Information",
+            "description": "Please update the system software to version {{version}}."
+        },
+        "remove": {
+            "title": "Remove Patterns",
+            "description": "The removed patterns can be sent from Closet to the watch again."
+        }
+    },
+    "fi": {
+        "common": {
+            "update": "Updating...",
+            "search": "Searching for watch..."
+        }
+    },
+    "settings": {
+        "general": {
+            "title": "SETTINGS",
+            "fi": {
+                "section": "WATCH",
+                "setting": "Watch Settings",
+                "registration": "Watch Registration"
+            },
+            "app": {
+                "section": "APP",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+                "version": "App Version",
+                "legal": "Licenses"
+            }
+        },
+        "fi": {
+            "title": "WATCH SETTINGS",
+            "setting": {
+                "section": "SETTINGS",
+                "time": "Date & Time",
+                "timeDisplayMode": "Time Display Mode",
+                "skinAutoChange": "Auto style change",
+                "skinManage": "Manage Patterns in Watch",
+                "unregistration": "Unregister Watch",
+                "reset": "Initialize Watch"
+            },
+            "information": {
+                "section": "ABOUT",
+                "fwUpdate": "Update System Software",
+                "fwLatest": "Latest",
+                "fwVersion": "System Software Version",
+                "modelName": "Model",
+                "serialNo": "Serial Number"
+            }
+        },
+        "skinManage": {
+            "title": "PATTERNS",
+            "titleSelectingNone": "SELECT",
+            "titleSelecting": "{{count}} SELECTED",
+            "titleSelecting_plural": "{{count}} SELECTED",
+            "remove": "Remove",
+            "unknownContent": "Patterns Not in Closet "
+        },
+        "dateTime": {
+            "title": "DATE & TIME",
+            "sync": "Set time with time/date on smartphone"
+        },
+        "timeDisplayMode": {
+            "title": "TIME DISPLAY MODE",
+            "always": "Always on",
+            "alwaysBatteryInfo": "Battery life - Short",
+            "watchAction": "Auto time display",
+            "watchActionBatteryInfo": "Battery life - Short",
+            "buttonPush": "When Pushing Button",
+            "buttonPushBatteryInfo": "Battery life - Standard",
+            "description": "Set the timing for displaying the time.",
+            "descriptionDetailTitle": "Auto time display occurs when:\n- Your arm is down, bringing your arm up to see the time on the watch.\n- Twisting your wrist."
+        },
+        "skinAutoChange": {
+            "title": "AUTO STYLE CHANGE",
+            "off": "OFF",
+            "byDay": "Every Day",
+            "byHour": "Every Hour",
+            "byMinute10": "Every 10 Minutes",
+            "byMinute": "Every 1 Minute",
+            "byMinimumDuration": "Every 5 Seconds",
+            "description": "The watch patterns can be changed at fixed intervals."
+        },
+        "store": {
+            "title": "CLOSET SETTINGS",
+            "setting": {
+                "restorePurchase": "Restore Pre-installed Patterns"
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
+        },
+        "resetFi": {
+            "title": "INITIALIZE WATCH",
+            "start": "Initialize Watch ",
+            "description": "Initialize watch?",
+            "descriptionDetail1": "The watch will be reset to defaults.\nThis operation cannot be undone.",
+            "descriptionDetail2": "Searching for watch...",
+            "descriptionDetail3": "Press and hold the button on the watch for 2 seconds before 10 seconds has passed.",
+            "estimateTimePrefix": "Remaining Time"
+        },
+        "legal": {
+            "title": "LEGAL",
+            "eula": "END USER LICENSE AGREEMENT",
+            "tos": "Terms of Service",
+            "pp": "Privacy Policy",
+            "oss": "Open Source Licenses",
+            "sendInformation": "Handling of Non-personal Information ",
+            "sendInformationDescription": "Regarding the usage status of this application and the device registered on the application, the customer agrees that non-personal information of the customer can be provided to a third party as long as the information is combined/processed in a manner so that the customer cannot be identified "
+        },
+        "fwUpdate": {
+            "title": "SOFTWARE UPDATE",
+            "start": "Start System Software Update ",
+            "description": "Update the system software? ",
+            "descriptionDetail1": "An update to improve the functions of the watch is available.\nThe update will take up to 10 minutes and cannot be canceled after it has started.",
+            "descriptionDetail2": "Sending data to watch…",
+            "descriptionDetail3": "Keep showing this dialog and keep the smartphone close to the watch.",
+            "descriptionDetail4": "Press and hold the button on the watch for 2 seconds before 10 seconds has passed."
+        },
+        "restorePurchase": {
+            "title": "Restoring Patterns...",
+            "progress": "({{count}}/{{max}})"
+        },
+        "oss": {
+            "title": "Open Source Licenses"
+        }
+    },
+    "connection": {
+        "title": "CONNECT",
+        "description": "Connect the smartphone and watch",
+        "descriptionDetail1": "If the Bluetooth icon does not appear in the watch, press and hold the button on the watch for 2 seconds.",
+        "descriptionDetail2": "The connection will become stable if you bring the watch close to the smartphone."
+    },
+    "oobe": {
+        "registration": {
+            "title": "CONNECT",
+            "description": "Connect the smartphone and watch",
+            "descriptionDetail1": "If the Bluetooth icon does not appear in the watch, press and hold the button on the watch for 2 seconds.",
+            "descriptionDetail2": "The connection will become stable if you bring the watch close to the smartphone.",
+            "descriptionDetail3": "The connection will be lost 5 minutes after the last operation from the smartphone to the watch."
+        },
+        "dateTime": {
+            "title": "DATE & TIME",
+            "sync": "Set time with time/date on smartphone",
+            "description": "Set the time and date "
+        },
+        "welcome": {
+            "title": "WELCOME",
+            "description": "You can configure FES Watch U or download/create new patterns. \nTry changing the pattern to a design you like!",
+            "agreement": "Please confirm and accept the following terms and conditions in order to use this service.",
+            "eula": "END USER LICENSE AGREEMENT",
+            "tos": "Terms of Service",
+            "pp": "Privacy Policy",
+            "start": "AGREE",
+            "moreInfo": "LEARN MORE"
+        },
+        "timeDisplayMode": {
+            "title": "TIME DISPLAY MODE",
+            "always": "Always on",
+            "alwaysBatteryInfo": "Battery life - Short",
+            "watchAction": "Auto time display",
+            "watchActionBatteryInfo": "Battery life - Short",
+            "buttonPush": "When Pushing Button",
+            "buttonPushBatteryInfo": "Battery life - Standard",
+            "description": "Set the timing for displaying the time",
+            "descriptionDetailTitle": "Auto time display occurs when:\n- Your arm is down, bringing your arm up to see the time on the watch.\n- Twisting your wrist."
+        },
+        "skinAutoChange": {
+            "title": "AUTO STYLE CHANGE",
+            "off": "OFF",
+            "byDay": "Every Day",
+            "byHour": "Every Hour",
+            "byMinute10": "Every 10 Minutes",
+            "byMinute": "Every 1 Minute",
+            "byMinimumDuration": "Every 5 Seconds",
+            "description": "The watch patterns can be changed at fixed intervals."
+        }
+    },
+    "sd": {
+        "download": {
+            "title": "Downloading",
+            "description": "Downloading the Special Design."
+        },
+        "complete": {
+            "title": "Download completed",
+            "description": "The Special Design is added to the Closet."
+        }
+    },
+    "EOF": "EOF"
+}

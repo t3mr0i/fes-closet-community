@@ -1,0 +1,414 @@
+{
+    "app": {
+        "name": "FES Closet",
+        "namecn": "FES Closet (China)",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "common": {
+            "backAllCaps": "上一步",
+            "nextAllCaps": "下一步",
+            "doneAllCaps": "完成",
+            "startAllCaps": "開始",
+            "skipAllCaps": "跳過",
+            "cancelAllCaps": "取消",
+            "ok": "確定",
+            "back": "上一步",
+            "next": "下一步",
+            "done": "完成",
+            "skip": "跳過",
+            "cancel": "取消",
+            "close": "關閉",
+            "transfer": "發送",
+            "preparing": "準備中",
+            "save": "儲存",
+            "delete": "刪除",
+            "remove": "刪除",
+            "unregister": "取消註冊",
+            "refresh": "刷新",
+            "select": "選擇",
+            "reset": "初始化",
+            "retry": "重試",
+            "restore": "復原",
+            "settings": "設定",
+            "support": "Community Catalog",
+            "update": "更新",
+            "later": "稍後",
+            "share": "分享"
+        },
+        "utility": {
+            "fraction": "{{count}}/{{total}}",
+            "bracket": "({{content}})",
+            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+        },
+        "url": {
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+        },
+        "os": {
+            "cameraUsageDescription": "用於新增圖案。",
+            "libraryUsageDescription": "用於新增圖案。",
+            "bluetoothUsageDescription": "用於與手錶連線。",
+            "contactsUsageDescription": "指定圖片給聯絡人。",
+            "photoLibraryAddUsageDescription": "儲存圖案的圖片。"
+        }
+    },
+    "store": {
+        "title": "CATALOG",
+        "common": {
+            "moneyUnit": "¥",
+            "moneyDelimiter": ",",
+            "buy": "購買",
+            "buyFor": "",
+            "buyPrice": "{{price}}",
+            "buyTransaction": "免費獲得",
+            "install": "免費獲得",
+            "getAgain": "重新獲得",
+            "try": "試用",
+            "purchased": "下載完成",
+            "designer": "設計師"
+        },
+        "information": {
+            "offline": "離線",
+            "offlineDetail": "無網路連線。",
+            "serverAccessLimitation": "目前伺服器忙碌中。\n請稍後再試。",
+            "serverMaintenance": "正在維護中，暫時無法使用。 \n開放服務的預定時間: {{time}}",
+            "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+            "support": "Community Catalog",
+            "notAvailable": "在您的國家/地區無法使用。",
+            "closeout": "線上商店服務已終止。"
+        }
+    },
+    "closet": {
+        "title": "樣式櫃",
+        "common": {
+            "delete": "刪除",
+            "share": "分享",
+            "install": "發送",
+            "installed": "使用中"
+        },
+        "information": {
+            "empty": "無圖案"
+        }
+    },
+    "edit": {
+        "background": {
+            "title": "新增",
+            "selectLibrary": "相冊",
+            "selectGallery": "圖庫",
+            "launchCamera": "相機"
+        },
+        "pattern": {
+            "title": "編輯",
+            "selectWatchFace": "錶盤",
+            "applyFilters": "濾鏡"
+        },
+        "save": {
+            "title": "儲存",
+            "description": "圖案名稱",
+            "unavailable": "無法使用 {{param}}。",
+            "unavailableCharacter": "使用了不可用的字元。",
+            "limitString": "請最多輸入 {{numOfString}} 個字元。"
+        },
+        "selectContent": {
+            "title": "所有照片"
+        }
+    },
+    "dialog": {
+        "settingsUpdated": "已更新設定",
+        "skipSettings": {
+            "title": "跳過設定？",
+            "description": "手錶設定也可以從此應用程式的設定選單更改。"
+        },
+        "deletePattern": {
+            "title": "刪除圖案？",
+            "description": "從線上商店下載的圖案，可再次儲存至樣式櫃。"
+        },
+        "unregisterWatch": {
+            "title": "取消註冊手錶？"
+        },
+        "restorePurchase": {
+            "title": "復原圖案？"
+        },
+        "selectRemove": {
+            "title": "刪除圖案",
+            "description_plural": "手錶只可以儲存 {{count}} 種圖案。\n請刪除其他圖案。"
+        },
+        "progress": {
+            "title": "正在發送圖案...",
+            "titleTry": "正在發送試用圖案...",
+            "description": "請保持智慧型手機畫面的顯示狀態，並將手機靠近手錶後蓋。",
+            "estimateTimePrefix": "剩餘時間",
+            "done": {
+                "title": "發送完成",
+                "descriptionTry": "3分鐘後將自動刪除試用圖案，或按手錶上的按鈕立刻進行刪除。",
+                "descriptionShare": "分享圖案的圖片。\n#feswatchu",
+                "descriptionShareCN": "分享圖案的圖片。\n#FesWatch#"
+            }
+        },
+        "install": {
+            "titleStart": "將圖案發送至手錶？",
+            "descriptionAfterSave": "圖案已儲存至樣式櫃。您也可以立即將其發送至手錶。",
+            "description": "發送時請保持智慧型手機靠近手錶的後蓋。",
+            "estimateTimePrefix": "預計發送時間"
+        },
+        "error": {
+            "title": {
+                "general": "錯誤",
+                "authentication": "無法進行身份驗證",
+                "purchase": "無法購買圖案",
+                "save": "無法儲存圖案",
+                "delete": "無法刪除圖案",
+                "remove": "無法刪除圖案",
+                "restorePurchase": "無法復原",
+                "needNotToRestorePurchase": "無需復原",
+                "resetFi": "無法初始化手錶",
+                "skinCorrupted": "圖案已損毀",
+                "transferPattern": "無法發送圖案",
+                "transferUpdate": "無法更新手錶系統軟體",
+                "transfer": "無法發送",
+                "bluetooth": "打開藍牙以允許“{{appName}}”連線至手錶。",
+                "location": "啟用定位服務以允許“{{appName}}”連線至手錶。",
+                "connectionToWatch": "無法連線",
+                "registration": "無法註冊",
+                "setting": "無法更新設定",
+                "sd_connection": "錯誤",
+                "sd_download": "錯誤",
+                "sd_duplication": "取消下載"
+            },
+            "message": {
+                "sd_download": "Check the community catalog or try again.",
+                "sd_duplication": "已下載過此樣式。請確認樣式櫃。",
+                "errorCode": "錯誤代碼: {{errorCode}}",
+                "serverGeneral": "請稍後重試。",
+                "internetAccess": "請檢查網路連線狀態並重試。",
+                "account": "請檢查帳戶並重試。",
+                "save": "可用儲存空間不足。您能於“設定”內管理儲存狀態。",
+                "restorePurchase": "可用儲存空間不足。您能於“設定”內管理儲存狀態。",
+                "needNotToRestorePurchase": "沒有可復原的圖案。",
+                "hasRestoreFailedProducts": "部分圖案的復原失敗。\n請稍後再試。",
+                "resetFi": "Check the community catalog or try again.",
+                "skinCorrupted": "Check the community catalog or try again.",
+                "transfer": "請在發送時保持本應用程式的顯示狀態並重試。",
+                "compatibility": "不支援此手錶。",
+                "batteryFi": "手錶的電池電量低。請充電後重試。",
+                "batteryApp": "智慧型手機的電池電量低。請充電後重試。",
+                "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
+                "connectionToWatch": "請檢查以下項並重試:\n手錶電量充足。\n智慧型手機距離手錶足夠近。\n藍牙已打開。",
+                "registrationFull": "此應用程式只能註冊 {{count}} 塊手錶。請從此應用程式取消註冊其他手錶。",
+                "registrationFull_plural": "此應用程式只能註冊 {{count}} 塊手錶。請從此應用程式取消註冊其他手錶。",
+                "registrationAnotherApp": "此手錶已於其他智慧型手機上註冊過。請初始化此手錶。",
+                "disconnected": "與手錶失去連線。請連線手錶並重試。",
+                "location": "智慧型手機的定位服務已關閉。請開啟定位服務並重試。"
+            },
+            "install": {
+                "title": "無法發送圖案",
+                "description": "Check the community catalog or try again.",
+                "titleAlready": "重新發送?",
+                "descriptionAlready": "已將此圖案發送至手錶。"
+            }
+        },
+        "update": {
+            "title": "更新應用程式",
+            "description": "已有應用程式的新版本可用。是否要進行更新？",
+            "detail": "更新內容："
+        },
+        "updateinfo": {
+            "title": "通知",
+            "description": "■使用手錶時，請注意\n請勿擠壓手錶，或彎曲、扭曲或擴展錶帶，而使其超過錶帶纏繞手腕所需的最小範圍。"
+        },
+        "systemupdate": {
+            "title": "通知",
+            "description": "請更新手錶系統軟體至最新版本{{version}}。"
+        },
+        "remove": {
+            "title": "刪除圖案",
+            "description": "刪除的圖案可以再次從樣式櫃發送至手錶。"
+        }
+    },
+    "fi": {
+        "common": {
+            "update": "正在更新…",
+            "search": "正在搜尋手錶…"
+        }
+    },
+    "settings": {
+        "general": {
+            "title": "設定",
+            "fi": {
+                "section": "手錶",
+                "setting": "手錶設定",
+                "registration": "手錶註冊"
+            },
+            "app": {
+                "section": "應用程式",
+                "storeSettings": "Community Catalog",
+                "support": "Community Catalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+                "version": "應用程式版本",
+                "legal": "Licenses"
+            }
+        },
+        "fi": {
+            "title": "手錶設定",
+            "setting": {
+                "section": "設定",
+                "time": "日期和時間",
+                "timeDisplayMode": "時間顯示模式",
+                "skinAutoChange": "自動更改圖案",
+                "skinManage": "管理手錶中的圖案",
+                "unregistration": "取消註冊手錶",
+                "reset": "初始化手錶"
+            },
+            "information": {
+                "section": "關於",
+                "fwUpdate": "更新手錶系統軟體",
+                "fwLatest": "最新",
+                "fwVersion": "手錶系統軟體版本",
+                "modelName": "型號",
+                "serialNo": "序號"
+            }
+        },
+        "skinManage": {
+            "title": "圖案管理",
+            "titleSelectingNone": "選擇圖案",
+            "titleSelecting": "已選擇 {{count}} 種圖案",
+            "titleSelecting_plural": "已選擇 {{count}} 種圖案",
+            "remove": "刪除",
+            "unknownContent": "非樣式櫃中的圖案"
+        },
+        "dateTime": {
+            "title": "日期和時間",
+            "sync": "按照智慧型手機上的時間/日期設定時間"
+        },
+        "timeDisplayMode": {
+            "title": "時間顯示模式",
+            "always": "隨時顯示",
+            "alwaysBatteryInfo": "電池續航時間：短",
+            "watchAction": "自動顯示時間",
+            "watchActionBatteryInfo": "電池續航時間：短",
+            "buttonPush": "按下按鈕時",
+            "buttonPushBatteryInfo": "電池續航時間：標準",
+            "description": "設定顯示時間的時機。",
+            "descriptionDetailTitle": "自動顯示時間是指在以下情況下顯示時間： \n- 手臂下垂，然後擡起手臂以查看手錶上的時間。\n- 扭轉手腕。"
+        },
+        "skinAutoChange": {
+            "title": "自動更改圖案",
+            "off": "關",
+            "byDay": "每天",
+            "byHour": "每小時",
+            "byMinute10": "每 10 分鐘",
+            "byMinute": "每 1 分鐘",
+            "byMinimumDuration": "每 5 秒鐘",
+            "description": "手錶圖案能夠以固定時間間隔進行更改。"
+        },
+        "store": {
+            "title": "樣式櫃設定",
+            "setting": {
+                "restorePurchase": "復原預設圖案"
+            },
+            "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
+        },
+        "resetFi": {
+            "title": "初始化手錶",
+            "start": "初始化手錶",
+            "description": "初始化手錶？",
+            "descriptionDetail1": "手錶將復原出廠設定。\n此操作無法撤消。",
+            "descriptionDetail2": "正在搜尋手錶…",
+            "descriptionDetail3": "在10秒內，久按2秒手錶上的按鈕。",
+            "estimateTimePrefix": "剩餘時間"
+        },
+        "legal": {
+            "title": "法律聲明",
+            "eula": "最終用戶同意協議",
+            "tos": "服務條款",
+            "pp": "隱私策略",
+            "oss": "開放原始碼授權協議",
+            "sendInformation": "非個人資訊的處理",
+            "sendInformationDescription": "關於此應用程式以及在此應用程式上註冊的設備之使用情形資訊，客戶同意透過某種方式對資訊進行組合/處理後，使得透過該資訊已無法辨識特定用戶的情況下，可將該資訊提供給第三人"
+        },
+        "fwUpdate": {
+            "title": "軟體更新",
+            "start": "開始手錶系統軟體更新",
+            "description": "是否更新手錶的系統軟體？",
+            "descriptionDetail1": "提供更新以改善手錶功能。\n更新最多需要10分鐘，更新途中無法取消。",
+            "descriptionDetail2": "正在向手錶發送資料...",
+            "descriptionDetail3": "請保持智慧型手機畫面的顯示狀態，並將手機靠近手錶後蓋。",
+            "descriptionDetail4": "於 10 秒內，久按2秒手錶上的按鈕。"
+        },
+        "restorePurchase": {
+            "title": "正在復原圖案...",
+            "progress": "({{count}}/{{max}})"
+        },
+        "oss": {
+            "title": "開放原始碼授權協議"
+        }
+    },
+    "connection": {
+        "title": "連線至手錶",
+        "description": "連線智慧型手機和手錶",
+        "descriptionDetail1": "如果手錶中未顯示藍牙圖標，請久按2秒手錶上的按鈕。",
+        "descriptionDetail2": "將手錶靠近智慧型手機，連線將變得穩定。"
+    },
+    "oobe": {
+        "registration": {
+            "title": "連線至手錶",
+            "description": "連線智慧型手機和手錶",
+            "descriptionDetail1": "如果手錶中未顯示藍牙圖標，請久按2秒手錶上的按鈕。",
+            "descriptionDetail2": "將手錶靠近智慧型手機，連線將變得穩定。",
+            "descriptionDetail3": "如智慧型手機向手錶執行操作後待機逾 5 分鐘，連線將自動切斷。"
+        },
+        "dateTime": {
+            "title": "日期和時間",
+            "sync": "按照智慧型手機上的時間/日期設定時間",
+            "description": "設定時間和日期"
+        },
+        "welcome": {
+            "title": "歡迎",
+            "description": "您可以設定 FES Watch U 或下載/新增圖案。\n敬請嘗試更改成您所喜愛的圖案樣式！",
+            "agreement": "請閱讀以下內容，同意後即可開始使用此服務。",
+            "eula": "終端用戶同意協議",
+            "tos": "服務條款",
+            "pp": "隱私策略",
+            "start": "同意",
+            "moreInfo": "了解詳情"
+        },
+        "timeDisplayMode": {
+            "title": "時間顯示模式",
+            "always": "隨時顯示",
+            "alwaysBatteryInfo": "電池續航時間：短",
+            "watchAction": "自動顯示時間",
+            "watchActionBatteryInfo": "電池續航時間：短",
+            "buttonPush": "按下按鈕時",
+            "buttonPushBatteryInfo": "電池續航時間：標準",
+            "description": "設定顯示時間的時機",
+            "descriptionDetailTitle": "自動顯示時間是指於下列情況下顯示時間： \n- 手臂下垂，然後抬起手臂以查看手錶上的時間。\n- 扭轉手腕。"
+        },
+        "skinAutoChange": {
+            "title": "自動更改圖案",
+            "off": "關",
+            "byDay": "每天",
+            "byHour": "每小時",
+            "byMinute10": "每 10 分鐘",
+            "byMinute": "每 1 分鐘",
+            "byMinimumDuration": "每 5 秒鐘",
+            "description": "能定期性地更改手錶圖案。"
+        }
+    },
+    "sd": {
+        "download": {
+            "title": "正在下載",
+            "description": "正在下載特別樣式。"
+        },
+        "complete": {
+            "title": "下載完成",
+            "description": "特別樣式已新增至樣式櫃中。"
+        }
+    },
+    "EOF": "EOF"
+}

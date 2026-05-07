@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="fes-nativebridge-stubs"
+        version="1.0.0">
+    <name>FES NativeBridge Stubs</name>
+    <description>Stub implementations of Sony FES native bridge classes for iOS</description>
+
+    <platform name="ios">
+        <source-file src="src/ios/FESNotificationHandler.m" target-dir="Plugins/fes-nativebridge-stubs" />
+        <source-file src="src/ios/FESMisc.m" target-dir="Plugins/fes-nativebridge-stubs" />
+        <source-file src="src/ios/FESLocalContentProvider.m" target-dir="Plugins/fes-nativebridge-stubs" />
+        <source-file src="src/ios/FESUUID.m" target-dir="Plugins/fes-nativebridge-stubs" />
+        <source-file src="src/ios/FESBatteryStatus.m" target-dir="Plugins/fes-nativebridge-stubs" />
+    </platform>
+</plugin>
