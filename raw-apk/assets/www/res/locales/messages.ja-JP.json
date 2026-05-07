@@ -370,14 +370,9 @@
       "description": "日付と時刻を設定します"
     },
     "welcome": {
-      "title": "WELCOME",
-      "description": "FES Watch U の設定や、新しい柄のダウンロード・作成ができます。\n好きなデザインへの着替えをお楽しみください！",
-      "agreement": "次の内容をお読みいただき、ご同意の上、本サービスをご使用ください。",
-      "eula": "ソフトウェア使用許諾契約書",
-      "tos": "利用規約",
-      "pp": "プライバシーポリシー",
-      "start": "同意する",
-      "moreInfo": "LEARN MORE"
+      "title": "FES COMMUNITY",
+      "description": "FES Watch U のためのコミュニティアプリ。\n文字盤を生成・カスタマイズして、Bluetooth で時計に転送できます。",
+      "start": "はじめる"
     },
     "timeDisplayMode": {
       "title": "TIME DISPLAY MODE",

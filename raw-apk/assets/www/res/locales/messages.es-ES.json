@@ -370,14 +370,9 @@
       "description": "Establecer fecha y hora"
     },
     "welcome": {
-      "title": "BIENVENIDO/A",
-      "description": "Puede configurar FES Watch U o descargar/crear nuevos diseños.\nCambie el diseño a uno que le guste.",
-      "agreement": "Por favor, confirme y acepte los siguientes términos y condiciones para poder utilizar este servicio.",
-      "eula": "ACUERDO DE LICENCIA DE USUARIO FINAL",
-      "tos": "Términos de servicio",
-      "pp": "Política de privacidad",
-      "start": "DE ACUERDO",
-      "moreInfo": "MÁS INFORMACIÓN"
+      "title": "FES COMMUNITY",
+      "description": "La app comunitaria para el FES Watch U.\nGenera, personaliza e instala tus propias esferas por Bluetooth.",
+      "start": "EMPEZAR"
     },
     "timeDisplayMode": {
       "title": "MODO DE VISUALIZACIÓN",

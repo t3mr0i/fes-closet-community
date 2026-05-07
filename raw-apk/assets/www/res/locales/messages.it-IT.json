@@ -370,14 +370,9 @@
       "description": "Imposta l'ora e la data. "
     },
     "welcome": {
-      "title": "BENVENUTO",
-      "description": "È possibile configurare FES Watch U o scaricare/creare nuovi modelli. \nProva a cambiare modello in un design che ti piace!",
-      "agreement": "Si prega di confermare e accettare i seguenti termini e condizioni al fine di utilizzare questo servizio.",
-      "eula": "CONTRATTO DI LICENZA PER L'UTENTE",
-      "tos": "Termini di servizio",
-      "pp": "Politica sulla riservatezza",
-      "start": "ACCETTO",
-      "moreInfo": "ULTERIORI INFORMAZIONI"
+      "title": "FES COMMUNITY",
+      "description": "L'app della community per FES Watch U.\nGenera, personalizza e installa i tuoi quadranti via Bluetooth.",
+      "start": "INIZIA"
     },
     "timeDisplayMode": {
       "title": "MODALITÀ DI VISUALIZZAZIONE",

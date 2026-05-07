@@ -370,14 +370,9 @@
       "description": "Stellen Sie die Uhrzeit und das Datum ein"
     },
     "welcome": {
-      "title": "WILLKOMMEN",
-      "description": "Sie können FES Watch U konfigurieren oder neue Muster herunterladen/erstellen.\nSchalten Sie das Muster in ein Design um, welches Ihnen gefällt!",
-      "agreement": "Bitte bestätigen und akzeptieren Sie die folgenden Bedingungen, um diesen Service nutzen zu können.",
-      "eula": "ENDBENUTZER-LIZENZVEREINBARUNG",
-      "tos": "Nutzungsbedingungen",
-      "pp": "Datenschutzbestimmungen",
-      "start": "ZUSTIMMEN",
-      "moreInfo": "WEITERE INFORMATIONEN"
+      "title": "FES COMMUNITY",
+      "description": "Die Community-App für die FES Watch U.\nWatchfaces generieren, anpassen und per Bluetooth auf die Uhr übertragen.",
+      "start": "LOSLEGEN"
     },
     "timeDisplayMode": {
       "title": "ANZEIGE MODUS",

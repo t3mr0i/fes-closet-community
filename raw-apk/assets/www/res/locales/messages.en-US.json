@@ -370,14 +370,9 @@
       "description": "Set the time and date "
     },
     "welcome": {
-      "title": "WELCOME",
-      "description": "You can configure FES Watch U or download/create new patterns. \nTry changing the pattern to a design you like!",
-      "agreement": "Please confirm and accept the following terms and conditions in order to use this service.",
-      "eula": "END USER LICENSE AGREEMENT",
-      "tos": "Terms of Service",
-      "pp": "Privacy Policy",
-      "start": "AGREE",
-      "moreInfo": "LEARN MORE"
+      "title": "FES COMMUNITY",
+      "description": "A community-built companion for the FES Watch U.\nGenerate, customize, and install your own watchfaces over Bluetooth.",
+      "start": "GET STARTED"
     },
     "timeDisplayMode": {
       "title": "TIME DISPLAY MODE",

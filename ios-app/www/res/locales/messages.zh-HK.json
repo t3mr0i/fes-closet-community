@@ -370,14 +370,9 @@
       "description": "設定時間和日期"
     },
     "welcome": {
-      "title": "歡迎",
-      "description": "您可以設定 FES Watch U 或下載/新增圖案。\n敬請嘗試更改成您所喜愛的圖案樣式！",
-      "agreement": "請閱讀以下內容，同意後即可開始使用此服務。",
-      "eula": "終端用戶同意協議",
-      "tos": "服務條款",
-      "pp": "隱私策略",
-      "start": "同意",
-      "moreInfo": "了解詳情"
+      "title": "FES COMMUNITY",
+      "description": "FES Watch U 的社群應用。\n產生、自訂並透過藍牙安裝你自己的錶面。",
+      "start": "開始使用"
     },
     "timeDisplayMode": {
       "title": "時間顯示模式",

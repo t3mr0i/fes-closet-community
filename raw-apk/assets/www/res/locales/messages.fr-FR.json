@@ -370,14 +370,9 @@
       "description": "Régler l’heure et la date"
     },
     "welcome": {
-      "title": "BIENVENUE",
-      "description": "Vous pouvez configurer FES Watch U ou télécharger/créer de nouveaux motifs. \nEssayez de changer le motif pour un design qui vous plaît !",
-      "agreement": "Veuillez prendre connaissance et accepter les conditions générales d’utilisation ci-dessous pour utiliser ce service.",
-      "eula": "CONTRAT DE LICENCE D’UTILISATEUR FINAL",
-      "tos": "Conditions générales d’utilisation",
-      "pp": "Politique de confidentialité",
-      "start": "ACCEPTER",
-      "moreInfo": "PLUS D’INFORMATIONS"
+      "title": "FES COMMUNITY",
+      "description": "L'app communautaire pour la FES Watch U.\nGénérez, personnalisez et installez vos cadrans par Bluetooth.",
+      "start": "COMMENCER"
     },
     "timeDisplayMode": {
       "title": "MODE D’AFFICHAGE",
