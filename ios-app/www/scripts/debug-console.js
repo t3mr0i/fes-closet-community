@@ -33,13 +33,13 @@ if (!window.cordova.plugins.SecureLocalStorage) {
     };
 }
 
-// Stub for cordova-plugin-google-analytics
+// Stub for cordova-plugin-google-analytics — must call success callbacks or promises hang
 window.ga = {
-    startTrackerWithId: function() {},
-    trackView: function() {},
-    trackEvent: function() {},
-    setAnonymizeIp: function() {},
-    debugMode: function() {},
-    setUserId: function() {},
-    addCustomDimension: function() {}
+    startTrackerWithId: function(id, success) { if (success) success(); },
+    trackView: function(s, success) { if (success) success(); },
+    trackEvent: function(c, a, l, v, success) { if (success) success(); },
+    setAnonymizeIp: function(b, success) { if (success) success(); },
+    debugMode: function(success) { if (success) success(); },
+    setUserId: function(id, success) { if (success) success(); },
+    addCustomDimension: function(i, v, success) { if (success) success(); }
 };
