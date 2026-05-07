@@ -329,6 +329,33 @@ which now stays `false` permanently - so the guards short-circuit and `ga`
 is never read. No `cordova-plugin-google-analytics` is installed as a real
 plugin (it was never in package.json), so nothing else to remove.
 
+## AI image generation: OpenAI gpt-image-2 (2026-05-07)
+
+The Pages-hosted catalog (`server-mirror/public/index.html`) and two GitHub
+workflows (`generate-style-tiles.yml`, `generate-ai-watchface.yml`) call an
+external image-generation API to produce 152x704 watchface backgrounds and
+the AI Generator tab's style preset previews.
+
+Provider: **OpenAI gpt-image-2** (`POST v1/images/generations`).
+
+Why not Gemini: Google's free tier is hard-capped at 0 requests on every
+image-capable model (`gemini-2.5-flash-image`, `gemini-3-pro-image-preview`,
+`imagen-4.0`). After verifying with 429s on a billing-active account on the
+wrong project, we moved to OpenAI which has working Tier-1 limits out of
+the box on a paid account.
+
+API mapping notes:
+- gpt-image-2 max aspect ratio is 3:1; the watchface is 1:4.6, so we ask
+  for 1024x3072 (portrait 1:3) and crop the top/bottom band on the canvas
+  rasterizer. Cover-fit, mid-anchored.
+- response is `data[0].b64_json` (base64 PNG by default).
+- Browser-side: the `OPENAI_API_KEY` constant in `index.html` is hardcoded
+  per user request and lives in a skip-worktree local copy. The committed
+  copy has `__OPENAI_API_KEY__` as placeholder.
+- Workflow side: `OPENAI_API_KEY` is a repo secret; the workflows set it
+  on env and the Node scripts (`generate-style-tiles.mjs`,
+  `generate-ai-watchface.mjs`) use the same shape.
+
 ## Mirror cleanup (2026-05-07)
 
 - Removed `server-mirror/public/_headers` - GitHub Pages does not honor
