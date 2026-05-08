@@ -258,10 +258,10 @@
         },
         nature: {
             light:        "golden-hour rim light or moody overcast",
-            depth:        "deep atmospheric perspective, three planes (foreground / mid / sky)",
-            negativeSpace:"upper third = sky, lower third = horizon detail",
+            depth:        "interlocking organic forms filling the full canvas, no single horizon line",
+            negativeSpace:"distributed pockets of negative space across the whole composition, NOT a sky-on-top / ground-on-bottom split",
             contrast:     "broad tonal range, deep shadows + bright highlights",
-            extras:       "organic textures (grass, water, mist, rock)"
+            extras:       "organic textures (foliage, water, rock, mist) covering top to bottom — avoid the default landscape with empty sky"
         },
         geometric: {
             light:        "flat lighting, no cast shadows",
@@ -279,10 +279,10 @@
         },
         anime: {
             light:        "dramatic backlight or rim light, lens-flare stylisation",
-            depth:        "three planes with clear silhouettes, sky / silhouette / foreground",
-            negativeSpace:"upper half = sky / cloud, lower half = silhouette",
+            depth:        "overlapping illustrated layers stacked floor-to-ceiling, characters / props / patterns interleaved",
+            negativeSpace:"distributed across the canvas — NOT a sky-half + silhouette-half split",
             contrast:     "high contrast cel-shading, ink-line emphasis",
-            extras:       "painterly illustrative style, no photorealism"
+            extras:       "painterly illustrative style, no photorealism, fill the whole tall canvas with motif"
         }
     };
 
@@ -295,7 +295,7 @@
             "Design watchface artwork for a vertical narrow strap-screen display.",
             "Exact pixel size: 152x704 (aspect ratio 1:4.6, very tall and thin).",
             "",
-            "FORMAT: pure greyscale / black-and-white only. NO colour, no tinting, no sepia. The watch display is physically monochrome.",
+            "FORMAT: 2-bit greyscale display — only 4 shades exist on the watch (black, dark grey, light grey, white). NO colour, no tinting, no sepia. Smooth gradients will banding-quantize, so design with bold tonal blocks and hard tonal transitions instead.",
             "",
             "CONCEPT: " + opts.concept,
             "MOOD: " + opts.mood,
@@ -310,11 +310,12 @@
             "",
             "COMPOSITION RULES (non-negotiable):",
             "- Vertical reading order, top-to-bottom story.",
-            "- Upper third is visually QUIET — the watch overlays a digital time readout there. Reserve it for low-detail, low-contrast space.",
-            "- Greyscale tones must be punchy: deep blacks, clean whites, full midtone range. The screen is small (~30mm wide on a wrist) so weak contrast disappears.",
+            "- FILL THE FULL CANVAS with deliberate design from edge to edge. No empty sky on top + ground on bottom. No horizon-line landscapes. No big flat regions reserved as 'space for the clock'. Every region of the 152×704 must carry composition.",
+            "- The watch overlays digital time on top of the artwork — just avoid fine text-like detail in the upper region so the overlay stays legible. This means quieter texture there, NOT empty space.",
+            "- Use the four available shades boldly: deep blacks, clean whites, and two distinct mid-greys arranged in tonal blocks. Subtle midtone variation will be lost — design as if posterized to 4 levels.",
+            "- The screen is small (~30 mm wide on a wrist) so silhouettes must be readable at thumbnail size.",
             "- Edge-to-edge artwork. NO white border, NO padding, NO frame.",
             "- NO text, NO numbers, NO logos, NO watermarks (the watch supplies its own time).",
-            "- Sharp, legible silhouettes that read at thumbnail size.",
             "",
             "OUTPUT: a single greyscale image, full bleed, ready to wrap onto a watch strap."
         ];
@@ -355,7 +356,7 @@
             "Mood: " + mood + ".",
             "User concept: " + rawConcept,
             "",
-            "Rewrite as a vivid, specific watchface concept brief. Strong tonal contrast. Vertical composition (the canvas is 1:4.6 portrait)."
+            "Rewrite as a vivid, specific watchface concept brief. Strong tonal contrast. Vertical 1:4.6 portrait canvas — design FILLS the whole canvas top-to-bottom. Do NOT default to a landscape with sky on top and ground on bottom; instead pick a subject or pattern that occupies the full vertical strip."
         ].join("\n");
 
         try {
