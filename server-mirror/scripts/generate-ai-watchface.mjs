@@ -47,7 +47,7 @@ function buildPrompt() {
     `- NO text, letters, numbers, logos, signatures, or watermarks.`,
     `- FILL THE FULL CANVAS with deliberate design from edge to edge. Do NOT default to a landscape with sky on top and ground at the bottom. No horizon lines splitting the canvas in half. No empty sky. No flat region reserved as 'space for the clock'. Every region of the 152x704 must carry composition.`,
     `- Pick a subject, pattern, or motif that occupies the full vertical strip — interlocking forms, full-bleed pattern, stacked motifs, or a tall single subject — not a horizon scene.`,
-    `- Quieter texture (not empty space) is OK in the upper region so the time overlay stays legible — but the design must still continue there.`,
+    `- SAFE ZONE for the time overlay: large clock digits are drawn by the watch firmware in the MIDDLE band of the canvas (roughly y=240 to y=510, the central ~38% of the height). In that middle band, use calmer texture or simpler tonal blocks so the clock reads on top. The TOP third (y<240) and BOTTOM third (y>510) carry NO overlay — put your strongest detail, focal element, and texture in those regions. Do NOT empty out the top — that is the wrong default.`,
     `- High contrast, sharp at small render sizes (final display ~30 mm wide on the wrist).`,
     `- Edge-to-edge artwork, no white border, no padding, no frame.`,
     `Render only the artwork as a single PNG/JPEG image.`,

@@ -311,7 +311,7 @@
             "COMPOSITION RULES (non-negotiable):",
             "- Vertical reading order, top-to-bottom story.",
             "- FILL THE FULL CANVAS with deliberate design from edge to edge. No empty sky on top + ground on bottom. No horizon-line landscapes. No big flat regions reserved as 'space for the clock'. Every region of the 152×704 must carry composition.",
-            "- The watch overlays digital time on top of the artwork — just avoid fine text-like detail in the upper region so the overlay stays legible. This means quieter texture there, NOT empty space.",
+            "- SAFE ZONE for the time overlay: the watch firmware draws large clock digits in the MIDDLE band of the canvas (roughly y=240 to y=510, i.e. the central ~38% of the height). In that middle band, prefer calmer texture or simpler tonal blocks so the clock stays readable on top. The TOP and BOTTOM thirds carry NO overlay — put your strongest detail, focal element, and texture there. (Do NOT empty out the top — empty top is the wrong default.)",
             "- Use the four available shades boldly: deep blacks, clean whites, and two distinct mid-greys arranged in tonal blocks. Subtle midtone variation will be lost — design as if posterized to 4 levels.",
             "- The screen is small (~30 mm wide on a wrist) so silhouettes must be readable at thumbnail size.",
             "- Edge-to-edge artwork. NO white border, NO padding, NO frame.",

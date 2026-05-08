@@ -8,7 +8,7 @@
 
   var STORE_INSTANCE = 2;
   var snapshot = null; // { models: [...], totalCount: N }
-  var state = { studio: null, artist: null, genre: null, tag: null, q: "" };
+  var state = { studio: null, artist: null, genre: null, tag: null };
   var FACET_GROUPS = ["studio", "artist", "genre", "tag"];
 
   function getCollection() {
@@ -96,20 +96,6 @@
     if (state.artist && modelField(m, "artist") !== state.artist) return false;
     if (state.genre && modelField(m, "genre") !== state.genre) return false;
     if (state.tag && modelTags(m).indexOf(state.tag) === -1) return false;
-    if (state.q) {
-      var q = state.q.toLowerCase();
-      var hay = [
-        modelField(m, "name"),
-        modelField(m, "brief"),
-        modelField(m, "description"),
-        modelField(m, "studio"),
-        modelField(m, "artist"),
-        modelTags(m).join(" "),
-      ]
-        .join(" ")
-        .toLowerCase();
-      if (hay.indexOf(q) === -1) return false;
-    }
     return true;
   }
 
@@ -176,7 +162,6 @@
   function activeFilterCount() {
     var n = 0;
     FACET_GROUPS.forEach(function (g) { if (state[g]) n++; });
-    if (state.q) n++;
     return n;
   }
 
@@ -220,8 +205,6 @@
     if (!bar) return;
     var panel = bar.querySelector("[data-catalog-panel]");
     var toggle = bar.querySelector("[data-catalog-toggle]");
-    var input = bar.querySelector("[data-catalog-search]");
-    var resetBtn = bar.querySelector("[data-catalog-reset]");
 
     toggle.addEventListener("click", function () {
       var open = panel.hasAttribute("hidden") ? false : true;
@@ -237,8 +220,6 @@
 
     function resetAll() {
       FACET_GROUPS.forEach(function (g) { state[g] = null; });
-      if (input) input.value = "";
-      state.q = "";
       applyFilter();
       refreshFacets(panel);
       refreshActive(bar);

@@ -38,7 +38,7 @@
                 </section>
                 <section class="skin-hero-meta">
                     <p class="creator-name">{{#creator}}{{name}}{{/creator}}{{^creator}}{{creatorName}}{{/creator}}</p>
-                    <h2 class="skin-name">{{name}}</h2>
+                    <p class="skin-name">{{name}}</p>
                     {{#endDate}}<p class="skin-expire-date">{{endDate}}</p>{{/endDate}}
                     <div class="skin-meta-chips">
                         {{#studio}}<span class="skin-meta-chip studio">{{studio}}</span>{{/studio}}
@@ -57,17 +57,15 @@
 
                 {{#creator}}
                 <section class="skin-card skin-card-creator">
-                    <header class="skin-card-creator-head">
+                    <span class="skin-card-label" data-i18n="store.common.designer">Designer</span>
+                    <div class="skin-card-creator-head">
                         <figure class="creator-icon-base">
                             {{#icon}}<figure class="creator-icon" style="background-image:url('{{icon}}');"></figure>{{/icon}}
                         </figure>
-                        <div class="skin-card-creator-titles">
-                            <span class="skin-card-label" data-i18n="store.common.designer">Designer</span>
-                            <p class="skin-card-creator-name">{{name}}</p>
-                            {{#url}}<a class="skin-card-creator-link command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">{{{url}}}</a>{{/url}}
-                        </div>
-                    </header>
+                        <p class="skin-card-creator-name">{{name}}</p>
+                    </div>
                     <p class="creator-introduction">{{introduction}}</p>
+                    {{#url}}<p class="skin-card-creator-url"><a class="command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">{{{url}}}</a></p>{{/url}}
                 </section>
                 {{/creator}}
             </section>
