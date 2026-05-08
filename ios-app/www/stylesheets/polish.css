@@ -1,0 +1,164 @@
+/*!
+ * FES polish — surgical detail upgrades
+ * Loaded last; overrides only specific details, leaves layout/colors untouched.
+ */
+
+:root {
+  --fes-easing-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --fes-easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --fes-duration-fast: 160ms;
+  --fes-duration-base: 240ms;
+}
+
+/* ---------- Typography ---------- */
+
+html,
+body,
+.ui-page,
+.ui-bar,
+.ui-body,
+button,
+input,
+select,
+textarea {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "San Francisco", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, .ui-title {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "San Francisco", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.fes-tnum,
+[data-role="header"] .battery,
+[data-role="header"] .clock,
+.skin-id,
+.fw-version,
+time,
+.numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ---------- Touch & interaction ---------- */
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a,
+button,
+.ui-btn,
+[role="button"],
+[data-role="button"] {
+  touch-action: manipulation;
+}
+
+.ui-page,
+.ui-bar,
+.ui-header,
+.ui-footer,
+.ui-title {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.skin-name,
+.skin-description,
+.creator-name,
+.skin-id,
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* ---------- Image rendering for watch previews ---------- */
+
+img.skin-preview,
+.skin-preview img,
+.skin-thumbnail img,
+img[src*="/skin"],
+canvas.watch-preview {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* For tiny pixel-accurate previews */
+.skin-preview-small img,
+img.pixel-preview {
+  image-rendering: pixelated;
+}
+
+/* ---------- Animation easing ---------- */
+
+.ui-btn,
+.ui-link,
+.ui-checkbox .ui-btn,
+.ui-radio .ui-btn,
+[data-role="button"] {
+  transition:
+    background-color var(--fes-duration-fast) var(--fes-easing-out),
+    color var(--fes-duration-fast) var(--fes-easing-out),
+    opacity var(--fes-duration-fast) var(--fes-easing-out),
+    transform var(--fes-duration-fast) var(--fes-easing-spring);
+}
+
+.ui-btn:active,
+[data-role="button"]:active,
+[role="button"]:active {
+  transform: scale(0.97);
+}
+
+.skin-card,
+.skin-item,
+.catalog-item {
+  transition: transform var(--fes-duration-base) var(--fes-easing-spring),
+    opacity var(--fes-duration-fast) var(--fes-easing-out);
+}
+
+.skin-card:active,
+.skin-item:active,
+.catalog-item:active {
+  transform: scale(0.98);
+}
+
+/* Smooth jQuery Mobile page transitions with modern easing */
+.ui-mobile-viewport-transitioning .ui-page.in,
+.ui-mobile-viewport-transitioning .ui-page.out {
+  animation-timing-function: var(--fes-easing-spring);
+  animation-duration: 320ms;
+}
+
+/* ---------- Scroll polish ---------- */
+
+.ui-content,
+[data-role="content"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.skin-list,
+.catalog-list,
+.long-list {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
+
+/* ---------- Reduced motion respect ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

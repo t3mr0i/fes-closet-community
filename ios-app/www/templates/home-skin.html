@@ -16,7 +16,7 @@
             <button class="share-skin command-share-skin ui-btn fes-button-transparent" data-skin-id="" data-i18n="closet.common.share">closet.common.share</button>
         </section>
         {{/store}}
-        <p class="index-and-total"></p></script><script type="text/template" id="skin-detail"><section class="skin-detail-contents-wrapper">
+        <p class="index-and-total"></p></script><script type="text/template" id="skin-detail"><section class="skin-detail-contents-wrapper fes-cv">
             <section class="skin-detail-contents">
                 <section class="skin-images-wrapper">
                     <section class="viewport">
@@ -33,40 +33,46 @@
                             {{/customImage3}}
                         </section>
                     </section>
-                    <section class="indicators">
-                    </section>
+                    <section class="indicators"></section>
                 </section>
-                <section class="skin-hero-meta">
-                    <p class="creator-name">{{#creator}}{{name}}{{/creator}}{{^creator}}{{creatorName}}{{/creator}}</p>
-                    <p class="skin-name">{{name}}</p>
-                    {{#endDate}}<p class="skin-expire-date">{{endDate}}</p>{{/endDate}}
-                    <div class="skin-meta-chips">
-                        {{#studio}}<span class="skin-meta-chip studio">{{studio}}</span>{{/studio}}
-                        {{#genre}}<span class="skin-meta-chip genre">{{genre}}</span>{{/genre}}
-                        {{#country}}<span class="skin-meta-chip country">{{country}}</span>{{/country}}
-                        {{#tags}}<span class="skin-meta-chip">{{.}}</span>{{/tags}}
-                    </div>
+
+                <section class="fes-cv-hero">
+                    {{#studio}}<p class="fes-cv-eyebrow">{{studio}}</p>{{/studio}}
+                    <h2 class="fes-cv-title">{{name}}</h2>
+                    {{#creator}}<p class="fes-cv-byline">by <span>{{name}}</span></p>{{/creator}}
+                    {{#endDate}}<p class="fes-cv-expire">{{endDate}}</p>{{/endDate}}
+                </section>
+
+                <hr class="fes-cv-rule">
+
+                {{#genre}}{{#country}}
+                <p class="fes-cv-meta">{{genre}} &nbsp;·&nbsp; {{country}}</p>
+                {{/country}}{{/genre}}
+                {{#genre}}{{^country}}<p class="fes-cv-meta">{{genre}}</p>{{/country}}{{/genre}}
+                {{^genre}}{{#country}}<p class="fes-cv-meta">{{country}}</p>{{/country}}{{/genre}}
+
+                <section class="fes-cv-actions">
+                    {{#store}}
+                    <button class="fes-cv-action fes-cv-action-primary purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id="{{id}}"><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
+                    <button class="fes-cv-action fes-cv-action-secondary try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="store.common.try">store.common.try</button>
+                    {{/store}}
+                    {{^store}}
+                    <button class="fes-cv-action fes-cv-action-primary transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.install">closet.common.install</button>
+                    {{/store}}
                 </section>
 
                 {{#skinDetail}}{{#description}}
-                <section class="skin-card skin-card-about">
-                    <span class="skin-card-label">About</span>
-                    <p class="skin-description">{{description}}</p>
-                </section>
+                <p class="fes-cv-body fes-cv-body-lead"><span class="fes-cv-leadmark">—</span>{{description}}</p>
                 {{/description}}{{/skinDetail}}
 
                 {{#creator}}
-                <section class="skin-card skin-card-creator">
-                    <span class="skin-card-label" data-i18n="store.common.designer">Designer</span>
-                    <div class="skin-card-creator-head">
-                        <figure class="creator-icon-base">
-                            {{#icon}}<figure class="creator-icon" style="background-image:url('{{icon}}');"></figure>{{/icon}}
-                        </figure>
-                        <p class="skin-card-creator-name">{{name}}</p>
-                    </div>
-                    <p class="creator-introduction">{{introduction}}</p>
-                    {{#url}}<p class="skin-card-creator-url"><a class="command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">{{{url}}}</a></p>{{/url}}
-                </section>
+                <p class="fes-cv-section-label">— About the designer</p>
+                <div class="fes-cv-creator-row">
+                    {{#icon}}<figure class="fes-cv-avatar"><figure class="creator-icon" style="background-image:url('{{icon}}');"></figure></figure>{{/icon}}
+                    <p class="fes-cv-creator-name">{{name}}</p>
+                </div>
+                {{#introduction}}<p class="fes-cv-body">{{introduction}}</p>{{/introduction}}
+                {{#url}}<p class="fes-cv-link"><a class="command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">→ {{{url}}}</a></p>{{/url}}
                 {{/creator}}
             </section>
         </section>
