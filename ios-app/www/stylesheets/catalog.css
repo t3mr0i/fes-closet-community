@@ -2,6 +2,13 @@
  * Monochrome palette to match the FES app. Loaded after app.css. */
 
 /* ---------- filter bar ---------- */
+/* Force black background — jQuery Mobile .ui-content can bleed through */
+#page-home-store .ui-content,
+#page-home-store .root-container,
+#page-home-store .main-page {
+  background: #000 !important;
+}
+
 .catalog-filter-bar {
   position: relative;
   padding: 6px 16px 8px;
@@ -15,28 +22,81 @@
   align-items: center;
   gap: 8px;
 }
+
+/* Override jQuery Mobile's search-input widget styles */
+.catalog-filter-bar .ui-input-search,
+.catalog-filter-bar .ui-shadow-inset,
 .catalog-filter-search {
   flex: 1 1 auto;
-  display: flex;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  padding: 0 12px;
-  height: 32px;
+  display: flex !important;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.10) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  border-radius: 999px !important;
+  padding: 0 10px 0 10px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  gap: 6px;
 }
-.catalog-filter-input {
+/* Search icon as inline SVG via CSS */
+.catalog-filter-search::before {
+  content: "";
+  display: block;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Ccircle cx='8.5' cy='8.5' r='5.5' stroke='rgba(255,255,255,0.5)' stroke-width='1.8'/%3E%3Cline x1='13' y1='13' x2='18' y2='18' stroke='rgba(255,255,255,0.5)' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;
+}
+
+/* The search icon jQuery Mobile injects */
+.catalog-filter-bar .ui-input-search .ui-icon-search,
+.catalog-filter-bar .ui-icon-search::before {
+  color: rgba(255, 255, 255, 0.5) !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  filter: invert(1) !important;
+  opacity: 0.5 !important;
+}
+
+.catalog-filter-input,
+.catalog-filter-bar input[type="search"],
+.catalog-filter-bar input[type="text"] {
   flex: 1 1 auto;
-  background: transparent;
-  border: 0;
-  color: #fff;
-  font-size: 13px;
-  outline: none;
+  background: transparent !important;
+  border: 0 !important;
+  color: #fff !important;
+  font-size: 13px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: auto !important;
+  line-height: normal !important;
 }
-.catalog-filter-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+.catalog-filter-input::placeholder,
+.catalog-filter-bar input[type="search"]::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+/* WebKit search decoration */
+.catalog-filter-bar input[type="search"]::-webkit-search-decoration,
+.catalog-filter-bar input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  filter: invert(1);
+  opacity: 0.5;
 }
 .catalog-filter-toggle {
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   height: 32px;
   padding: 0 14px;
   border-radius: 999px;
@@ -46,10 +106,92 @@
   font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  transition: background 0.18s ease, color 0.18s ease;
 }
 .catalog-filter-toggle[aria-expanded="true"] {
   background: #fff;
   color: #000;
+}
+.catalog-filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.catalog-filter-toggle[aria-expanded="true"] .catalog-filter-count {
+  background: #000;
+  color: #fff;
+}
+.catalog-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.catalog-active-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  border: 0;
+  font-size: 12px;
+  cursor: pointer;
+}
+.catalog-active-pill-x {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.6;
+}
+.catalog-active-pill:hover .catalog-active-pill-x {
+  opacity: 1;
+}
+.catalog-empty {
+  margin: 14px 0 4px;
+  padding: 18px 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.03);
+}
+.catalog-empty[hidden] {
+  display: none;
+}
+.catalog-empty-text {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+}
+.catalog-empty-reset {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  border: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+/* When the catalog-empty banner is visible, dim the empty arc and hide the
+ * stock "no skin" message so we only show one empty UI. */
+#page-home-store.catalog-empty-active .skin-list-window {
+  opacity: 0.2;
+  pointer-events: none;
+}
+#page-home-store.catalog-empty-active .no-skin {
+  display: none !important;
 }
 .catalog-filter-panel {
   margin-top: 8px;
@@ -59,9 +201,14 @@
   background: rgba(255, 255, 255, 0.04);
   max-height: 50vh;
   overflow-y: auto;
+  animation: catalog-panel-in 0.18s ease;
 }
 .catalog-filter-panel[hidden] {
   display: none;
+}
+@keyframes catalog-panel-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .catalog-filter-group + .catalog-filter-group {
   margin-top: 10px;
@@ -110,59 +257,180 @@
   text-underline-offset: 3px;
 }
 
-/* ---------- detail page ---------- */
-#page-home-store .skin-detail-contents-wrapper {
+/* ---------- detail page (rebuilt as cards) ---------- */
+:is(#page-home-store, #page-home-closet) .skin-detail-contents-wrapper {
   background: #000;
   color: #fff;
 }
-#page-home-store .skin-detail-contents {
+:is(#page-home-store, #page-home-closet) .skin-detail-contents {
   padding-bottom: 120px; /* space for sticky CTA */
 }
-#page-home-store .skin-images-wrapper {
+:is(#page-home-store, #page-home-closet) .skin-images-wrapper {
   position: relative;
-  background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+  background: radial-gradient(
+      120% 80% at 50% 0%,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(0, 0, 0, 0) 60%
+    ),
+    linear-gradient(180deg, #1a1a1a 0%, #000 100%);
 }
-#page-home-store .detail-image,
-#page-home-store .skin-image {
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
+:is(#page-home-store, #page-home-closet) .skin-images-wrapper::after {
+  /* soft fade into the dark content area below */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 100%);
+  pointer-events: none;
 }
-#page-home-store .skin-detail-contents .creator-icon-base {
-  margin-top: -28px;
+:is(#page-home-store, #page-home-closet) .detail-image,
+:is(#page-home-store, #page-home-closet) .skin-image {
+  filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.6));
+}
+:is(#page-home-store, #page-home-closet) .indicators {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
   display: flex;
   justify-content: center;
+  gap: 6px;
+  z-index: 2;
 }
-#page-home-store .skin-detail-contents .creator-icon {
-  width: 64px;
-  height: 64px;
+:is(#page-home-store, #page-home-closet) .indicators .indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+:is(#page-home-store, #page-home-closet) .indicators .indicator.active {
+  background: #fff;
+  transform: scale(1.3);
+}
+/* The creator icon now lives inside the creator card, not floating below
+ * the hero. We override the legacy "floating avatar" layout. */
+:is(#page-home-store, #page-home-closet) .skin-detail-contents .creator-icon-base {
+  margin: 0;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  position: relative;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator-head .creator-icon {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background-size: cover;
   background-position: center;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
-#page-home-store .skin-detail-contents .creator-name {
-  margin-top: 10px;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+
+/* Hero meta block (creator-name + skin-name + chips) */
+:is(#page-home-store, #page-home-closet) .skin-hero-meta {
+  padding: 14px 20px 4px;
   text-align: center;
 }
-#page-home-store .skin-detail-contents .skin-name {
-  margin: 6px 16px 4px;
-  font-size: 24px;
+:is(#page-home-store, #page-home-closet) .skin-hero-meta .creator-name {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 4px;
+}
+:is(#page-home-store, #page-home-closet) .skin-hero-meta .skin-name {
+  font-size: 26px;
   font-weight: 600;
   line-height: 1.2;
-  text-align: center;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
 }
-#page-home-store .skin-detail-contents .skin-meta-chips {
+:is(#page-home-store, #page-home-closet) .skin-hero-meta .skin-expire-date {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 8px;
+}
+:is(#page-home-store, #page-home-closet) .skin-hero-meta .skin-meta-chips {
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 6px;
-  margin: 10px 16px 14px;
 }
-#page-home-store .skin-detail-contents .skin-meta-chip {
+
+/* Cards */
+:is(#page-home-store, #page-home-closet) .skin-card {
+  margin: 14px 16px 0;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 8px;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-about .skin-description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: left;
+}
+
+/* Creator card */
+:is(#page-home-store, #page-home-closet) .skin-card-creator-head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator-titles {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator-titles .skin-card-label {
+  margin-bottom: 3px;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator-name {
+  margin: 0 0 2px;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator-link {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-bottom: 1px;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator-link:hover {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+:is(#page-home-store, #page-home-closet) .skin-card-creator .creator-introduction {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+}
+/* shared chip style (used in hero meta) */
+:is(#page-home-store, #page-home-closet) .skin-meta-chip {
   font-size: 11px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -170,41 +438,40 @@
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 999px;
   color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
 }
-#page-home-store .skin-detail-contents .skin-meta-chip.studio {
+:is(#page-home-store, #page-home-closet) .skin-meta-chip.studio {
   background: #fff;
   color: #000;
   border-color: #fff;
 }
-#page-home-store .skin-detail-contents .skin-description {
-  margin: 4px 20px 18px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.85);
-  text-align: left;
+:is(#page-home-store, #page-home-closet) .skin-meta-chip.genre {
+  border-color: rgba(255, 255, 255, 0.7);
 }
-#page-home-store .skin-detail-contents .creator-introduction-headline {
-  margin: 18px 20px 6px;
-  font-size: 10px;
+:is(#page-home-store, #page-home-closet) .skin-meta-chip.country {
   letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  opacity: 0.7;
 }
-#page-home-store .skin-detail-contents .creator-introduction {
-  margin: 0 20px 10px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.78);
+
+:is(#page-home-store, #page-home-closet) .skin-detail-contents-wrapper + .header-buttons,
+:is(#page-home-store, #page-home-closet) .header-buttons {
+  position: absolute;
+  top: calc(8px + env(safe-area-inset-top, 0));
+  left: 8px;
+  z-index: 5;
 }
-#page-home-store .skin-detail-contents .creator-url a {
-  color: #fff;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  font-size: 12px;
+:is(#page-home-store, #page-home-closet) .header-buttons .back-to-main {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* sticky footer CTA */
-#page-home-store .footer-buttons {
+:is(#page-home-store, #page-home-closet) .footer-buttons {
   position: sticky;
   bottom: 0;
   display: flex;
@@ -212,21 +479,21 @@
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0));
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000 30%);
 }
-#page-home-store .footer-buttons .ui-btn {
+:is(#page-home-store, #page-home-closet) .footer-buttons .ui-btn {
   flex: 1 1 0;
   border-radius: 999px;
   height: 44px;
   font-size: 14px;
   letter-spacing: 0.04em;
 }
-#page-home-store .footer-buttons .purchase-skin,
-#page-home-store .footer-buttons .transfer-skin {
+:is(#page-home-store, #page-home-closet) .footer-buttons .purchase-skin,
+:is(#page-home-store, #page-home-closet) .footer-buttons .transfer-skin {
   background: #fff;
   color: #000;
 }
-#page-home-store .footer-buttons .try-skin,
-#page-home-store .footer-buttons .delete-skin,
-#page-home-store .footer-buttons .share-skin {
+:is(#page-home-store, #page-home-closet) .footer-buttons .try-skin,
+:is(#page-home-store, #page-home-closet) .footer-buttons .delete-skin,
+:is(#page-home-store, #page-home-closet) .footer-buttons .share-skin {
   background: transparent;
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.4);

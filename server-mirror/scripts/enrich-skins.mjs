@@ -4,9 +4,17 @@
 //
 // Run:  node server-mirror/scripts/enrich-skins.mjs
 //
-// Manual corrections live in server-mirror/scripts/enrich-overrides.json
-// shaped as { "<skinId>": { "artist": "...", "studio": "...", "tags": [...] } }
-// and { "creators": { "<creatorId>": { "studio": "...", "tags": [...] } } }.
+// Manual corrections live in server-mirror/scripts/enrich-overrides.json:
+// {
+//   "skins":    { "<skinId>":    { "artist": "...", "studio": "...",
+//                                   "tags": [...], "genre": "..." } },
+//   "creators": { "<creatorId>": { "studio": "...", "country": "...",
+//                                   "city": "...", "genre": "...",
+//                                   "discipline": "...", "intro": "...",
+//                                   "icon": "<STORAGE_DIRECTORY>/<id>/icon.png",
+//                                   "url": "...", "tags": [...] } }
+// }
+// Per-skin overrides win over per-creator overrides.
 
 import { readFile, writeFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -25,22 +33,24 @@ const LOCALES = ["en-us", "ja-jp", "zh-cn"];
 
 const OVERRIDES_PATH = path.join(__dirname, "enrich-overrides.json");
 
-// Tag dictionary: tag -> regex matchers (case-insensitive) on combined text.
+// Tag dictionary: tag -> regex matchers (case-insensitive).
+// Run only against skin name+brief+description (NOT creator bio) so we don't
+// pick up boilerplate from creator introductions.
 const TAG_RULES = [
-  ["minimal",     /\bminimal|simple|clean|reduce|reduktiv|シンプル|簡約|极简\b/i],
-  ["analog",      /\banalog|hands?\b|時計|指針|表盘\b/i],
-  ["digital",     /\bdigital|numeric|数字|デジタル\b/i],
-  ["typography",  /\btypograph|letter|font|字|書|calligraph|タイポ\b/i],
-  ["geometric",   /\bgeometr|grid|pattern|stripe|dots?|circles?|squares?|幾何|几何\b/i],
-  ["organic",     /\borganic|nature|leaf|flower|wave|花|葉|自然\b/i],
-  ["abstract",    /\babstract|art|paint|brush|抽象\b/i],
-  ["photo",       /\bphoto|landscape|cityscape|skyline|写真\b/i],
-  ["mono",        /\bmono|black|white|monochrome|gray|grey|モノ|黑白\b/i],
-  ["bold",        /\bbold|strong|impact|heavy|大胆\b/i],
-  ["fashion",     /\bfashion|style|chic|elegant|ファッション|时尚\b/i],
-  ["seasonal",    /\bspring|summer|autumn|fall|winter|holiday|christmas|new year|春|夏|秋|冬\b/i],
-  ["geo-japan",   /\bjapan|japanese|tokyo|kyoto|osaka|和|日本\b/i],
-  ["festival",    /\bfestival|creative festival\b/i],
+  ["minimal",     /\b(minimal|simple|clean|reduce)\w*|シンプル|簡約|极简/i],
+  ["analog",      /\b(analog|analogue|hands?\b)|時計|指針|表盘/i],
+  ["digital",     /\b(digital|numeric|number)\w*|数字|デジタル/i],
+  ["typography",  /\b(typograph|letter|font|calligraph)\w*|タイポ|文字/i],
+  ["geometric",   /\b(geometr|grid|stripe|dots?|circles?|squares?|triangles?)\w*|幾何|几何/i],
+  ["pattern",     /\bpatterns?\b|柄|模様/i],
+  ["organic",     /\b(nature|leaf|flower|plant|wave|garden)\w*|花|葉|自然/i],
+  ["abstract",    /\b(abstract|expression|surreal)\w*|抽象/i],
+  ["photo",       /\b(photo|landscape|cityscape|skyline|portrait)\w*|写真/i],
+  ["bold",        /\b(bold|strong|impact|heavy)\w*|大胆/i],
+  ["seasonal",    /\b(spring|summer|autumn|fall|winter|holiday|christmas|new year)\b|春|夏|秋|冬|年末/i],
+  ["festival",    /\b(festival|creative festival)\b/i],
+  ["nature",      /\b(sky|sea|ocean|mountain|forest|rain|cloud|sun|moon|star)\w*|空|海|山|森/i],
+  ["urban",       /\b(city|street|metro|urban|tokyo|new york)\w*|街|都市/i],
 ];
 
 function loadOverrides() {
@@ -74,21 +84,33 @@ function deriveTags(text) {
   return [...out];
 }
 
+// Names of creators that are placeholders / not real — don't expose as filters.
+const DUMMY_CREATOR_NAMES = new Set(["dummy", "test", ""]);
+
+function isDummyCreator(creator) {
+  if (!creator) return true;
+  const n = (creator.name || "").trim().toLowerCase();
+  if (DUMMY_CREATOR_NAMES.has(n)) return true;
+  if ((creator.introduction || "").trim().toLowerCase() === "dummy") return true;
+  return false;
+}
+
+function cleanName(s) {
+  return (s || "").replace(/\s+/g, " ").trim();
+}
+
 function deriveStudio(creator) {
-  if (!creator) return null;
-  const intro = (creator.introduction || "").trim();
-  // "X is a ... design studio" / "... studio founded by ..."
-  const m =
-    intro.match(/([A-Z][\w&'\-. ]{1,40}?(?:design studio|studio|design office|inc\.|Inc\.))/);
-  if (m) return m[1].trim();
-  // Fallback: creator name
-  return creator.name || null;
+  // Prefer the proper noun. The creator name *is* the studio in 90% of cases;
+  // we only rewrite when the creator field is itself unclean.
+  if (!creator || isDummyCreator(creator)) return "";
+  const name = cleanName(creator.name);
+  if (name) return name;
+  return "";
 }
 
 function pickArtist(creator) {
-  if (!creator) return null;
-  if (creator.name && creator.name.toLowerCase() !== "dummy") return creator.name;
-  return null;
+  if (!creator || isDummyCreator(creator)) return "";
+  return cleanName(creator.name);
 }
 
 async function main() {
@@ -112,6 +134,26 @@ async function main() {
       (creatorsDoc.creators || []).map((c) => [c.id, c])
     );
 
+    // Patch creators-*.json with creator-level overrides (intro, icon, url).
+    for (const targetRel of TARGETS) {
+      const cPath = path.join(repoRoot, targetRel, `creators-${locale}.json`);
+      if (!existsSync(cPath)) continue;
+      const cDoc = await readJson(cPath);
+      let cTouched = 0;
+      for (const cr of cDoc.creators || []) {
+        const o = overrides.creators[cr.id];
+        if (!o) continue;
+        if (o.intro) cr.introduction = o.intro;
+        if (o.url) cr.url = o.url;
+        if (o.icon) cr.icon = o.icon;
+        cTouched++;
+      }
+      if (cTouched > 0) {
+        await writeJson(cPath, cDoc);
+        console.log(`[ok] ${targetRel}/creators-${locale}.json (${cTouched} patched)`);
+      }
+    }
+
     for (const targetRel of TARGETS) {
       const skinsPath = path.join(repoRoot, targetRel, `skins-${locale}.json`);
       if (!existsSync(skinsPath)) {
@@ -127,14 +169,12 @@ async function main() {
 
         const artist = ovr.artist || pickArtist(creator) || "";
         const studio = ovr.studio || cOvr.studio || deriveStudio(creator) || artist || "";
+        const genre = ovr.genre || cOvr.genre || "";
+        const country = ovr.country || cOvr.country || "";
+        const city = ovr.city || cOvr.city || "";
 
-        const text = [
-          skin.name,
-          skin.brief,
-          skin.description,
-          creator?.name,
-          creator?.introduction,
-        ]
+        // Tag matching: skin's own text only, to avoid creator-bio noise.
+        const text = [skin.name, skin.brief, skin.description]
           .filter(Boolean)
           .join(" \n ");
         const autoTags = deriveTags(text);
@@ -144,6 +184,9 @@ async function main() {
 
         skin.artist = artist;
         skin.studio = studio;
+        skin.genre = genre;
+        skin.country = country;
+        skin.city = city;
         skin.tags = tags;
         enriched++;
       }

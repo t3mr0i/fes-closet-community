@@ -8,7 +8,8 @@
 
   var STORE_INSTANCE = 2;
   var snapshot = null; // { models: [...], totalCount: N }
-  var state = { studio: null, artist: null, tag: null, q: "" };
+  var state = { studio: null, artist: null, genre: null, tag: null, q: "" };
+  var FACET_GROUPS = ["studio", "artist", "genre", "tag"];
 
   function getCollection() {
     try {
@@ -66,12 +67,15 @@
   function buildFacets(models) {
     var studios = [];
     var artists = [];
+    var genres = [];
     var tags = {};
     models.forEach(function (m) {
       var s = modelField(m, "studio");
       var a = modelField(m, "artist");
+      var g = modelField(m, "genre");
       if (s) studios.push(s);
       if (a) artists.push(a);
+      if (g) genres.push(g);
       modelTags(m).forEach(function (t) {
         tags[t] = (tags[t] || 0) + 1;
       });
@@ -82,6 +86,7 @@
     return {
       studio: distinct(studios),
       artist: distinct(artists),
+      genre: distinct(genres),
       tag: tagList,
     };
   }
@@ -89,6 +94,7 @@
   function matchModel(m) {
     if (state.studio && modelField(m, "studio") !== state.studio) return false;
     if (state.artist && modelField(m, "artist") !== state.artist) return false;
+    if (state.genre && modelField(m, "genre") !== state.genre) return false;
     if (state.tag && modelTags(m).indexOf(state.tag) === -1) return false;
     if (state.q) {
       var q = state.q.toLowerCase();
@@ -116,21 +122,27 @@
       return;
     }
     var filtered = snapshot.models.filter(matchModel);
-    if (filtered.length === 0) {
-      // Arc with 0 children misbehaves; show empty state via stock pattern by
-      // resetting to empty + non-zero totalCount triggers "no skins" UI.
-      coll.reset([], { silent: true });
-      coll._totalCount = 0;
-      coll.trigger("sync", coll, coll, { reset: true });
-      return;
-    }
     coll.reset(filtered, { silent: true });
     coll._totalCount = filtered.length;
     coll.trigger("sync", coll, coll, { reset: true });
+    toggleEmpty(filtered.length === 0 && activeFilterCount() > 0);
+  }
+
+  function toggleEmpty(show) {
+    var el = document.querySelector("#page-home-store [data-catalog-empty]");
+    var page = document.getElementById("page-home-store");
+    if (!el) return;
+    if (show) {
+      el.removeAttribute("hidden");
+      page && page.classList.add("catalog-empty-active");
+    } else {
+      el.setAttribute("hidden", "");
+      page && page.classList.remove("catalog-empty-active");
+    }
   }
 
   function renderChips(panel, facets) {
-    ["studio", "artist", "tag"].forEach(function (group) {
+    FACET_GROUPS.forEach(function (group) {
       var host = panel.querySelector('[data-catalog-chips="' + group + '"]');
       if (!host) return;
       host.innerHTML = "";
@@ -161,6 +173,45 @@
     renderChips(panel, buildFacets(models));
   }
 
+  function activeFilterCount() {
+    var n = 0;
+    FACET_GROUPS.forEach(function (g) { if (state[g]) n++; });
+    if (state.q) n++;
+    return n;
+  }
+
+  function refreshActive(bar) {
+    var host = bar.querySelector("[data-catalog-active]");
+    var countBadge = bar.querySelector("[data-catalog-count]");
+    if (!host || !countBadge) return;
+    host.innerHTML = "";
+    var entries = [];
+    FACET_GROUPS.forEach(function (g) {
+      if (state[g]) entries.push({ group: g, value: state[g] });
+    });
+    entries.forEach(function (e) {
+      var pill = document.createElement("button");
+      pill.type = "button";
+      pill.className = "catalog-active-pill";
+      pill.setAttribute("data-catalog-clear", e.group);
+      pill.innerHTML =
+        '<span class="catalog-active-pill-label">' +
+        e.value.replace(/[<>&]/g, "") +
+        '</span><span class="catalog-active-pill-x" aria-hidden="true">×</span>';
+      host.appendChild(pill);
+    });
+    if (entries.length) host.removeAttribute("hidden");
+    else host.setAttribute("hidden", "");
+
+    var n = activeFilterCount();
+    if (n > 0) {
+      countBadge.textContent = String(n);
+      countBadge.removeAttribute("hidden");
+    } else {
+      countBadge.setAttribute("hidden", "");
+    }
+  }
+
   function bind(page) {
     if (page.dataset.catalogFilterReady === "1") return;
     page.dataset.catalogFilterReady = "1";
@@ -184,6 +235,15 @@
       }
     });
 
+    function resetAll() {
+      FACET_GROUPS.forEach(function (g) { state[g] = null; });
+      if (input) input.value = "";
+      state.q = "";
+      applyFilter();
+      refreshFacets(panel);
+      refreshActive(bar);
+    }
+
     panel.addEventListener("click", function (e) {
       var t = e.target.closest("[data-catalog-pick]");
       if (t) {
@@ -192,21 +252,32 @@
         state[group] = state[group] === val ? null : val;
         applyFilter();
         refreshFacets(panel);
+        refreshActive(bar);
         return;
       }
-      if (e.target.matches("[data-catalog-reset]")) {
-        state.studio = null;
-        state.artist = null;
-        state.tag = null;
-        if (input) input.value = "";
-        state.q = "";
-        applyFilter();
-        refreshFacets(panel);
+      if (e.target.closest("[data-catalog-reset]")) resetAll();
+    });
+
+    // Empty-state reset lives outside the panel; bind on the whole bar.
+    bar.addEventListener("click", function (e) {
+      if (e.target.closest("[data-catalog-reset]")) {
+        // panel handler already fires when the click is inside the panel;
+        // this catches the empty-state button outside it.
+        if (!panel.contains(e.target)) resetAll();
       }
     });
 
-    if (resetBtn) {
-      // already handled via delegation but keep direct binding for safety
+    var activeHost = bar.querySelector("[data-catalog-active]");
+    if (activeHost) {
+      activeHost.addEventListener("click", function (e) {
+        var t = e.target.closest("[data-catalog-clear]");
+        if (!t) return;
+        var group = t.getAttribute("data-catalog-clear");
+        state[group] = null;
+        applyFilter();
+        refreshFacets(panel);
+        refreshActive(bar);
+      });
     }
 
     if (input) {
@@ -216,6 +287,7 @@
         debounce = setTimeout(function () {
           state.q = input.value.trim();
           applyFilter();
+          refreshActive(bar);
         }, 180);
       });
     }
@@ -237,11 +309,7 @@
         snapshot = null;
       }
       // re-apply last filter if user comes back from detail
-      if (
-        coll &&
-        snapshot &&
-        (state.studio || state.artist || state.tag || state.q)
-      ) {
+      if (coll && snapshot && activeFilterCount() > 0) {
         applyFilter();
       }
     });

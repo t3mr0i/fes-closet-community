@@ -36,23 +36,39 @@
                     <section class="indicators">
                     </section>
                 </section>
-                <figure class="creator-icon-base">
-                    {{#creator}}{{#icon}}
-                    <figure class="creator-icon" style="background-image:url('{{icon}}');"></figure>
-                    {{/icon}}{{/creator}}
-                </figure>
-                <p class="creator-name">{{#creator}}{{name}}{{/creator}}{{^creator}}{{creatorName}}{{/creator}}</p>
-                <p class="skin-name">{{name}}</p>
-                {{#endDate}}<p class="skin-expire-date">{{endDate}}</p>{{/endDate}}
-                <div class="skin-meta-chips">
-                    {{#studio}}<span class="skin-meta-chip studio">{{.}}</span>{{/studio}}
-                    {{#tags}}<span class="skin-meta-chip">{{.}}</span>{{/tags}}
-                </div>
-                <p class="skin-description">{{#skinDetail}}{{description}}{{/skinDetail}}</p>
+                <section class="skin-hero-meta">
+                    <p class="creator-name">{{#creator}}{{name}}{{/creator}}{{^creator}}{{creatorName}}{{/creator}}</p>
+                    <h2 class="skin-name">{{name}}</h2>
+                    {{#endDate}}<p class="skin-expire-date">{{endDate}}</p>{{/endDate}}
+                    <div class="skin-meta-chips">
+                        {{#studio}}<span class="skin-meta-chip studio">{{studio}}</span>{{/studio}}
+                        {{#genre}}<span class="skin-meta-chip genre">{{genre}}</span>{{/genre}}
+                        {{#country}}<span class="skin-meta-chip country">{{country}}</span>{{/country}}
+                        {{#tags}}<span class="skin-meta-chip">{{.}}</span>{{/tags}}
+                    </div>
+                </section>
+
+                {{#skinDetail}}{{#description}}
+                <section class="skin-card skin-card-about">
+                    <span class="skin-card-label">About</span>
+                    <p class="skin-description">{{description}}</p>
+                </section>
+                {{/description}}{{/skinDetail}}
+
                 {{#creator}}
-                <h3 class="creator-introduction-headline" data-i18n="store.common.designer">store.common.designer</h3>
-                <p class="creator-introduction">{{introduction}}</p>
-                <p class="creator-url">{{#url}}<a class="command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">{{{url}}}</a>{{/url}}</p>
+                <section class="skin-card skin-card-creator">
+                    <header class="skin-card-creator-head">
+                        <figure class="creator-icon-base">
+                            {{#icon}}<figure class="creator-icon" style="background-image:url('{{icon}}');"></figure>{{/icon}}
+                        </figure>
+                        <div class="skin-card-creator-titles">
+                            <span class="skin-card-label" data-i18n="store.common.designer">Designer</span>
+                            <p class="skin-card-creator-name">{{name}}</p>
+                            {{#url}}<a class="skin-card-creator-link command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">{{{url}}}</a>{{/url}}
+                        </div>
+                    </header>
+                    <p class="creator-introduction">{{introduction}}</p>
+                </section>
                 {{/creator}}
             </section>
         </section>

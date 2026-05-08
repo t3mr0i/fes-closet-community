@@ -1,4 +1,1243 @@
 {
-  "skins": {},
-  "creators": {}
+  "_genres": [
+    "calligraphy",
+    "typography",
+    "illustration",
+    "graphic-design",
+    "photography",
+    "fine-art",
+    "architecture",
+    "product-design",
+    "fashion",
+    "generative",
+    "street-art"
+  ],
+  "skins": {
+    "c0ffee00000000000000000000000001": {
+      "tags": [
+        "light",
+        "dark",
+        "typography",
+        "vertical",
+        "minimal"
+      ]
+    },
+    "1f2a0fdb966d4f699250a240673a7954": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "typography",
+        "abstract",
+        "geometric"
+      ]
+    },
+    "e99cfb38928946d0a8876bf841939c2c": {
+      "tags": [
+        "high-contrast",
+        "typography",
+        "pattern",
+        "dense",
+        "abstract"
+      ]
+    },
+    "bcf218973cd042b8b64154cf6a7b99ce": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "minimal",
+        "typography",
+        "geometric"
+      ]
+    },
+    "1ca6de52c8e745fb94b8c3ce76f4a63f": {
+      "tags": [
+        "light",
+        "organic",
+        "illustration",
+        "pattern",
+        "typography"
+      ]
+    },
+    "5a2216b2c6524bcd9db5fa2d67c5078b": {
+      "tags": [
+        "high-contrast",
+        "abstract",
+        "typography",
+        "dense",
+        "organic"
+      ]
+    },
+    "1b3c93c581a041569a3c349f010a7672": {
+      "tags": [
+        "high-contrast",
+        "abstract",
+        "geometric",
+        "dense",
+        "typography"
+      ]
+    },
+    "89862c70a5464ea9b601acdeedc9c4f7": {
+      "tags": [
+        "dark",
+        "pattern",
+        "abstract",
+        "geometric",
+        "high-contrast"
+      ]
+    },
+    "309157ff8dbf4178bc0054333dcd54a5": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "geometric",
+        "pattern"
+      ]
+    },
+    "50b5dfa31b7447b9897ab069d511b894": {
+      "tags": [
+        "high-contrast",
+        "dots",
+        "minimal",
+        "geometric"
+      ]
+    },
+    "26f9e924df5c41b1b14346ad279d3022": {
+      "tags": [
+        "light",
+        "minimal",
+        "typography",
+        "linework",
+        "geometric"
+      ]
+    },
+    "55fec10792a44d85b635208f8328b2e1": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "stripes"
+      ]
+    },
+    "350e297130bb41e2ae9969ca2fdd542e": {
+      "tags": [
+        "light",
+        "geometric",
+        "pattern",
+        "abstract",
+        "high-contrast"
+      ]
+    },
+    "817ae46b24d4447eb1db145c06e174ca": {
+      "tags": [
+        "dark",
+        "dense",
+        "organic",
+        "illustration",
+        "pattern"
+      ]
+    },
+    "1ab0b9042bd9452fb90715fff9297ba8": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "abstract",
+        "linework"
+      ]
+    },
+    "64178ce2924247caacea3f785302fd60": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "minimal",
+        "abstract"
+      ]
+    },
+    "b86e517b37e44898b20a3a61c2133047": {
+      "tags": [
+        "dark",
+        "geometric",
+        "grid",
+        "minimal",
+        "high-contrast"
+      ]
+    },
+    "bbec51518041447fa81782290b2f6676": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "minimal"
+      ]
+    },
+    "b3a2028b0ade467e9abe8790c3d1056a": {
+      "tags": [
+        "light",
+        "minimal",
+        "geometric",
+        "abstract",
+        "high-contrast"
+      ]
+    },
+    "e9d88f3dbd814dcaa60b04b8c9073c21": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "typography",
+        "abstract",
+        "geometric"
+      ]
+    },
+    "3137124eed9e44f6ac98b41cedaddd4c": {
+      "tags": [
+        "light",
+        "minimal",
+        "organic",
+        "typography",
+        "illustration"
+      ]
+    },
+    "a660f26eb0d34a85b39d25c8b171feeb": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "typography",
+        "minimal",
+        "abstract"
+      ]
+    },
+    "c9af1d7b29824a469e4211e8e24926be": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "abstract",
+        "typography",
+        "vertical"
+      ]
+    },
+    "7d13ea9dc66c4fa5962aab89eb397738": {
+      "tags": [
+        "high-contrast",
+        "stripes",
+        "geometric",
+        "minimal"
+      ]
+    },
+    "62e0fb4aefcc4f5dae0c32676a0d6ebb": {
+      "tags": [
+        "high-contrast",
+        "stripes",
+        "geometric",
+        "abstract"
+      ]
+    },
+    "8cce69ca1f264c3fa619407e5bd51b60": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "typography",
+        "minimal",
+        "geometric"
+      ]
+    },
+    "5e3b7b06a9af4f6fbd73f059e7937daf": {
+      "tags": [
+        "high-contrast",
+        "abstract",
+        "geometric",
+        "typography",
+        "dense"
+      ]
+    },
+    "e68c44d817504b43bc132fe52957f350": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "dense",
+        "pattern",
+        "typography"
+      ]
+    },
+    "601232c5efd442a5843fed3e989a3a60": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "organic",
+        "typography"
+      ]
+    },
+    "8a816355d0d248528d15be72acf9f2f4": {
+      "tags": [
+        "high-contrast",
+        "geometric",
+        "stripes",
+        "abstract"
+      ]
+    },
+    "b205fc709a2f4fb39024f16396fcfd68": {
+      "tags": [
+        "dark",
+        "dense",
+        "geometric",
+        "illustration",
+        "pattern"
+      ]
+    },
+    "d2b5356a82344b49af7a3be580918913": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "dots",
+        "minimal"
+      ]
+    },
+    "04181a8e600844adb720b42edfaa028e": {
+      "tags": [
+        "light",
+        "minimal",
+        "geometric",
+        "typography",
+        "abstract"
+      ]
+    },
+    "25248858aa044d44a8d0287426daf187": {
+      "tags": [
+        "illustration",
+        "organic",
+        "linework",
+        "minimal",
+        "vertical"
+      ]
+    },
+    "56d8567aa1cb4ffca2cfadcc52a1bc25": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "abstract",
+        "linework"
+      ]
+    },
+    "e9cb4b75d23d4666a91a9983c0bdc8ca": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "typography",
+        "dense",
+        "geometric"
+      ]
+    },
+    "e35e7c45bcf4416a8b51529e39fa8d30": {
+      "tags": [
+        "abstract",
+        "stripes",
+        "high-contrast",
+        "geometric"
+      ]
+    },
+    "e25cc730cb354c2a8217ec49117e5cab": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "abstract",
+        "typography"
+      ]
+    },
+    "95ab666fb2d045c0828912973d285d81": {
+      "tags": [
+        "dark",
+        "organic",
+        "typography",
+        "pattern",
+        "high-contrast"
+      ]
+    },
+    "c1368ad0adc0495faa5dcf0c2331e594": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "typography",
+        "pattern"
+      ]
+    },
+    "56f479da137b423d8761acd9cde613d3": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "typography",
+        "photo",
+        "geometric"
+      ]
+    },
+    "7a0e0b19631846e6be15a384d8fcde00": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "minimal",
+        "pattern"
+      ]
+    },
+    "6aec7ae42283497dad3540332837f1d6": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "typography",
+        "abstract"
+      ]
+    },
+    "6402907dc74446cba67e9a8b42795339": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "abstract",
+        "photo"
+      ]
+    },
+    "d89ed37ddb6347c49354913592891078": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "typography",
+        "pattern"
+      ]
+    },
+    "14ad014822a4444c815604d2becbcb78": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "photo",
+        "geometric",
+        "typography"
+      ]
+    },
+    "f909e900c7b040e2a8f8ced285daf8dc": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "illustration",
+        "pattern",
+        "geometric"
+      ]
+    },
+    "863d4d6587c248b19d3e2836602c9d08": {
+      "tags": [
+        "dark",
+        "illustration",
+        "typography",
+        "organic",
+        "centered"
+      ]
+    },
+    "0167a33afcb547a2b028d90291ec81ac": {
+      "tags": [
+        "dark",
+        "organic",
+        "illustration",
+        "pattern",
+        "high-contrast"
+      ]
+    },
+    "c21e8ba2f5a84a18b5a0b1dfdee9c1aa": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "typography",
+        "geometric"
+      ]
+    },
+    "87f9667d62404633908a1948308a4445": {
+      "tags": [
+        "dense",
+        "illustration",
+        "abstract",
+        "organic",
+        "pattern"
+      ]
+    },
+    "7bd66430df2e4857a42d8c2da51c435f": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "geometric",
+        "vertical"
+      ]
+    },
+    "a026880bdf514d3198067c8adf0ebf31": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "illustration",
+        "geometric",
+        "typography"
+      ]
+    },
+    "93a45e365e2248349fa83b5fe08175f2": {
+      "tags": [
+        "dark",
+        "abstract",
+        "organic",
+        "pattern",
+        "high-contrast"
+      ]
+    },
+    "ebc33e7502f14ba6bda77fba3729a0d6": {
+      "tags": [
+        "high-contrast",
+        "abstract",
+        "pattern",
+        "geometric",
+        "dense"
+      ]
+    },
+    "846f52e59ad344d8aafe27bf87b6b89b": {
+      "tags": [
+        "light",
+        "abstract",
+        "illustration",
+        "typography",
+        "geometric"
+      ]
+    },
+    "d51d5adcf381467c8f69b6c6f102b59b": {
+      "tags": [
+        "light",
+        "abstract",
+        "organic",
+        "typography",
+        "high-contrast"
+      ]
+    },
+    "37da173b38c0462c94d8e35993323c9a": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "typography",
+        "pattern",
+        "dots"
+      ]
+    },
+    "cec5b54e11c04cd09acdcd1b8eaa4697": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "pattern",
+        "organic"
+      ]
+    },
+    "beba4346d5c349adbc22696793880f61": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "pattern",
+        "geometric"
+      ]
+    },
+    "a4d3b1debe44449ab01126c7eb1687c7": {
+      "tags": [
+        "dark",
+        "organic",
+        "illustration",
+        "pattern",
+        "minimal"
+      ]
+    },
+    "fb71cec8df614447b9041f166d273049": {
+      "tags": [
+        "light",
+        "minimal",
+        "typography",
+        "illustration",
+        "vertical"
+      ]
+    },
+    "4e5e7845461d40278c81d9f5f8289f05": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "minimal",
+        "geometric",
+        "typography"
+      ]
+    },
+    "48aee7f7c43d470c9a367dd722a11c1c": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "illustration",
+        "minimal"
+      ]
+    },
+    "5a7680d39fb8443286d7a1de97afd62f": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "illustration",
+        "pattern",
+        "geometric"
+      ]
+    },
+    "6d99ba7e91c64507a0de5a91679196cb": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "minimal",
+        "abstract",
+        "typography"
+      ]
+    },
+    "a62f3223a62c4830bd3a05e142efb7cc": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "illustration",
+        "pattern",
+        "geometric"
+      ]
+    },
+    "3bfb7095c1b44ee3a655aeb4945a2980": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "illustration",
+        "pattern",
+        "geometric"
+      ]
+    },
+    "086b6f36b55540acaecfe3d10aca0304": {
+      "tags": [
+        "dark",
+        "illustration",
+        "pattern",
+        "geometric",
+        "high-contrast"
+      ]
+    },
+    "58a6edc2a45149a1beb106e00be4c1c3": {
+      "tags": [
+        "dark",
+        "minimal",
+        "illustration",
+        "abstract",
+        "geometric"
+      ]
+    },
+    "184dd8382aaa4370929733994c34f4e0": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "typography",
+        "pattern",
+        "geometric"
+      ]
+    },
+    "fb096e310cff4ab8b2d09dd09aa1aeaa": {
+      "tags": [
+        "light",
+        "minimal",
+        "illustration",
+        "pattern",
+        "typography"
+      ]
+    },
+    "5f6a43f171144c669056204b4088d4be": {
+      "tags": [
+        "dark",
+        "illustration",
+        "pattern",
+        "organic",
+        "minimal"
+      ]
+    },
+    "616117bc9bb14ca58e30ae06374dfdba": {
+      "tags": [
+        "light",
+        "illustration",
+        "pattern",
+        "geometric",
+        "centered"
+      ]
+    },
+    "15d5a0f2676c4107a67676cb6184af87": {
+      "tags": [
+        "dark",
+        "geometric",
+        "abstract",
+        "pattern",
+        "high-contrast"
+      ]
+    },
+    "cc7b3eaa81304aebbed1acad22b7451d": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "pattern",
+        "stripes",
+        "geometric"
+      ]
+    },
+    "8e51147140c24e729da1395166233aff": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "typography"
+      ]
+    },
+    "93434f8882534830a9f8d5ac633febfd": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "stripes",
+        "geometric",
+        "minimal"
+      ]
+    },
+    "ed38a35ba1a648e59212ec7fdf351eb2": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "typography",
+        "stripes"
+      ]
+    },
+    "5b8ca97e3bb14c4ea5304a90140fdd70": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "pattern",
+        "geometric",
+        "abstract"
+      ]
+    },
+    "f88e874fbd5b4dbfbb6923018b544b5d": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "minimal"
+      ]
+    },
+    "ac327aae47ed47b0ada1acc9d261510e": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "pattern",
+        "abstract",
+        "geometric"
+      ]
+    },
+    "2a04d918e43c44bc93b9942e2366f2e2": {
+      "tags": [
+        "stripes",
+        "high-contrast",
+        "minimal",
+        "typography",
+        "horizontal"
+      ]
+    },
+    "7bcba7d5cdf44820a070c07c7662372f": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "pattern",
+        "geometric",
+        "typography"
+      ]
+    },
+    "071039a098ee4b6c9f7a9514e863eb1f": {
+      "tags": [
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "typography"
+      ]
+    },
+    "57947826ecca47d9af6bab47b6909096": {
+      "tags": [
+        "light",
+        "geometric",
+        "minimal",
+        "high-contrast",
+        "typography"
+      ]
+    },
+    "59590bef17eb4667abe2898dfdae7792": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "geometric",
+        "stripes",
+        "typography"
+      ]
+    },
+    "988efecdb5c24dd09bcda845fd807ca7": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "stripes",
+        "minimal",
+        "geometric"
+      ]
+    },
+    "2b24a1a2ea4c4d49a2f4c062184df074": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "grid",
+        "typography"
+      ]
+    },
+    "834a97c08a634220a5a85b2603926a46": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "illustration"
+      ]
+    },
+    "1f85494b877d468c9a4487da47684e46": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "minimal"
+      ]
+    },
+    "2633c43024354429baeddde2f0ea054e": {
+      "tags": [
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "stripes",
+        "minimal"
+      ]
+    },
+    "bc2e6cb907f54560920462dd7ec40f78": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "pattern",
+        "abstract",
+        "geometric"
+      ]
+    },
+    "7afbacc06c7a40b19a7e2510d1e2a71a": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "dots",
+        "geometric",
+        "typography"
+      ]
+    },
+    "b3773f1aeb9e48769b45fea247daf2ef": {
+      "tags": [
+        "dark",
+        "geometric",
+        "illustration",
+        "minimal"
+      ]
+    },
+    "d6b9cef4fa1040f895051b802b6e2d75": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "stripes",
+        "minimal",
+        "geometric"
+      ]
+    },
+    "6b31f2a6d8d84210986ae057e73d5005": {
+      "tags": [
+        "high-contrast",
+        "geometric",
+        "pattern",
+        "typography",
+        "abstract"
+      ]
+    },
+    "a354a44327394b40aad7e2484431f0c5": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "typography",
+        "minimal",
+        "centered"
+      ]
+    },
+    "a4ad3ac6cf55431cbf1b454d54500224": {
+      "tags": [
+        "dark",
+        "high-contrast",
+        "minimal",
+        "typography",
+        "centered"
+      ]
+    },
+    "bfc2a8a38509476d8d3f3a49939df861": {
+      "tags": [
+        "light",
+        "high-contrast",
+        "minimal",
+        "typography",
+        "geometric"
+      ]
+    }
+  },
+  "creators": {
+    "3ef85ed1-54c8-4341-b843-c3932d95d405": {
+      "studio": "Fashion Entertainments",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "product-design",
+      "discipline": "E-paper wearables",
+      "intro": "Fashion Entertainments is Sony's in-house startup behind the FES Watch U. They use electronic paper as a fabric so a single watch can carry endless face and strap designs. The first FES Watch U launched on Sony's First Flight crowdfunding platform in 2017, co-designed with Tokyo studio TAKT PROJECT.",
+      "url": "https://fashion-entertainments.com/"
+    },
+    "c1127d20-307a-4017-be88-a34859f56e81": {
+      "studio": "iLovedust",
+      "country": "United Kingdom",
+      "city": "Portsmouth",
+      "genre": "graphic-design",
+      "discipline": "Graphic design and illustration",
+      "intro": "iLovedust is a UK design crüe working under the motto 'Seduction vs. Function' — graphic design, illustration and art direction with a punk edge. Their clients include Nike, Levi's and the New York Times.",
+      "url": "https://www.ilovedust.com/"
+    },
+    "78aa96fe-98d9-43d0-8188-26ca4b8d4341": {
+      "studio": "B&A",
+      "country": "United States",
+      "city": "New York",
+      "genre": "illustration",
+      "discipline": "Artist representation across photo, illustration, animation, CGI",
+      "intro": "B&A is an international artist representation agency with offices in New York, London, Berlin and Los Angeles. Their roster spans photographers, illustrators, animators, CGI studios and mural artists working for global brands.",
+      "url": "https://www.ba-reps.com/"
+    },
+    "9adde805-1d79-460b-8d46-0fc876af88a1": {
+      "studio": "HI(NY)",
+      "country": "United States",
+      "city": "New York / Kyoto",
+      "genre": "graphic-design",
+      "discipline": "Branding and design direction",
+      "intro": "HI(NY) is a boutique design studio founded by Hitomi Watanabe Deluca and Iku Oyamada, with offices in New York and Kyoto. Their work focuses on branding and identity for clients including Coca-Cola, MTV, the United Nations and Isetan; multiple ONE SHOW and GDUSA awards.",
+      "url": "https://www.hinydesign.com/"
+    },
+    "e8228b7b-52c3-49c8-a0ea-5b64b43a1051": {
+      "studio": "Bouillon",
+      "country": "Japan",
+      "city": "Nagoya / Tokyo",
+      "genre": "product-design",
+      "discipline": "Product and interior design",
+      "intro": "Bouillon is a product and interior design studio founded by Shunya Hattori and Hiroki Nasu, splitting its work between Nagoya and Tokyo. Recognised at Salone Satellite, Stockholm Furniture Fair, Milan Design Week and Toyama Design Competition.",
+      "url": "http://www.design-bouillon.jp/"
+    },
+    "88c8ac0e-67be-49a2-b4a0-cf9bbeb17629": {
+      "studio": "Ahonen & Lamberg",
+      "country": "France",
+      "city": "Paris",
+      "genre": "graphic-design",
+      "discipline": "Multidisciplinary graphic design",
+      "intro": "Ahonen & Lamberg is a Paris-based multidisciplinary design studio founded by Anna Ahonen and Katariina Lamberg. They work across art direction, editorial and identity design for fashion and culture clients.",
+      "url": "https://www.ahonenandlamberg.com/"
+    },
+    "1f2fc0c7-d615-485c-923f-afb6dd31d4db": {
+      "studio": "YOY",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "product-design",
+      "discipline": "Spatial and product design",
+      "intro": "YOY is a Tokyo design studio founded in 2011 by spatial designer Naoki Ono and product designer Yuki Yamamoto. Working under the theme 'between space and object', they create furniture, lighting and installations exhibited at Milan Design Week since 2012.",
+      "url": "https://yoy-idea.jp/"
+    },
+    "29ad82fb-5dba-49e5-ac8f-231d7a970121": {
+      "studio": "ten_do_ten",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "fine-art",
+      "discipline": "Pixel art, sound, exhibitions",
+      "intro": "ten_do_ten is a Japanese pixel artist who studied under Gento Matsumoto at Musashino Art University. The name reads 'ten by ten' — ten meaning both dot and pixel in Japanese. Active since launching the ten_do site in 2001, working across visual art, sound and exhibitions.",
+      "url": "http://www.tententen.net/"
+    },
+    "4450a78e-4038-4163-94c2-4e8e57529212": {
+      "studio": "TAKT PROJECT",
+      "country": "Japan",
+      "city": "Tokyo (Tohoku Lab in Sendai)",
+      "genre": "product-design",
+      "discipline": "Design research and product",
+      "intro": "TAKT PROJECT is a Tokyo design studio that runs both client work and self-driven research, with a Tohoku Lab in Sendai. Co-designed Sony's original FES Watch U. Their stated mission is to 'destabilize existing frameworks to cultivate the future.'",
+      "url": "http://taktproject.com/"
+    },
+    "ab0371e8-8428-4966-b662-78a1db2f0c26": {
+      "studio": "we+",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "product-design",
+      "discipline": "Contemporary research-based design",
+      "intro": "we+ is a Tokyo contemporary design studio founded in 2013 by Toshiya Hayashi and Hokuto Ando. Their research-based practice explores 'alternative design that establishes a close coexistence with the natural and social environment.'",
+      "url": "https://weplus.jp/"
+    },
+    "7af11818-96b3-4ae9-9b81-abc10155ed5c": {
+      "studio": "Bob Foundation",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "graphic-design",
+      "discipline": "Graphic, product and exhibition design",
+      "intro": "Bob Foundation is a Tokyo creative studio active since 2002, working across art direction, graphic and product design, exhibitions and illustration. They run the lifestyle brand DAILY BOB.",
+      "url": "http://www.bobfoundation.com/"
+    },
+    "b48d47b6-3448-44d1-90e3-d064e8c9f6d6": {
+      "studio": "N&R Foldings",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "product-design",
+      "discipline": "Product and packaging design",
+      "intro": "N&R Foldings is a Japanese product design studio focused on folding-based forms. Their original lines include ORISHIKI and Poligon alongside collaborations with brands and institutions.",
+      "url": "http://nandrfoldings.com/"
+    },
+    "d9f41f56-5465-47df-bdfa-c9af83899bce": {
+      "studio": "Marcus James",
+      "country": "United Kingdom",
+      "city": "London",
+      "genre": "fine-art",
+      "discipline": "Drawing, printmaking, sculpture",
+      "intro": "Marcus James is a UK visual artist trained at the Royal College of Art. His large-scale pen-and-ink drawings, screenprints and sculptures examine glacial extinction and humanity's relationship with landscape — from the Aral Sea to the Pine Island Glacier.",
+      "url": "http://www.marcusjames.co.uk/"
+    },
+    "7a19b2e6-7c96-4cc9-a24b-00a2b39db95b": {
+      "studio": "Gasius",
+      "country": "United Kingdom",
+      "city": "London",
+      "genre": "street-art",
+      "discipline": "Illustration and street-influenced graphics",
+      "intro": "Gasius is the work of London-based illustrator and skater Russell Maurice, known for surreal, hand-drawn characters that move between zines, streetwear, and gallery walls.",
+      "url": "http://www.gasius.com/"
+    },
+    "87dd39c9-6c92-4110-be51-7789dfd6515a": {
+      "studio": "Tangent",
+      "country": "United Kingdom",
+      "city": "London",
+      "genre": "graphic-design",
+      "discipline": "Design and direction",
+      "intro": "Tangent is a UK design studio that contributed to Sony's FES Watch U launch lineup. Their original site has since been retired.",
+      "url": "http://www.tangent.uk.com/"
+    },
+    "community-0000-0000-0000-000000000001": {
+      "studio": "FES Community",
+      "country": "Worldwide",
+      "city": "",
+      "genre": "graphic-design",
+      "discipline": "Community-maintained skins",
+      "intro": "FES Community is the volunteer effort that keeps FES Watch U alive after Sony's official store closed. Skins under this name are uploaded by users of the community catalog.",
+      "url": "https://github.com/t3mr0i/fes-closet-community"
+    },
+    "d0d5ec68-981f-4037-a5ea-c796f8498d78": {
+      "studio": "Madblast Hiro",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "street-art",
+      "discipline": "Mural and live painting",
+      "intro": "Madblast Hiro is a Japanese painter working across mural, live painting and canvas, with exhibitions including Gallery White Cube. Selected as an official creator for Sony's FES Watch U Creative Festival."
+    },
+    "041207bd-ca2c-4eec-8fed-1eaa184d2cc0": {
+      "studio": "TAKAHIRO YASUDA",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "graphic-design",
+      "discipline": "Art direction and graphic design",
+      "intro": "Takahiro Yasuda (b. 1985) is a Tokyo-based art director and graphic designer. After graduating from Tama Art University and working at Draft Inc., he went independent in 2015 and joined the CEKAI collective; clients include FamilyMart, Nike, Issey Miyake and Google."
+    },
+    "03ed8f7c-87af-495a-9177-32f52fb9fdf3": {
+      "studio": "SEIYA-TOKYO",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "illustration",
+      "discipline": "Illustration, graphic design, music",
+      "intro": "SEIYA-TOKYO is a comprehensive art project by Seiya Fujikura spanning illustration, graphic design, apparel and music, with the SEIYA-TOKYO Records label and the trackmaker fashion brand."
+    },
+    "e54db009-e94f-466c-afa4-b91a9f9f47f2": {
+      "studio": "unshift",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "generative",
+      "discipline": "Creative front-end development",
+      "intro": "Takumi Hasegawa is a Tokyo-based creative front-end developer working under the unshift studio name, with a design-forward approach to interactive web work."
+    },
+    "d53d14f3-c2e0-4bb0-891c-a6834e3a6c4c": {
+      "studio": "gorillaSTAR",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "illustration",
+      "discipline": "Character design, 3D and motion",
+      "intro": "gorillaSTAR is a Japanese designer working across character design, 3D modelling and motion graphics. Their festival design 'yellowAMIKO' was selected for Sony's FES Watch U Creative Festival."
+    },
+    "c88b8791-375b-4d32-ba75-2683ec310588": {
+      "studio": "a-tan-pic",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "illustration",
+      "discipline": "Illustration and character design",
+      "intro": "a-tan-pic is a Tokyo illustrator and character designer working primarily in Adobe Illustrator on goods and sticker projects. Selected as an official creator for Sony's FES Watch U Creative Festival."
+    },
+    "33729bb2-6209-4968-8637-9a514bd4baab": {
+      "studio": "Ise Naoki",
+      "country": "Japan",
+      "city": "Yamaguchi",
+      "genre": "graphic-design",
+      "discipline": "Graphic design for media art",
+      "intro": "Ise Naoki (伊勢尚生, b. 1986 in Aomori) is a Japanese graphic designer at Yamaguchi Center for Arts and Media (YCAM). He studied information design at Tama Art University and Berlin University of the Arts; his work spans media-art exhibition graphics for ICC and YCAM. Selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "47101436-c600-4757-96de-d5b58e457a2b": {
+      "studio": "Ishida Mayumi",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "fine-art",
+      "discipline": "Painting, installation, music",
+      "intro": "Ishida Mayumi (石田真弓) is a Tokyo-based artist working across painting, installation and musical composition. She has synesthesia and treats sound as visual material. Selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "3d50fa51-2f0c-4596-be0c-6658206e8cd0": {
+      "studio": "Asaoka Maria",
+      "country": "Japan",
+      "city": "Shizuoka",
+      "genre": "illustration",
+      "discipline": "Yuru-kyara character illustration",
+      "intro": "Asaoka Maria (あさおかまりあ), based in Shizuoka, is an illustrator working in the yuru-kyara style of soft, friendly Japanese characters. She illustrated The Musubi Book. Selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "bc43fbde-b4cc-4c30-8f96-9df8e1443008": {
+      "studio": "Yanagisawa Shun",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "graphic-design",
+      "discipline": "Art direction, branding, editorial",
+      "intro": "Yanagisawa Shun (柳澤駿) is a Tokyo art director and graphic designer working across branding, visual identity and editorial. Selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "9e08c114-090f-4988-9977-3ec517fdda8a": {
+      "studio": "Etw.Vonneguet",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "fashion",
+      "discipline": "Fashion-tech and digital fashion",
+      "intro": "Olga is the designer behind Etw.Vonneguet, a Tokyo-based fashion-tech label. After studying fashion and technology in the UK, she works across digital collections, conductive textiles and 3DCG runway formats. Selected as an official creator for Sony's FES Watch U Creative Festival."
+    },
+    "cca6604f-09a5-4729-81bb-b49e5070c0ec": {
+      "studio": "Nakayama Kei",
+      "country": "Japan",
+      "city": "Tokyo",
+      "genre": "product-design",
+      "discipline": "Product design",
+      "intro": "Nakayama Kei (中山桂) works at RD-MAK, a market-development product design office in Shibuya, Tokyo, founded in 1974. Selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "75762d6a-26c7-4f3f-93bb-58efe78bdb72": {
+      "studio": "skydiving magazine",
+      "country": "Japan",
+      "genre": "photography",
+      "discipline": "Magazine / publishing",
+      "intro": "skydiving magazine is a Japanese skydiving lifestyle magazine, selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "3f996207-75b4-471e-90f6-b2567bd67f06": {
+      "studio": "Natsuki Mitsuru",
+      "country": "Japan",
+      "genre": "illustration",
+      "discipline": "Illustration",
+      "intro": "Natsuki Mitsuru (夏木満) is a Japanese illustrator selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "da8dc611-baf0-4206-a7cc-0a41790484d1": {
+      "studio": "Kanda Yusaku",
+      "country": "Japan",
+      "genre": "calligraphy",
+      "discipline": "Calligraphy",
+      "intro": "Kanda Yusaku (神田有作) is a Japanese designer selected as an official creator for Sony's FES Watch U Creative Festival 2018, where 32 creators were chosen on the theme of 'diversity'."
+    },
+    "19dd9348-7eb7-477b-8b9b-d7c7bfb8dd7a": {
+      "studio": "Akutsu Kanako",
+      "country": "Japan",
+      "genre": "graphic-design",
+      "discipline": "Design",
+      "intro": "Akutsu Kanako (あくつかなこ) is a Japanese illustrator selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "4f824843-0394-4bb5-a540-b2eae270bb0f": {
+      "studio": "Hamanaka Nozomi",
+      "country": "Japan",
+      "genre": "graphic-design",
+      "discipline": "Design and editorial",
+      "intro": "Hamanaka Nozomi (濱中望実) is a Japanese designer selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "4e67af8e-fb0a-4502-a7cd-d5c69f25ae74": {
+      "studio": "Takase Hanano",
+      "country": "Japan",
+      "genre": "illustration",
+      "discipline": "Illustration",
+      "intro": "Takase Hanano (たかせはなの) is a Japanese illustrator selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "38f76b8d-e1e8-465c-8de2-0c1d0c593b51": {
+      "studio": "Tomigahara Yuki",
+      "country": "Japan",
+      "genre": "illustration",
+      "discipline": "Illustration",
+      "intro": "Tomigahara Yuki (冨ヶ原由季) is a Japanese illustrator selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "b69c111b-1c06-411e-9cd2-3797b631d820": {
+      "studio": "Ogawa Atsuo",
+      "country": "Japan",
+      "genre": "fine-art",
+      "discipline": "Fine art",
+      "intro": "Ogawa Atsuo (小川敦生) is a Japanese fine artist represented by Base Gallery, selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "fe1f23b0-b81b-4c7d-bf7f-c0be69fb7d7d": {
+      "studio": "Isakino Reina",
+      "country": "Japan",
+      "genre": "illustration",
+      "discipline": "Illustration",
+      "intro": "Isakino Reina (伊咲乃玲名) is a Japanese visual artist selected as an official creator for Sony's FES Watch U Creative Festival 2018. Active on Instagram as @123chura."
+    },
+    "6e056c0e-e4e2-496a-8b5e-5ea4a932cfba": {
+      "studio": "Suga Takuya",
+      "country": "Japan",
+      "genre": "graphic-design",
+      "discipline": "Book jacket and graphic design",
+      "intro": "Suga Takuya (管拓也) is a Japanese book jacket and graphic designer, selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "b45d21d2-53de-430b-a985-f545855a0dce": {
+      "studio": "MK Studio",
+      "country": "Japan",
+      "genre": "graphic-design",
+      "discipline": "Design",
+      "intro": "MK studio is a Japanese design studio selected as one of 32 official creators for Sony's FES Watch U Creative Festival 2018."
+    },
+    "b8e5fd13-c635-4163-abb8-f3702b392f03": {
+      "studio": "Kirihara Yuji",
+      "country": "Japan",
+      "genre": "fashion",
+      "discipline": "Makeup",
+      "intro": "Kirihara Yuji (桐原祐二) is a Tokyo makeup artist (@suzan_triggermua) selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    },
+    "13dca05f-d0b2-476c-aa46-356be7ed3fae": {
+      "studio": "Esora Maya",
+      "country": "Japan",
+      "genre": "illustration",
+      "discipline": "Illustration",
+      "intro": "Esora Maya (絵空摩耶) is a Japanese illustrator working in animation, illustration and design with interests in kemono and steampunk subjects. Selected as an official creator for Sony's FES Watch U Creative Festival 2018."
+    }
+  }
 }
