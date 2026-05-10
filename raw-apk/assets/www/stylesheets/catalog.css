@@ -135,6 +135,9 @@
   justify-content: center;
   pointer-events: none;
 }
+#fes-catalog-toolbar .fct-badge[hidden] {
+  display: none;
+}
 
 /* search row */
 #fes-catalog-toolbar .fct-search-row {

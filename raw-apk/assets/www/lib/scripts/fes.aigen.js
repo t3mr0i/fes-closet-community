@@ -18,6 +18,13 @@
        can crop/resize via the URL params. */
     var STYLE_PRESETS = [
         {
+            id: "none",
+            label: "No style",
+            // a soft neutral tile so the option reads as a real choice, not absence
+            img: "https://images.unsplash.com/photo-1557682250-33bd709cbe85?auto=format&fit=crop&w=200&h=320&q=70",
+            desc: ""
+        },
+        {
             id: "minimalist",
             label: "Minimalist",
             // calm, lots of negative space
@@ -291,55 +298,70 @@
     };
 
     function structuredPrompt(opts) {
-        /* Build a concrete art-direction prompt the image model can
-           execute on. Each line is a directive; the model handles them
-           better as labelled bullets than as one paragraph. */
-        var dir = STYLE_DIRECTION[opts.styleId] || STYLE_DIRECTION.minimalist;
-        var lines = [
-            "You are creating a printed skin — a flat greyscale image — for a wearable device called the Sony FES Watch U.",
-            "The FES Watch U has a monochrome e-paper display that covers the entire device surface: both the round watch face AND both watch straps are one continuous e-paper screen.",
-            "Your image IS that surface, unrolled and laid out flat. No background, no environment, no table, no shadow — just the artwork itself.",
-            "",
-            "SHAPE OF THE IMAGE (152 px wide × 704 px tall):",
-            "  1. Upper strap: a short rectangle at the top (y=0–196), full width.",
-            "  2. Watch face: a large circle in the middle (y=196–508), full width of the canvas.",
-            "  3. Lower strap: a short rectangle at the bottom (y=508–704), full width.",
-            "The artwork flows seamlessly across all three zones — no gap, no border, no frame between them.",
-            "",
-            "CANVAS DIMENSIONS: 152 px wide × 704 px tall.",
-            "  - Upper strap region: x=0–152, y=0–196 (rectangular band).",
-            "  - Watch face region: x=0–152, y=196–508 (the design is circular here but the canvas is still the full 152 px wide — corners of this zone are background).",
-            "  - Lower strap region: x=0–152, y=508–704 (rectangular band).",
-            "",
-            "DISPLAY FORMAT: The screen is greyscale e-paper with only 4 tones: pure black, dark grey, light grey, and pure white. No colour exists on this device. Smooth gradients look terrible — they posterize into ugly steps. Design with flat tonal areas and hard tonal edges, like a screen-printed poster or a woodblock print.",
-            "",
-            "CONCEPT: " + opts.concept,
-            opts.mood ? ("MOOD: " + opts.mood) : null,
-            "STYLE: " + (opts.styleLabel || opts.styleId).toLowerCase(),
-            "",
-            "ART DIRECTION:",
-            "- Light: " + dir.light + ".",
-            "- Depth: " + dir.depth + ".",
-            "- Negative space: " + dir.negativeSpace + ".",
-            "- Contrast: " + dir.contrast + ".",
-            "- Extras: " + dir.extras + ".",
-            "",
-            "COMPOSITION RULES:",
-            "- The pattern or artwork must flow continuously and naturally across all three zones (upper strap → watch face circle → lower strap). Think of it like a textile print that wraps around the whole object.",
-            "- The watch firmware draws the time (large clock digits) inside the circular face area, centred at approximately x=76, y=352, radius 76 px. This means the central circle of the watch face will have the time overlaid on top of your artwork. Design the watch face zone (y=196–508) with a CALM, UNIFORM background — either a solid dark value or a solid light value — so the time digits remain readable. Put your interesting textures and focal elements in the strap regions.",
-            "- The two strap regions (top and bottom) are where the visual concept lives. They should be bold, detailed, and expressive.",
-            "- Use the 4 tones boldly. Large flat areas of a single tone read better than busy detail at this size.",
-            "- The watch is only 30 mm wide in real life. Shapes must be simple and readable at thumbnail size.",
-            "- Fill every pixel — no white margins, no border, no padding around the edges.",
-            "- Do not add any text, digits, clock hands, or logos. The watch firmware handles the time display.",
-            "",
-            "OUTPUT: A single flat greyscale image, 152×704 px, showing the complete artwork as it would appear printed across the full surface of the FES Watch U."
-        ];
-        if (opts.vary) {
-            lines.push("");
-            lines.push("VARIATION: keep the same concept, mood, and style direction. Change the specific visual composition, the tonal distribution, and the shape of the main focal element.");
+        /* Concept-first prompt. The user's idea is the brief; everything
+           else is constraint. Style and mood are optional soft hints —
+           when supplied they nudge, when omitted they don't appear at all
+           and the concept fully decides the aesthetic.
+
+           Greyscale is treated as a *design constraint*, not a post-step:
+           the model is asked to think in tonal values from the start so
+           it doesn't render a colour image that posterises badly when
+           desaturated downstream by rasterizeToWatch(). */
+        var hasStyle = opts.styleId && opts.styleId !== "none";
+        var dir = hasStyle ? STYLE_DIRECTION[opts.styleId] : null;
+
+        var lines = [];
+
+        // 1. Lead with the brief.
+        lines.push("THE DESIGN BRIEF (this is the main thing — render this):");
+        lines.push(opts.concept);
+        lines.push("");
+
+        // 2. Optional soft hints, only when the user supplied them.
+        var hints = [];
+        if (hasStyle) {
+            hints.push("Stylistic flavour: " + (opts.styleLabel || opts.styleId).toLowerCase() +
+                " — " + dir.extras + ". " +
+                "Lean this way only when it doesn't fight the brief above.");
         }
-        return lines.filter(function (l) { return l !== null; }).join("\n");
+        if (opts.mood) {
+            hints.push("Mood hint: " + opts.mood + " — let this colour the tonal feel, but the brief leads.");
+        }
+        if (hints.length) {
+            lines.push("OPTIONAL HINTS:");
+            for (var hi = 0; hi < hints.length; hi++) lines.push("- " + hints[hi]);
+            lines.push("");
+        }
+
+        // 3. Hard greyscale constraint, framed as a design choice not a filter.
+        lines.push("MEDIUM (non-negotiable):");
+        lines.push("This is a greyscale e-paper screen with only 4 tones: pure black, dark grey, light grey, pure white. No colour. Do not render a colour image and rely on conversion — design IN greyscale from the start, thinking in tonal blocks, not hues. Smooth gradients posterise into ugly bands; use flat tonal areas with clean tonal edges, like a screen-printed poster, a woodblock print, or a high-contrast black-and-white photograph.");
+        lines.push("");
+
+        // 4. Hard physical / canvas constraints — the watch shape.
+        lines.push("PHYSICAL FORMAT (non-negotiable):");
+        lines.push("The image IS the entire surface of a Sony FES Watch U, unrolled and flat. 152 px wide × 704 px tall. Three connected zones:");
+        lines.push("  • Upper strap (y=0–196), full width.");
+        lines.push("  • Watch face circle (y=196–508), full width — the design is circular but the canvas stays rectangular; corners of this zone read as background.");
+        lines.push("  • Lower strap (y=508–704), full width.");
+        lines.push("The artwork must flow continuously across all three zones, like a textile print wrapping the object. No frame, border, padding, white margin, or scene background — fill every pixel.");
+        lines.push("");
+
+        // 5. Composition advice, in service of the brief.
+        lines.push("HOW TO MAKE THE BRIEF WORK ON THIS SHAPE:");
+        lines.push("- The watch firmware overlays large clock digits inside the circular face area (centred ~x=76 y=352, radius 76 px). Keep that central region readable — a calm, uniform tonal block (either solid dark or solid light) under where the time will sit. The expressive, detailed parts of the brief should land in the upper and lower strap regions.");
+        lines.push("- The watch is only 30 mm wide physically. Shapes must read clearly at thumbnail size. Bold tonal masses beat fine detail.");
+        lines.push("- No text, no digits, no clock hands, no logos — the firmware handles the time.");
+        lines.push("");
+
+        if (opts.vary) {
+            lines.push("VARIATION: same brief, recompose. Change the specific tonal layout and the shape of the main focal element. Don't drift from the brief.");
+            lines.push("");
+        }
+
+        lines.push("OUTPUT: a single flat greyscale image, 152×704 px, showing the complete artwork ready to print onto the watch surface.");
+
+        return lines.join("\n");
     }
 
     function getSecrets() {
@@ -366,16 +388,23 @@
             console.warn("[aigen] rephrase skipped: no key");
             return rawConcept;
         }
-        var system = "You are a design brief writer for the Sony FES Watch U — a fashion watch where the entire device surface (round face + both straps) is one continuous monochrome e-paper screen. Your job is to rewrite vague user concepts into vivid, concrete image-generation briefs of 1–2 sentences. Output must be present-tense, sensory, and specific. No meta-commentary, no 'Sure!', no quotes, no explanation. Maximum 40 words.";
-        var user = [
-            "Style: " + styleLabel + ".",
-            mood ? ("Mood: " + mood + ".") : "Mood: choose what fits the concept.",
-            "User concept: " + rawConcept,
-            "",
-            "Rewrite this as a vivid, specific artwork brief for the FES Watch U skin.",
-            "Remember: the image is 152×704 px greyscale (4 tones only). It shows the watch face as a circle in the centre, with two short rectangular straps above and below. The concept must work as a pattern or texture that flows continuously across all three zones — top strap, circular face, bottom strap — like a single printed fabric.",
-            "Avoid describing scenes with a sky-and-ground horizon. Instead describe a bold repeating pattern, texture, motif, or abstract composition that fills the whole strip top-to-bottom."
-        ].join("\n");
+        var hasStyle = styleLabel && styleLabel.toLowerCase() !== "no style";
+        var system = [
+            "You write image-generation briefs for a black-and-white e-paper watchface.",
+            "RULES — follow all of them, in this order:",
+            "1. The user's concept is the subject. Never replace it, water it down, or bury it. It MUST be the first thing a viewer recognises in the result.",
+            "2. The image is GREYSCALE ONLY — 4 tones (pure black, dark grey, light grey, pure white). Design in tonal masses from the start. No colour, no gradients, no hue references.",
+            "3. Add only what makes the concept more renderable: iconic visual form, dominant tonal structure, characteristic shapes or textures tied to the concept.",
+            "4. Output: 1–2 tight present-tense sentences, max 35 words. No preamble, no quotes, no explanation."
+        ].join(" ");
+        var userLines = [
+            "Concept: " + rawConcept
+        ];
+        if (hasStyle) userLines.push("Style hint (secondary only): " + styleLabel);
+        if (mood)     userLines.push("Mood hint (secondary only): " + mood);
+        userLines.push("");
+        userLines.push("Write the brief. The concept must lead.");
+        var user = userLines.join("\n");
 
         try {
             var res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -420,7 +449,7 @@
                 "Authorization": "Bearer " + sec.key,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ model: sec.model, prompt: promptText, size: sec.size, n: 1 })
+            body: JSON.stringify({ model: sec.model, prompt: promptText, size: sec.size, quality: "high", n: 1 })
         });
         if (!res.ok) {
             var errText = await res.text();
@@ -804,7 +833,7 @@
                 slug: slug,
                 concept: meta.concept || "",
                 refinedConcept: meta.refinedConcept || "",
-                style: meta.style || "minimalist",
+                style: (meta.style && meta.style !== "none") ? meta.style : "",
                 mood: meta.mood || "",
                 createdAt: new Date().toISOString(),
                 source: "in-app-aigen"

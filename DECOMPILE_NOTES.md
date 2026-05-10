@@ -398,3 +398,49 @@ The `RestorePurchase` settings entry was already removed from
 there. If a future skin ever ships with `tier > 0`, the buy-button
 labels will reappear from the still-present `buy`/`buyFor`/`buyPrice`
 strings — by design.
+
+## Dark Mode Coverage
+
+Sony's `app.css` hardcodes light-mode values throughout. `modern.css`
+overrides surfaces via the `--fes-*` token system, but only a handful
+of selectors had Dark-Mode counter-rules until this pass. Symptom: in
+prefers-color-scheme:dark the body and home list flip dark, but the
+detail card stays bright-white-on-white-text and the bottom nav bar
+stays visibly white. This sections is the audit map for the full pass.
+
+**Layers**
+
+- `modern.css` — own design layer, token-driven. Already has a dark
+  block; we extend it.
+- `aigen.css` — own design layer, token-driven. Verified clean. The
+  `.aigen-watch-screen { background:#e8e4dc }` is intentional: it
+  simulates the physical e-paper of the watch and must NOT flip.
+- `catalog.css` — own design layer, has two adjacent dark blocks.
+  Consolidated in this pass.
+- `app.css` — Sony, do not edit. Targeted overrides go into
+  `modern.css`'s dark block.
+
+**Selector groups needing dark overrides** (extracted from `app.css`):
+
+1. **Detail card** (Pain Point #1): `#page-home-{store,closet} .detail-page` (`bg:#fff`); 5× `color:#000` on `.creator-name`, `.skin-description`, `.creator-introduction`, `.creator-url`, `.creator-url a`; `.indicators .indicator.active { bg:#000 }`; `.back-to-main::after { border:#000 }` (chevron).
+2. **Home main bars** (Pain Point #2): `#page-home-store, .footer-buttons { bg:#fff }`; `#page-home-closet, .footer-buttons { bg:#ccc }`; `.fes-button-alternative { bg:#fff; color:#000 }`; `.fes-button-transparent { color:#000 }`; `.store-error-info { bg:#fff }`.
+3. **OOBE**: `.oobe-page { bg:#fff }`; `.oobe-page .ui-header button { color:#fff }` (assumes dark header behind, breaks on light footer); `.oobe-page .ui-footer { bg:#000 }` and its `.ui-btn`/`.fes-back-navigator` (in dark mode this becomes black-on-black). 6× `color:#6d6d72` on `.welcome-agreement`/`.detail-description` (mid-grey, OK in both modes but worth bumping to `--fes-ink-3` for consistency). `.ui-flipswitch.ui-flipswitch-active { bg:#000 }` toggle.
+4. **Settings**: `.ui-listview > .ui-li-static { bg:#fff }`; `.ui-li-divider { color:#6d6d72; border:#c8c7cc }`; `.fes-list-property-title { color:#000 }`; `:active { bg:#ededed }`. (`modern.css` already styles `.ui-listview > li` but Sony's selector wins on specificity.)
+5. **Edit**: `#page-edit-save, .oobe-page { bg:#fff }`; `.footer-pattern-select-area { bg:#fff }`; `.footer-button-base .fes-button-regular.ui-block-b { color:#c8c7cc }` (disabled state); `.select-btn { color:#ccccd9 }` and `.selected/active { color:#000; border-color:#000 }`; pattern-slider `.center-guide { bg:#cfcfcf }`, `.ui-slider-popup { color:#000 }`. `.edit-area, .watch-guide { bg:#7f7f7f }` is neutral grey, fine in both modes.
+6. **Modals/popups**: `.ui-overlay-fes, .ui-panel-wrapper { bg:#000 }` is the backdrop layer — already dark, leave alone. The popup container itself is on `.ui-popup` → `modern.css` styles it via tokens, verified.
+7. **Common**: `.network-connection-error { bg:#000; color:#fff }` is style-aware (always dark button), keep as-is.
+
+**Skin-image allow-list** (must NEVER be inverted/recoloured because
+they render the actual greyscale e-paper output):
+
+- `.detail-image, .skin-image, .skin-images-wrapper img`
+- `.aigen-watch-screen img`
+- `.aigen-history-strip .h-img img`
+- `.tile-img img` (style preset thumbnails)
+- The arc-area `<canvas>` (no class — selected via `.skin-list-window canvas`)
+
+**Order of execution**
+
+1. Pain Points first (detail + home/main) — visible on every commit.
+2. OOBE → Settings → Edit → Modals → Common.
+3. Mirror APK ↔ iOS via `cp` (same pattern as the aigen pivot).

@@ -159,46 +159,39 @@
     return null;
   }
 
-  function _dbg(msg) {
-    var el = document.getElementById("fct-debug-toast");
-    if (!el) {
-      el = document.createElement("div");
-      el.id = "fct-debug-toast";
-      el.style.cssText = "position:fixed;bottom:80px;left:8px;right:8px;background:rgba(0,0,0,.9);color:#fff;font:11px monospace;padding:8px;border-radius:6px;z-index:99999;white-space:pre-wrap;word-break:break-all;pointer-events:none;max-height:140px;overflow:hidden";
-      document.body.appendChild(el);
-    }
-    el.textContent = msg;
-    clearTimeout(el._t);
-    el._t = setTimeout(function () { el.textContent = ""; }, 4000);
-  }
-
   // Sony lazy-paginates the catalog (~2 skins at a time). We can't wait for
   // the user to scroll through 50 pages — we hydrate Sony's Backbone
   // collection from our pre-loaded catalog JSON directly. Backbone.add with
   // raw objects auto-instantiates Skin models.
-  var _hydrated = false;
-  function hydrateCollection() {
-    if (_hydrated) return;
-    var coll = getCollection();
-    if (!coll || typeof coll.add !== "function") return;
+  function hydrateOne(c) {
+    if (!c || typeof c.add !== "function") return;
+    if (c._fesHydrated) return;
     if (!facets || !facets._all.length) return;
     var have = Object.create(null);
-    coll.models.forEach(function (m) {
+    c.models.forEach(function (m) {
       var id = m.id || (m.attributes && m.attributes.id);
       if (id) have[id] = 1;
     });
     var missing = facets._all.filter(function (s) { return !have[s.id]; });
     if (missing.length) {
-      try { coll.add(missing, { silent: true, merge: true }); } catch (_) {}
+      try { c.add(missing, { silent: true, merge: true }); } catch (_) {}
     }
-    try { coll._totalCount = coll.models.length; } catch (_) {}
-    _hydrated = true;
+    try { c._totalCount = c.models.length; } catch (_) {}
+    try { c._totalContentCount = c.models.length; } catch (_) {}
+    c._fesHydrated = true;
+  }
+  function hydrateCollection() {
+    hydrateOne(getCollection());
+    var pc = findHomePageController("page-home-store") ||
+             findHomePageController("page-home-closet");
+    var slvColl = pc && pc._skinListView && pc._skinListView.collection;
+    if (slvColl) hydrateOne(slvColl);
   }
 
   function applyToArc() {
     var coll = getCollection();
-    if (!coll || !coll.models) { _dbg("no coll"); return; }
-    if (!facets || !facets._all.length) { _dbg("no facets._all"); return; }
+    if (!coll || !coll.models) return;
+    if (!facets || !facets._all.length) return;
     hydrateCollection();
     _applyFilterNow();
   }
@@ -206,18 +199,18 @@
   function _applyFilterNow() {
     var coll = getCollection();
     if (!coll || !coll.models) return;
-    var dbg = [];
-    dbg.push("coll.length=" + coll.length);
-    dbg.push("facets._all=" + facets._all.length);
-    dbg.push("state=" + JSON.stringify({g:state.genre,t:state.tag,a:state.artist}));
 
-    // Snapshot the now-hydrated model list. Always re-snapshot if collection
-    // grew (hydration can add models after first apply).
-    if (!coll._fesOriginalModels || coll._fesOriginalModels.length < coll.models.length) {
-      coll._fesOriginalModels = coll.models.slice();
+    // The SkinListView holds its own SkinCollection instance — separate from
+    // the SkinCollection.getInstance(2) singleton. Filter that one instead.
+    var pc = findHomePageController("page-home-store") ||
+             findHomePageController("page-home-closet");
+    var slv = pc && pc._skinListView;
+    var target = (slv && slv.collection) || coll;
+
+    if (!target._fesOriginalModels || target._fesOriginalModels.length < target.models.length) {
+      target._fesOriginalModels = target.models.slice();
     }
-    var src = coll._fesOriginalModels;
-    dbg.push("src=" + src.length);
+    var src = target._fesOriginalModels;
 
     var allowedSet = Object.create(null);
     facets._all.filter(matchSkin).forEach(function (s) { allowedSet[s.id] = 1; });
@@ -225,54 +218,35 @@
       var id = (m && m.id) || (m && m.attributes && m.attributes.id);
       return allowedSet[id];
     });
-    dbg.push("filtered=" + filtered.length);
-
-    try { coll.reset(filtered, { silent: true }); } catch (_) {}
-    // Sony's totalCount getter reads _totalContentCount. If that's higher than
-    // length, prepareSkinDataForArc pushes empty placeholders AND SkinList.fetch
-    // auto-loads more skins (length !== totalCount triggers a re-fetch).
-    // We set both to filtered.length to keep Sony's pagination quiet.
-    try { coll._totalContentCount = filtered.length; } catch (_) {}
-    try { coll._totalCount = filtered.length; } catch (_) {}
 
     // Cancel any in-flight Sony fetch that might overwrite our reset.
-    var pcCancel = findHomePageController("page-home-store") ||
-                   findHomePageController("page-home-closet");
-    if (pcCancel && pcCancel._skinListView && pcCancel._skinListView._promiseFetch) {
-      try { pcCancel._skinListView._promiseFetch.abort(); } catch (_) {}
-      pcCancel._skinListView._promiseFetch = null;
+    if (slv && slv._promiseFetch) {
+      try { slv._promiseFetch.abort(); } catch (_) {}
+      slv._promiseFetch = null;
     }
-    if (coll._promiseFetch) {
-      try { coll._promiseFetch.abort(); } catch (_) {}
-      coll._promiseFetch = null;
+    if (target._promiseFetch) {
+      try { target._promiseFetch.abort(); } catch (_) {}
+      target._promiseFetch = null;
     }
 
-    // Re-paint Sony's arc directly. Don't use SkinListView.render() because
-    // its tail calls this.fetch() which immediately re-pulls the unfiltered
-    // catalog from the server, overwriting our filtered set.
-    var pc = findHomePageController("page-home-store") ||
-             findHomePageController("page-home-closet");
-    var slv = pc && pc._skinListView;
+    try { target.reset(filtered, { silent: true }); } catch (_) {}
+    // Backbone's reset triggers Sony's onReset which sets _totalCount=null.
+    // Set BOTH counters AFTER reset so prepareSkinDataForArc doesn't pad
+    // with empty placeholders up to the original totalCount.
+    try { target._totalContentCount = filtered.length; } catch (_) {}
+    try { target._totalCount = filtered.length; } catch (_) {}
+
     if (slv) {
       try {
         if (typeof slv.cleanView === "function") slv.cleanView(true);
-        if (typeof slv.initArc === "function") {
-          slv.initArc(0);
-          dbg.push("arc-rebuilt");
-        }
-        // re-show no-skin message if filtered to 0
+        if (typeof slv.initArc === "function") slv.initArc(0);
         if (filtered.length === 0 && typeof slv.displayNoSkinsMessage === "function") {
           slv.displayNoSkinsMessage();
         } else if (typeof slv.hideNoSkinMessage === "function") {
           slv.hideNoSkinMessage();
         }
-      } catch (e) {
-        dbg.push("arc.err=" + e.message);
-      }
-    } else {
-      dbg.push("no-slv");
+      } catch (_) {}
     }
-    _dbg(dbg.join("\n"));
   }
 
   // Navigation helpers: drive jQM's router using the same hash-IDs Sony's
@@ -290,13 +264,7 @@
   }
 
   function navigateToCloset() { navigateTo("#home-closet", "slant"); }
-  function navigateToCatalog() {
-    var r = _router();
-    if (r) {
-      try { r.back(); return; } catch (_) {}
-    }
-    navigateTo("#home-store", "slant");
-  }
+  function navigateToCatalog() { navigateTo("#home-store", "slant"); }
   function navigateToEditBackground() {
     var r = _router();
     if (r && typeof r.beginSubFlow === "function") {
@@ -686,23 +654,32 @@
     return id === "page-home-store" || id === "page-home-closet";
   }
 
-  function detectActivePage() {
-    return document.querySelector(".ui-page-active") ||
-           document.getElementById("page-home-store");
+  function detectActivePage(hint) {
+    // Prefer the page reported by the lifecycle event when available.
+    if (hint && hint.id) return hint;
+    // jQM may briefly mark both outgoing and incoming pages as active during
+    // a transition; prefer a home page if any home page is active.
+    var actives = document.querySelectorAll(".ui-page-active");
+    for (var i = 0; i < actives.length; i++) {
+      if (isHomePage(actives[i].id)) return actives[i];
+    }
+    return actives[0] || document.getElementById("page-home-store");
   }
 
   var lastActiveId = null;
 
-  function syncToolbarToActivePage() {
-    var act = detectActivePage();
+  function syncToolbarToActivePage(ev) {
+    var hint = ev && ev.target && ev.target.id ? ev.target : null;
+    var act = detectActivePage(hint);
     if (!act) return;
-    if (act.id === lastActiveId) return;
-    lastActiveId = act.id;
     if (!isHomePage(act.id)) {
       hideToolbar();
+      lastActiveId = act.id;
       return;
     }
-    showToolbarFor(act);
+    var sameAsLast = act.id === lastActiveId;
+    lastActiveId = act.id;
+    showToolbarFor(act, sameAsLast);
   }
 
   function hideToolbar() {
@@ -710,7 +687,7 @@
     if (t) t.style.display = "none";
   }
 
-  function showToolbarFor(page) {
+  function showToolbarFor(page, skipHeavy) {
     var toolbar = buildToolbar();
     var sheet = buildSheet();
     bindToolbarEvents(toolbar, sheet);
@@ -729,7 +706,11 @@
     // height so CSS can push .main-page down by exactly that amount.
     requestAnimationFrame(publishToolbarHeight);
     setTimeout(publishToolbarHeight, 200);
+    // Attach detail-page watcher whenever a home page becomes active. The
+    // jQM pageshow event isn't reliable here, so this is the durable hook.
+    watchDetailPage(page);
     if (page.id === "page-home-closet") return;
+    if (skipHeavy) return;
 
     loadFacets().then(function () {
       renderPillRow();
@@ -765,32 +746,46 @@
   }
 
   function init() {
-    document.addEventListener("pageshow", function (ev) {
-      syncToolbarToActivePage(ev);
-      var page = ev.target;
-      if (page && (page.id === "page-home-store" || page.id === "page-home-closet")) {
-        watchDetailPage(page);
-      }
-    });
-    document.addEventListener("pagebeforeshow", syncToolbarToActivePage);
-    document.addEventListener("pagehide", function () {
-      setTimeout(syncToolbarToActivePage, 60);
-    });
-
-    // Watch jQM's per-page class toggle (ui-page-active) without observing
-    // the entire body subtree (which would interfere with the arc's Hammer
-    // recognizers as Sony's render churns DOM).
-    var mo = new MutationObserver(syncToolbarToActivePage);
-    var pages = document.querySelectorAll('[data-role="page"]');
-    if (pages.length) {
-      pages.forEach(function (p) {
-        mo.observe(p, { attributes: true, attributeFilter: ["class"] });
+    // jQM dispatches page lifecycle events as jQuery custom events — they
+    // don't propagate through native addEventListener. Bind via jQuery.
+    var $doc = window.$ ? $(document) : null;
+    if ($doc) {
+      $doc.on("pageshow pagebeforeshow", function (ev) {
+        var page = ev.target;
+        syncToolbarToActivePage({ type: ev.type, target: page });
+        if (page && (page.id === "page-home-store" || page.id === "page-home-closet")) {
+          watchDetailPage(page);
+        }
       });
-    } else {
-      mo.observe(document.body, { childList: true });
+      $doc.on("pagehide", function () {
+        setTimeout(function () { syncToolbarToActivePage(); }, 60);
+      });
     }
 
-    // Initial-load fallback: jQM may not fire pageshow on the first page.
+    // Watch each page element's class attribute for ui-page-active toggles.
+    // jQM loads page templates lazily, so we also watch body's direct
+    // children (childList only — no subtree) to attach observers as new
+    // pages are added.
+    var classMo = new MutationObserver(function () { syncToolbarToActivePage(); });
+    var watched = new WeakSet();
+    function watchPage(p) {
+      if (!p || watched.has(p)) return;
+      watched.add(p);
+      classMo.observe(p, { attributes: true, attributeFilter: ["class"] });
+    }
+    document.querySelectorAll('[data-role="page"]').forEach(watchPage);
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        m.addedNodes && m.addedNodes.forEach(function (n) {
+          if (n.nodeType === 1 && n.getAttribute && n.getAttribute("data-role") === "page") {
+            watchPage(n);
+            syncToolbarToActivePage();
+          }
+        });
+      });
+    }).observe(document.body, { childList: true });
+
+    // Initial-load fallback.
     var attempts = 0;
     var poll = setInterval(function () {
       syncToolbarToActivePage();
