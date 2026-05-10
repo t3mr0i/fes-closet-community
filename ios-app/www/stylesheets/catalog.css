@@ -9,31 +9,471 @@
   box-sizing: border-box;
 }
 
-/* The legacy Sony layout uses .two-pages-container > .main-page (width:50%)
- * for the slide transition. The filter bar JS hoists this element out of
- * .main-page and re-appends it directly to #page-home-store so it can span
- * the real viewport width. */
-#page-home-store {
-  /* anchor for the absolutely-positioned filter bar */
-  position: relative;
+/* The legacy Sony catalog filter bar (in the home-store template) is
+ * permanently hidden — fes.catalog-filter.js builds its own floating shell. */
+#catalog-filter-bar { display: none !important; }
+
+/* Hide Sony's home-header on BOTH catalog and closet pages. Our toolbar
+ * replaces them. Sony's buttons inside the header still work — they're just
+ * not visible; we trigger them via vclick from the toolbar. */
+#page-home-store .home-header,
+#page-home-closet .home-header { display: none !important; }
+
+/* Kill ALL page transitions on the two home pages — slant, slide, fade,
+ * platform-default, platform-alternative — so the toolbar swap is instant.
+ * jQuery Mobile applies these as classes on the page itself during transition. */
+#page-home-store,
+#page-home-store *,
+#page-home-store::before,
+#page-home-store::after,
+#page-home-closet,
+#page-home-closet *,
+#page-home-closet::before,
+#page-home-closet::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+}
+#page-home-store.slant::before,
+#page-home-store.slant.in::before,
+#page-home-store.slant.out::before,
+#page-home-store.slant.in.reverse::before,
+#page-home-store.slant.out.reverse::before,
+#page-home-closet.slant::before,
+#page-home-closet.slant.in::before,
+#page-home-closet.slant.out::before,
+#page-home-closet.slant.in.reverse::before,
+#page-home-closet.slant.out.reverse::before {
+  display: none !important;
 }
 
-#page-home-store .catalog-filter-bar--hoisted {
-  position: absolute;
-  top: 44px; /* sits directly under the .home-header (height:44px) */
+/* ============================================================
+ * fes-catalog-toolbar - top floating shell on the store page
+ * ============================================================ */
+#fes-catalog-toolbar {
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
   width: 100%;
-  max-width: 100vw;
-  margin: 0;
-  padding: 6px 0 8px;
+  z-index: 90;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  padding-top: env(safe-area-inset-top, 0px);
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  color: #181818;
+}
+.platform-ios #fes-catalog-toolbar {
+  /* iPhone safe-area-inset-top is ~47-59px; that's exactly what we want as
+   * top padding (no extra). The row1 below sits flush under the status bar. */
+  padding-top: env(safe-area-inset-top, 47px);
+}
+#fes-catalog-toolbar .fct-row1 {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0;
+  gap: 0;
+}
+#fes-catalog-toolbar .fct-row1[hidden],
+#fes-catalog-toolbar .fct-pill-row[hidden],
+#fes-catalog-toolbar .fct-search-row[hidden] {
+  display: none !important;
+}
+#fes-catalog-toolbar .fct-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#fes-catalog-toolbar .fct-icon-btn {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: #181818;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+}
+#fes-catalog-toolbar .fct-icon-btn:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+#fes-catalog-toolbar .fct-badge {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: #c4954b;
+  color: #1a1408;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* search row */
+#fes-catalog-toolbar .fct-search-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+#fes-catalog-toolbar .fct-search-input {
+  flex: 1;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  color: #181818;
+  outline: none;
+  -webkit-appearance: none;
+}
+#fes-catalog-toolbar .fct-search-clear {
+  width: 32px; height: 32px;
+  border: 0; border-radius: 999px;
+  background: transparent;
+  color: #555;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* pill scroller */
+#fes-catalog-toolbar .fct-pill-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 4px 12px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#fes-catalog-toolbar .fct-pill-row::-webkit-scrollbar { display: none; }
+
+#fes-catalog-toolbar .fct-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.03);
+  color: #181818;
+  font: 600 11px/1 -apple-system, "SF Pro Text", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+#fes-catalog-toolbar .fct-pill.is-active {
+  background: #181818;
+  color: #fff;
+  border-color: #181818;
+}
+#fes-catalog-toolbar .fct-pill-count {
+  display: inline-block;
+  min-width: 18px;
+  height: 16px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.07);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+#fes-catalog-toolbar .fct-pill.is-active .fct-pill-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Push the arc + info-strip down, but use margin-top on .skin-list-window
+ * (which has position:relative;overflow:hidden and is what Sony's Arc reads)
+ * — NOT padding on .main-page (which would create scrollable overflow that
+ * fights Hammer.js pan recognizers). */
+#page-home-store .skin-list-window {
+  margin-top: 92px;
+}
+.platform-ios #page-home-store .skin-list-window {
+  margin-top: 130px;
+}
+#page-home-closet .skin-list-window {
+  margin-top: 50px;
+}
+.platform-ios #page-home-closet .skin-list-window {
+  margin-top: 88px;
+}
+/* Prevent the page from becoming vertically scrollable: Sony's pages have
+ * .ui-content that holds the .root-container; both should not overflow. */
+#page-home-store .ui-content,
+#page-home-closet .ui-content {
+  overflow: hidden !important;
+  -webkit-overflow-scrolling: auto;
+}
+#page-home-store .main-page,
+#page-home-closet .main-page {
+  overflow: hidden;
+}
+
+/* tag pills look softer than genre pills */
+#fes-catalog-toolbar .fct-pill-tag {
+  border-style: dashed;
+  background: transparent;
+}
+#fes-catalog-toolbar .fct-pill-tag.is-active {
+  border-style: solid;
+  background: #c4954b;
+  color: #1a1408;
+  border-color: #c4954b;
+}
+#fes-catalog-toolbar .fct-pill-tag.is-active .fct-pill-count {
+  background: rgba(26, 20, 8, 0.18);
+  color: rgba(26, 20, 8, 0.7);
+}
+
+#fes-catalog-toolbar .fct-icon-btn svg {
+  display: block;
+  pointer-events: none;
+  margin: 0 auto;
+}
+
+/* search auto-complete suggestions */
+#fes-catalog-toolbar .fct-suggest {
   background: #fff;
-  color: #000;
-  font-family: Roboto, Arial, Helvetica, sans-serif;
-  border-bottom: 1px solid #ededed;
-  z-index: 100;
-  overflow: visible;
-  pointer-events: auto;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  max-height: 280px;
+  overflow-y: auto;
+}
+#fes-catalog-toolbar .fct-suggest[hidden] { display: none !important; }
+#fes-catalog-toolbar .fct-sg-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: 500 14px/1.2 -apple-system, "SF Pro Text", system-ui, sans-serif;
+  color: #181818;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+#fes-catalog-toolbar .fct-sg-row:last-child { border-bottom: 0; }
+#fes-catalog-toolbar .fct-sg-row:active { background: rgba(0, 0, 0, 0.04); }
+#fes-catalog-toolbar .fct-sg-kind {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+#fes-catalog-toolbar .fct-sg-value {
+  flex: 1;
+  text-transform: capitalize;
+}
+#fes-catalog-toolbar .fct-sg-count {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.45);
+}
+@media (prefers-color-scheme: dark) {
+  #fes-catalog-toolbar .fct-suggest { background: #1a1816; }
+  #fes-catalog-toolbar .fct-sg-row { color: #f4f0e6; border-bottom-color: rgba(244, 240, 230, 0.06); }
+  #fes-catalog-toolbar .fct-sg-kind { background: rgba(244, 240, 230, 0.08); color: rgba(244, 240, 230, 0.6); }
+}
+
+/* ============================================================
+ * fes-catalog-filter-sheet - bottom sheet for full facet picker
+ * ============================================================ */
+#fes-catalog-filter-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: block;
+}
+#fes-catalog-filter-sheet[hidden] { display: none; }
+#fes-catalog-filter-sheet .fcs-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(20, 18, 14, 0.32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+#fes-catalog-filter-sheet .fcs-panel {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  max-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px 18px 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.18);
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  color: #181818;
+  animation: fcs-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fcs-rise {
+  from { transform: translateY(20%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+#fes-catalog-filter-sheet .fcs-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+#fes-catalog-filter-sheet .fcs-title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+}
+#fes-catalog-filter-sheet .fcs-reset {
+  background: transparent; border: 0; color: #c4954b;
+  font: 600 13px/1 inherit;
+  cursor: pointer;
+}
+#fes-catalog-filter-sheet .fcs-close {
+  width: 32px; height: 32px;
+  border: 0; border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 18px; cursor: pointer;
+}
+#fes-catalog-filter-sheet .fcs-body {
+  flex: 1; overflow-y: auto;
+  padding: 12px 18px 18px;
+}
+#fes-catalog-filter-sheet .fcs-group {
+  margin-top: 16px;
+}
+#fes-catalog-filter-sheet .fcs-group:first-child { margin-top: 4px; }
+#fes-catalog-filter-sheet .fcs-group h4 {
+  margin: 0 0 8px;
+  font: 700 11px/1 inherit;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+#fes-catalog-filter-sheet .fcs-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+#fes-catalog-filter-sheet .fcs-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: #fff;
+  color: #181818;
+  font: 500 12px/1 inherit;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+#fes-catalog-filter-sheet .fcs-chip.is-active {
+  background: #181818;
+  color: #fff;
+  border-color: #181818;
+}
+#fes-catalog-filter-sheet .fcs-count {
+  display: inline-block;
+  min-width: 18px; padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+#fes-catalog-filter-sheet .fcs-chip.is-active .fcs-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+}
+#fes-catalog-filter-sheet .fcs-empty {
+  font-size: 13px; color: rgba(0, 0, 0, 0.45);
+}
+#fes-catalog-filter-sheet .fcs-foot {
+  padding: 12px 18px 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+#fes-catalog-filter-sheet .fcs-apply {
+  width: 100%;
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: #181818;
+  color: #fff;
+  font: 700 13px/1 inherit;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* dark mode - sheet + toolbar adapt */
+@media (prefers-color-scheme: dark) {
+  #fes-catalog-toolbar {
+    background: rgba(20, 18, 15, 0.86);
+    border-bottom-color: rgba(244, 240, 230, 0.10);
+    color: #f4f0e6;
+  }
+  #fes-catalog-toolbar .fct-icon-btn { color: #f4f0e6; }
+  #fes-catalog-toolbar .fct-icon-btn:active { background: rgba(255, 255, 255, 0.08); }
+  #fes-catalog-toolbar .fct-pill {
+    background: rgba(244, 240, 230, 0.06);
+    border-color: rgba(244, 240, 230, 0.18);
+    color: #f4f0e6;
+  }
+  #fes-catalog-toolbar .fct-pill.is-active {
+    background: #f4f0e6;
+    color: #1a1408;
+    border-color: #f4f0e6;
+  }
+  #fes-catalog-toolbar .fct-pill-count {
+    background: rgba(244, 240, 230, 0.08);
+    color: rgba(244, 240, 230, 0.6);
+  }
+  #fes-catalog-toolbar .fct-search-input {
+    background: rgba(244, 240, 230, 0.10);
+    color: #f4f0e6;
+  }
+  #fes-catalog-filter-sheet .fcs-panel {
+    background: #1a1816;
+    color: #f4f0e6;
+  }
+  #fes-catalog-filter-sheet .fcs-chip {
+    background: rgba(244, 240, 230, 0.04);
+    border-color: rgba(244, 240, 230, 0.18);
+    color: #f4f0e6;
+  }
 }
 
 /* The arc/skin-list-window starts at the top of .main-page. Push it down so
@@ -42,8 +482,8 @@
   margin-top: 46px;
 }
 
-#page-home-store .catalog-filter-bar--hoisted .catalog-genre-pill,
-#page-home-store .catalog-filter-bar--hoisted .catalog-chip {
+.catalog-filter-bar--hoisted .catalog-genre-pill,
+.catalog-filter-bar--hoisted .catalog-chip {
   pointer-events: auto;
   position: relative;
   z-index: 1;
@@ -121,10 +561,6 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-}
-
-#page-home-store .catalog-filter-bar--hoisted {
-  position: absolute;
 }
 
 .catalog-filter-panel {

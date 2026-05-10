@@ -1,0 +1,697 @@
+/* FES Community modern design layer.
+ * Loaded last; overrides Sony's app.css visuals without touching layout
+ * primitives that the Cordova/jQuery-Mobile/Backbone runtime depends on.
+ *
+ * Design tokens live as CSS custom properties so dark-mode is a one-block
+ * override at the bottom of this file. Layout, transforms, and JS hooks
+ * (selectors, classes the framework reads) are NEVER changed here. */
+
+:root {
+  /* type */
+  --fes-font-display: -apple-system, "SF Pro Display", "BlinkMacSystemFont", "Inter", "Segoe UI", system-ui, sans-serif;
+  --fes-font-text: -apple-system, "SF Pro Text", "BlinkMacSystemFont", "Inter", "Segoe UI", system-ui, sans-serif;
+  --fes-font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --fes-font-serif: "Iowan Old Style", "Apple Garamond", "Georgia", "Times New Roman", serif;
+
+  /* surface palette - warm off-white scale */
+  --fes-surface-0: #ffffff;
+  --fes-surface-1: #faf8f4;
+  --fes-surface-2: #f3efe7;
+  --fes-surface-3: #e8e3d8;
+  --fes-line: rgba(20, 18, 14, 0.10);
+  --fes-line-strong: rgba(20, 18, 14, 0.18);
+
+  /* ink */
+  --fes-ink-1: #14120e;
+  --fes-ink-2: rgba(20, 18, 14, 0.72);
+  --fes-ink-3: rgba(20, 18, 14, 0.52);
+  --fes-ink-4: rgba(20, 18, 14, 0.34);
+
+  /* accents */
+  --fes-accent: #c4954b;
+  --fes-accent-ink: #1a1408;
+  --fes-positive: #3a8a5f;
+  --fes-warning: #c2632a;
+  --fes-danger: #b3382c;
+
+  /* radii */
+  --fes-r-xs: 4px;
+  --fes-r-sm: 8px;
+  --fes-r-md: 12px;
+  --fes-r-lg: 18px;
+  --fes-r-pill: 999px;
+
+  /* shadows */
+  --fes-shadow-sm: 0 1px 2px rgba(20, 18, 14, 0.06), 0 1px 1px rgba(20, 18, 14, 0.04);
+  --fes-shadow-md: 0 4px 14px rgba(20, 18, 14, 0.08), 0 1px 2px rgba(20, 18, 14, 0.05);
+  --fes-shadow-lg: 0 18px 36px rgba(20, 18, 14, 0.14), 0 4px 8px rgba(20, 18, 14, 0.06);
+
+  /* spacing */
+  --fes-pad-xs: 4px;
+  --fes-pad-sm: 8px;
+  --fes-pad-md: 14px;
+  --fes-pad-lg: 22px;
+  --fes-pad-xl: 32px;
+
+  /* motion */
+  --fes-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fes-dur: 0.28s;
+}
+
+/* ---------- baseline ---------- */
+body,
+.ui-page-theme-fes,
+#splash {
+  background-color: var(--fes-surface-1);
+  color: var(--fes-ink-1);
+  font-family: var(--fes-font-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- splash: replace the Sony PNG with a clean wordmark ---------- */
+#splash {
+  background-image: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#splash::before {
+  content: "FES";
+  font-family: var(--fes-font-display);
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--fes-ink-1);
+  display: block;
+  text-align: center;
+  line-height: 1;
+}
+#splash::after {
+  content: "Community";
+  font-family: var(--fes-font-text);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  color: var(--fes-ink-3);
+  position: absolute;
+  margin-top: 84px;
+  text-transform: uppercase;
+}
+
+/* ---------- typography pass ---------- */
+h1, h2, h3, h4 {
+  font-family: var(--fes-font-display);
+  letter-spacing: -0.005em;
+}
+.ui-content,
+.ui-page-theme-fes p {
+  font-family: var(--fes-font-text);
+}
+.ui-page-theme-fes h1,
+.ui-page-theme-fes .ui-header h1 {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--fes-ink-1);
+}
+.ui-page-theme-fes .home-header h1 {
+  letter-spacing: 0.22em;
+}
+
+/* ---------- buttons ---------- */
+.fes-button-regular,
+.command-connect-navigate.fes-button-regular,
+button.fes-button-regular {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border: 0;
+  border-radius: var(--fes-r-sm);
+  font-family: var(--fes-font-text);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  box-shadow: var(--fes-shadow-sm);
+  transition: transform var(--fes-dur) var(--fes-ease), box-shadow var(--fes-dur) var(--fes-ease);
+}
+.fes-button-regular:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ---------- list rows (settings, file lists) ---------- */
+.ui-page-theme-fes .ui-listview > li {
+  background: var(--fes-surface-0);
+  border-bottom: 1px solid var(--fes-line);
+}
+.ui-page-theme-fes .ui-listview > li.ui-li-divider {
+  background: transparent;
+  color: var(--fes-ink-3);
+  font-family: var(--fes-font-text);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 18px 16px 6px;
+  border: 0;
+}
+.ui-page-theme-fes .ui-listview > li > a {
+  color: var(--fes-ink-1);
+  font-family: var(--fes-font-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ---------- catalog filter bar polish ---------- */
+#page-home-store .catalog-filter-bar--hoisted {
+  background: var(--fes-surface-0);
+  border-bottom: 1px solid var(--fes-line);
+  box-shadow: var(--fes-shadow-sm);
+  padding: 8px 0;
+}
+.catalog-genre-pill {
+  background: var(--fes-surface-1);
+  border: 1px solid var(--fes-line-strong);
+  color: var(--fes-ink-1);
+  font-family: var(--fes-font-text);
+  letter-spacing: 0.04em;
+  height: 32px;
+  padding: 0 14px;
+  transition: background var(--fes-dur) var(--fes-ease), color var(--fes-dur) var(--fes-ease), border-color var(--fes-dur) var(--fes-ease);
+}
+.catalog-genre-pill.active {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border-color: var(--fes-ink-1);
+}
+.catalog-genre-pill-more {
+  border-style: dashed;
+  background: transparent;
+}
+.catalog-genre-pill-more.active {
+  background: var(--fes-accent);
+  color: var(--fes-accent-ink);
+  border-color: var(--fes-accent);
+  border-style: solid;
+}
+.catalog-chip-count {
+  background: rgba(20, 18, 14, 0.08);
+  color: var(--fes-ink-3);
+}
+.catalog-genre-pill.active .catalog-chip-count,
+.catalog-chip.active .catalog-chip-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+.catalog-filter-panel {
+  background: var(--fes-surface-0);
+  border-top: 1px solid var(--fes-line);
+  border-bottom: 1px solid var(--fes-line);
+  box-shadow: var(--fes-shadow-md);
+}
+.catalog-filter-label {
+  color: var(--fes-ink-3);
+  font-family: var(--fes-font-text);
+  letter-spacing: 0.18em;
+}
+.catalog-chip {
+  background: var(--fes-surface-1);
+  border: 1px solid var(--fes-line-strong);
+  color: var(--fes-ink-1);
+}
+.catalog-chip.active {
+  background: var(--fes-ink-1);
+  border-color: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+}
+
+/* ---------- catalog/closet meta strip BELOW the arc ----------
+ * Sony's .info-and-controllers is the bottom 225px panel that shows
+ * skin name + creator + TRY/GET FREE buttons. The arc itself is left
+ * alone. We polish typography, buttons, and the share row. */
+
+#page-home-store .main-page .info-and-controllers,
+#page-home-closet .main-page .info-and-controllers {
+  background: linear-gradient(180deg, transparent 0%, var(--fes-surface-1) 28%);
+}
+
+/* skin-a / skin-b text wrapper - keep the slide-fade behavior, just retype */
+#page-home-store .main-page .info-and-controllers .skin-a,
+#page-home-store .main-page .info-and-controllers .skin-b,
+#page-home-closet .main-page .info-and-controllers .skin-a,
+#page-home-closet .main-page .info-and-controllers .skin-b {
+  text-align: center;
+}
+
+/* primary action: TRY / GET FREE / WEAR  */
+#page-home-store .ui-content button.purchase-skin,
+#page-home-closet .ui-content button.purchase-skin {
+  border-radius: var(--fes-r-sm);
+  font-family: var(--fes-font-text);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-size: 12px;
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border: 0;
+  box-shadow: var(--fes-shadow-sm);
+  transition: transform var(--fes-dur) var(--fes-ease), box-shadow var(--fes-dur) var(--fes-ease);
+}
+#page-home-store .ui-content button.purchase-skin:active,
+#page-home-closet .ui-content button.purchase-skin:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+#page-home-store .ui-content button.purchase-skin .label span,
+#page-home-closet .ui-content button.purchase-skin .label span {
+  font-family: var(--fes-font-text);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+}
+
+/* bottom share/etc row - softer divider */
+#page-home-store .main-page .info-and-controllers .skin-a .bottom-buttons button.share-skin,
+#page-home-store .main-page .info-and-controllers .skin-b .bottom-buttons button.share-skin,
+#page-home-closet .main-page .info-and-controllers .skin-a .bottom-buttons button.share-skin,
+#page-home-closet .main-page .info-and-controllers .skin-b .bottom-buttons button.share-skin {
+  border-left: 1px solid var(--fes-line);
+  font-family: var(--fes-font-text);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fes-ink-2);
+}
+
+/* page indicator (e.g. 2/101) - softer */
+#page-home-store .main-page .skin-list-window ~ .page-indicator,
+#page-home-closet .main-page .skin-list-window ~ .page-indicator {
+  font-family: var(--fes-font-mono);
+  font-size: 11px;
+  color: var(--fes-ink-3);
+  letter-spacing: 0.05em;
+}
+
+/* the round nav arrow next to the arc (forward swipe affordance) */
+#page-home-store .left-svg-button .svg-icon,
+#page-home-closet .left-svg-button .svg-icon {
+  filter: drop-shadow(0 1px 2px rgba(20, 18, 14, 0.10));
+}
+
+/* ---------- store / closet titles ---------- */
+.main-page .creator-name,
+#page-home-store .main-page .creator-name {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--fes-ink-1);
+}
+.main-page .creator-introduction-headline,
+.main-page .skin-name,
+#page-home-store .main-page .skin-name {
+  font-family: var(--fes-font-text);
+  font-size: 13px;
+  color: var(--fes-ink-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.main-page .skin-description,
+#page-home-store .main-page .skin-description {
+  font-family: var(--fes-font-serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fes-ink-2);
+}
+
+/* The detail page renders TWO sets of action buttons:
+ *   - .fes-cv-actions in the body (the polished GET FREE / TRY pair)
+ *   - .footer-buttons sticky at the bottom (legacy Sony duplicate)
+ * Hide the duplicate, give the body a bit of bottom-padding back. */
+#page-home-store .detail-page .footer-buttons,
+#page-home-closet .detail-page .footer-buttons {
+  display: none !important;
+}
+#page-home-store .detail-page .fes-cv .skin-detail-contents,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents {
+  padding-bottom: 40px;
+}
+
+/* ---------- detail page (already uses .fes-cv-*) ---------- */
+.fes-cv {
+  background: var(--fes-surface-1);
+  color: var(--fes-ink-1);
+}
+.fes-cv .fes-cv-title {
+  font-family: var(--fes-font-serif);
+  color: var(--fes-ink-1);
+}
+.fes-cv .fes-cv-byline {
+  color: var(--fes-ink-3);
+}
+.fes-cv .fes-cv-eyebrow,
+.fes-cv .fes-cv-meta,
+.fes-cv .fes-cv-section-label {
+  color: var(--fes-ink-2);
+  letter-spacing: 0.22em;
+}
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action {
+  border-radius: var(--fes-r-sm);
+  letter-spacing: 0.12em;
+  font-family: var(--fes-font-text);
+}
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action-primary,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action-primary {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+}
+
+/* ---------- OOBE pages ---------- */
+.ui-page-theme-fes.oobe-page {
+  background: linear-gradient(180deg, var(--fes-surface-1) 0%, var(--fes-surface-0) 100%);
+}
+.ui-page-theme-fes.oobe-page .main-content h3,
+.ui-page-theme-fes.oobe-page .ui-content h3 {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.005em;
+  color: var(--fes-ink-1);
+}
+.ui-page-theme-fes.oobe-page .welcome-description,
+.ui-page-theme-fes.oobe-page .ui-content p {
+  font-family: var(--fes-font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fes-ink-2);
+}
+.ui-page-theme-fes.oobe-page .ui-footer {
+  background: transparent;
+  border-top: 1px solid var(--fes-line);
+}
+
+/* ---------- settings list rows: more breathing room ---------- */
+.ui-page-theme-fes.settings-page .ui-listview {
+  background: transparent;
+}
+.ui-page-theme-fes.settings-page .ui-listview > li {
+  background: var(--fes-surface-0);
+  margin: 0;
+}
+.ui-page-theme-fes.settings-page .ui-listview > li:not(.ui-li-divider) {
+  min-height: 48px;
+}
+.ui-page-theme-fes.settings-page .ui-listview > li:not(.ui-li-divider):first-child {
+  border-top-left-radius: var(--fes-r-md);
+  border-top-right-radius: var(--fes-r-md);
+}
+.ui-page-theme-fes.settings-page .ui-listview > li:not(.ui-li-divider):last-child {
+  border-bottom-left-radius: var(--fes-r-md);
+  border-bottom-right-radius: var(--fes-r-md);
+}
+.ui-page-theme-fes .fes-list-property-title {
+  font-family: var(--fes-font-text);
+  color: var(--fes-ink-1);
+  font-size: 15px;
+}
+.ui-page-theme-fes .fes-list-property-value {
+  font-family: var(--fes-font-text);
+  color: var(--fes-ink-3);
+}
+
+/* ---------- edit-pattern / edit-background ---------- */
+.ui-page-theme-fes[id^="page-edit-"] .ui-content {
+  background: var(--fes-surface-1);
+}
+.ui-page-theme-fes[id^="page-edit-"] .ui-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--fes-line);
+}
+
+/* ---------- OOBE welcome hero polish ---------- */
+.ui-page-theme-fes.oobe-page .image-area {
+  background: linear-gradient(135deg, var(--fes-surface-2) 0%, var(--fes-surface-1) 100%);
+}
+.ui-page-theme-fes.oobe-page.no-header .main-content {
+  padding-top: 48px;
+}
+.ui-page-theme-fes.oobe-page .main-content button.fes-button-regular {
+  margin: 24px auto 12px;
+  min-width: 200px;
+}
+
+/* ---------- dialogs / popups ---------- */
+.ui-popup .ui-popup-container,
+.ui-popup-container {
+  border-radius: var(--fes-r-md);
+  box-shadow: var(--fes-shadow-lg);
+  overflow: hidden;
+  font-family: var(--fes-font-text);
+}
+.ui-popup .ui-content {
+  background: var(--fes-surface-0);
+  color: var(--fes-ink-1);
+}
+.ui-popup h1,
+.ui-popup h2 {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- aigen modal: re-skin the existing classes ---------- */
+#aigen-modal {
+  background: var(--fes-surface-0);
+  color: var(--fes-ink-1);
+}
+#aigen-modal .aigen-style-tile {
+  border-radius: var(--fes-r-sm);
+}
+
+/* ---------- repair modal: pick up the same tokens ---------- */
+#fes-repair-modal {
+  background: var(--fes-surface-1) !important;
+  color: var(--fes-ink-1) !important;
+  font-family: var(--fes-font-text) !important;
+}
+#fes-repair-modal .r-title {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.005em;
+}
+#fes-repair-modal .r-step {
+  background: var(--fes-surface-0);
+  border-color: var(--fes-line);
+}
+#fes-repair-modal .r-step.is-active {
+  background: var(--fes-surface-0);
+  border-color: var(--fes-accent);
+  box-shadow: var(--fes-shadow-md);
+}
+#fes-repair-modal .r-step.is-done {
+  background: var(--fes-surface-0);
+  border-color: rgba(58, 138, 95, 0.45);
+}
+#fes-repair-modal .r-step.is-fail {
+  background: var(--fes-surface-0);
+  border-color: rgba(179, 56, 44, 0.45);
+}
+#fes-repair-modal .r-step.is-active .r-pill {
+  background: var(--fes-accent);
+  color: var(--fes-accent-ink);
+}
+#fes-repair-modal .r-step.is-done .r-pill {
+  background: var(--fes-positive);
+}
+#fes-repair-modal .r-step.is-fail .r-pill {
+  background: var(--fes-danger);
+}
+#fes-repair-modal .r-progress {
+  background: var(--fes-line);
+}
+#fes-repair-modal .r-progress-fill {
+  background: var(--fes-accent);
+}
+#fes-repair-modal .r-btn.primary {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border-radius: var(--fes-r-sm);
+}
+#fes-repair-modal .r-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--fes-line-strong);
+  color: var(--fes-ink-1);
+  border-radius: var(--fes-r-sm);
+}
+#fes-repair-modal .r-step .r-step-body {
+  color: var(--fes-ink-2);
+}
+#fes-repair-modal .r-debug {
+  background: var(--fes-surface-2);
+  color: var(--fes-ink-3);
+  border: 1px solid var(--fes-line);
+}
+
+/* ---------- micro-interactions: pressed + ripple states ---------- */
+@keyframes fes-tap-ripple {
+  0% { transform: scale(0.8); opacity: 0.45; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.fes-button-regular,
+button.fes-button-regular,
+.fes-cv-action,
+button.purchase-skin,
+.catalog-genre-pill,
+.catalog-chip,
+.r-btn,
+.aigen-style-tile {
+  position: relative;
+  overflow: hidden;
+}
+.fes-tap-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: currentColor;
+  opacity: 0.18;
+  width: 28px;
+  height: 28px;
+  transform: scale(0.8);
+  animation: fes-tap-ripple 480ms var(--fes-ease) forwards;
+  z-index: 0;
+}
+/* keep label/content on top of the ripple */
+.fes-button-regular > *,
+button.fes-button-regular > *,
+.fes-cv-action > *,
+.purchase-skin > *,
+.catalog-genre-pill > *,
+.catalog-chip > *,
+.r-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- skeleton loaders (cataloge, lists) ---------- */
+@keyframes fes-skeleton {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.fes-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--fes-surface-2) 0%,
+    var(--fes-surface-3) 50%,
+    var(--fes-surface-2) 100%
+  );
+  background-size: 200% 100%;
+  animation: fes-skeleton 1.4s linear infinite;
+  border-radius: var(--fes-r-sm);
+  color: transparent;
+  pointer-events: none;
+}
+
+/* ---------- toast (lightweight, summoned by polish.js) ---------- */
+.fes-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 16px) + 28px);
+  transform: translateX(-50%) translateY(20px);
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  font-family: var(--fes-font-text);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: var(--fes-r-pill);
+  box-shadow: var(--fes-shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms var(--fes-ease), transform 220ms var(--fes-ease);
+  z-index: 100000;
+  max-width: 80vw;
+  text-align: center;
+}
+.fes-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- view transitions (Safari 18 + WKWebView 17.4+) ---------- */
+@supports (view-transition-name: a) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: var(--fes-ease);
+  }
+  /* tag shared elements */
+  #page-home-store,
+  #page-home-closet {
+    view-transition-name: catalog-page;
+  }
+  #page-home-store .skin-list-window,
+  #page-home-closet .skin-list-window {
+    view-transition-name: arc-area;
+  }
+}
+
+/* ---------- accessibility: respect reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .fes-tap-ripple { display: none; }
+}
+
+/* ---------- dark mode ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fes-surface-0: #1a1816;
+    --fes-surface-1: #14120f;
+    --fes-surface-2: #221f1b;
+    --fes-surface-3: #2c2925;
+    --fes-line: rgba(244, 240, 230, 0.10);
+    --fes-line-strong: rgba(244, 240, 230, 0.20);
+
+    --fes-ink-1: #f4f0e6;
+    --fes-ink-2: rgba(244, 240, 230, 0.78);
+    --fes-ink-3: rgba(244, 240, 230, 0.56);
+    --fes-ink-4: rgba(244, 240, 230, 0.36);
+
+    --fes-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --fes-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.42);
+    --fes-shadow-lg: 0 18px 36px rgba(0, 0, 0, 0.55);
+  }
+  body,
+  .ui-page-theme-fes {
+    background-color: var(--fes-surface-1);
+    color: var(--fes-ink-1);
+  }
+  /* the catalog detail / closet detail uses Sony's white card layout
+   * heavily; flip the obvious surfaces but leave images alone */
+  #page-home-store .ui-content,
+  #page-home-closet .ui-content {
+    background: var(--fes-surface-1);
+  }
+  #page-home-store .skin-list-window,
+  #page-home-closet .skin-list-window {
+    background: var(--fes-surface-1);
+  }
+  /* reset white backgrounds Sony hardcoded inline-ish on white */
+  .ui-page-theme-fes .home-header,
+  .ui-page-theme-fes .ui-header {
+    background: var(--fes-surface-1) !important;
+    color: var(--fes-ink-1);
+  }
+}
