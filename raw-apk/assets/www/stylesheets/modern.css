@@ -55,7 +55,42 @@
 
   /* motion */
   --fes-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fes-ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --fes-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --fes-dur: 0.28s;
+  --fes-dur-fast: 160ms;
+  --fes-dur-base: 240ms;
+}
+
+/* ---------- ergonomics: tap, selection, scroll, image rendering ---------- */
+* { -webkit-tap-highlight-color: transparent; }
+a, button, .ui-btn, [role="button"], [data-role="button"] {
+  touch-action: manipulation;
+}
+.ui-page, .ui-bar, .ui-header, .ui-footer, .ui-title {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.skin-name, .skin-description, .creator-name, .skin-id, input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.ui-content, [data-role="content"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+img.skin-preview, .skin-preview img, .skin-thumbnail img,
+img[src*="/skin"], canvas.watch-preview {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+.skin-preview-small img, img.pixel-preview {
+  image-rendering: pixelated;
+}
+.fes-tnum, [data-role="header"] .battery, [data-role="header"] .clock,
+.skin-id, .fw-version, time, .numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 /* ---------- baseline ---------- */
