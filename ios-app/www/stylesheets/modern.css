@@ -856,4 +856,122 @@ button.fes-button-regular > *,
     background: var(--fes-surface-1) !important;
     color: var(--fes-ink-1);
   }
+
+  /* ── DARK: detail page (Pain Point #1) ──────────────────────────
+     Sony hardcodes .detail-page bg:#fff and 5× color:#000 on the
+     creator/skin text. Without these overrides the detail card is
+     unreadable in dark mode. */
+  #page-home-store .detail-page,
+  #page-home-closet .detail-page {
+    background-color: var(--fes-surface-1) !important;
+    color: var(--fes-ink-1);
+  }
+  #page-home-store .detail-page .creator-name,
+  #page-home-closet .detail-page .creator-name,
+  #page-home-store .main-page .creator-name,
+  #page-home-closet .main-page .creator-name,
+  #page-home-store .detail-page .skin-name,
+  #page-home-closet .detail-page .skin-name {
+    color: var(--fes-ink-1) !important;
+  }
+  #page-home-store .detail-page .skin-description,
+  #page-home-closet .detail-page .skin-description,
+  #page-home-store .main-page .skin-description,
+  #page-home-closet .main-page .skin-description,
+  #page-home-store .detail-page .creator-introduction,
+  #page-home-closet .detail-page .creator-introduction,
+  #page-home-store .main-page .creator-introduction,
+  #page-home-closet .main-page .creator-introduction {
+    color: var(--fes-ink-2) !important;
+  }
+  #page-home-store .detail-page .creator-url,
+  #page-home-closet .detail-page .creator-url,
+  #page-home-store .detail-page .creator-url a,
+  #page-home-closet .detail-page .creator-url a,
+  #page-home-store .detail-page .creator-url a:hover,
+  #page-home-closet .detail-page .creator-url a:hover,
+  #page-home-store .detail-page .creator-url a:active,
+  #page-home-closet .detail-page .creator-url a:active {
+    color: var(--fes-accent) !important;
+  }
+  #page-home-store .detail-page .creator-introduction-headline,
+  #page-home-closet .detail-page .creator-introduction-headline {
+    color: var(--fes-ink-3) !important;
+  }
+  /* slide indicators (the dots under the skin-images-wrapper) */
+  #page-home-store .detail-page .indicators .indicator,
+  #page-home-closet .detail-page .indicators .indicator {
+    background-color: var(--fes-line-strong);
+  }
+  #page-home-store .detail-page .indicators .indicator.active,
+  #page-home-closet .detail-page .indicators .indicator.active {
+    background-color: var(--fes-ink-1) !important;
+  }
+  /* back-to-main chevron — Sony draws it as ::after with #000 borders.
+     Selecting on the pseudo to flip the colour. */
+  #page-home-store .detail-page .header-buttons button.back-to-main::after,
+  #page-home-closet .detail-page .header-buttons button.back-to-main::after {
+    border-bottom-color: var(--fes-ink-1) !important;
+    border-left-color: var(--fes-ink-1) !important;
+  }
+
+  /* ── DARK: home / main bars (Pain Point #2) ─────────────────────
+     #page-home-store and its .footer-buttons get bg:#fff hardcoded.
+     #page-home-closet variant gets bg:#ccc. Both produce the
+     "white bar at the bottom" the user reported. */
+  #page-home-store,
+  #page-home-store .footer-buttons,
+  #page-home-closet,
+  #page-home-closet .footer-buttons {
+    background-color: var(--fes-surface-1) !important;
+  }
+
+  /* alternative + transparent button variants — Sony hardcodes
+     bg:#fff/color:#000 and color:#000 respectively, neither flips */
+  .ui-bar-fes .ui-btn.fes-button-alternative,
+  .ui-body-fes .ui-btn.fes-button-alternative,
+  .ui-btn.ui-btn-fes.fes-button-alternative,
+  .ui-page-theme-fes .ui-btn.fes-button-alternative {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1) !important;
+    border-color: var(--fes-line-strong) !important;
+  }
+  .ui-bar-fes .ui-btn.fes-button-transparent,
+  .ui-body-fes .ui-btn.fes-button-transparent,
+  .ui-btn.ui-btn-fes.fes-button-transparent,
+  .ui-page-theme-fes .ui-btn.fes-button-transparent {
+    color: var(--fes-ink-1) !important;
+  }
+
+  /* error info card on home (network down / store error) */
+  #page-home-store .main-page .store-error-info,
+  #page-home-closet .main-page .store-error-info {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1);
+  }
+  #page-home-store .main-page .store-error-info a,
+  #page-home-closet .main-page .store-error-info a {
+    color: var(--fes-accent) !important;
+  }
+
+  /* the bottom info-and-controllers strip uses a gradient FROM the
+     light surface; in dark we want the same gradient to a dark
+     surface so the fade-into-arc still reads. */
+  #page-home-store .main-page .info-and-controllers,
+  #page-home-closet .main-page .info-and-controllers {
+    background: linear-gradient(180deg, transparent 0%, var(--fes-surface-1) 28%);
+  }
+
+  /* skin-image allow-list: the e-paper preview imagery must NOT be
+     touched by any later filter/invert rules. Explicit identity
+     filter to make this a hard lock. */
+  .detail-image,
+  .skin-image,
+  .skin-images-wrapper img,
+  .aigen-watch-screen img,
+  .aigen-history-strip .h-img img,
+  .tile-img img,
+  .skin-list-window canvas {
+    filter: none;
+  }
 }
