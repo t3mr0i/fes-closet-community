@@ -538,9 +538,71 @@ button.fes-button-regular {
 .ui-page-theme-fes[id^="page-edit-"] .ui-content {
   background: var(--fes-surface-1);
 }
+
+/* Header: solid surface so Cancel/Next are legible against the grey canvas */
 .ui-page-theme-fes[id^="page-edit-"] .ui-header {
+  background: var(--fes-surface-1) !important;
+  border-bottom: 1px solid var(--fes-line) !important;
+  box-shadow: none !important;
+}
+
+/* Cancel / Next header buttons — inherit ink colour, not jQuery Mobile white */
+.ui-page-theme-fes[id^="page-edit-"] .ui-header .fes-header-button,
+.ui-page-theme-fes[id^="page-edit-"] .ui-header .ui-btn,
+#page-edit-background .ui-header button,
+#page-edit-pattern   .ui-header button {
+  color: var(--fes-ink-1) !important;
   background: transparent !important;
-  border-bottom: 1px solid var(--fes-line);
+  border: 0 !important;
+  box-shadow: none !important;
+  font-family: var(--fes-font-text);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-shadow: none !important;
+}
+#page-edit-background .ui-header button:active,
+#page-edit-pattern   .ui-header button:active {
+  color: var(--fes-accent) !important;
+}
+
+/* Footer source bar (LIBRARY / CAMERA / AI) — three equal, quiet pills */
+#page-edit-background .footer-button-base,
+#page-edit-pattern    .footer-button-base {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0));
+  background: var(--fes-surface-1) !important;
+  border-top: 1px solid var(--fes-line) !important;
+  box-shadow: none !important;
+}
+
+#page-edit-background .footer-button-base .ui-btn,
+#page-edit-pattern    .footer-button-base .ui-btn {
+  flex: 1 1 0;
+  margin: 0 !important;
+  padding: 11px 6px !important;
+  background: var(--fes-surface-0) !important;
+  color: var(--fes-ink-1) !important;
+  border: 1px solid var(--fes-line-strong) !important;
+  border-radius: var(--fes-r-sm) !important;
+  font-family: var(--fes-font-text) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-shadow: none !important;
+  box-shadow: var(--fes-shadow-sm) !important;
+  line-height: 1.2 !important;
+}
+#page-edit-background .footer-button-base .ui-btn:active,
+#page-edit-pattern    .footer-button-base .ui-btn:active {
+  background: var(--fes-ink-1) !important;
+  color: var(--fes-surface-0) !important;
+  border-color: var(--fes-ink-1) !important;
+  transform: translateY(1px);
+  box-shadow: none !important;
 }
 
 /* ---------- OOBE welcome hero polish ---------- */
@@ -572,15 +634,6 @@ button.fes-button-regular {
   font-family: var(--fes-font-display);
   font-weight: 600;
   letter-spacing: -0.005em;
-}
-
-/* ---------- aigen modal: re-skin the existing classes ---------- */
-#aigen-modal {
-  background: var(--fes-surface-0);
-  color: var(--fes-ink-1);
-}
-#aigen-modal .aigen-style-tile {
-  border-radius: var(--fes-r-sm);
 }
 
 /* ---------- repair modal: pick up the same tokens ---------- */
