@@ -962,6 +962,156 @@ button.fes-button-regular > *,
     background: linear-gradient(180deg, transparent 0%, var(--fes-surface-1) 28%);
   }
 
+  /* ── DARK: OOBE ─────────────────────────────────────────────────
+     Sony hardcodes .oobe-page bg:#fff and the OOBE footer to a
+     black-on-white invert (bg:#000, color:#fff). In dark mode that
+     footer becomes black-on-black. We retarget the page surface to
+     a dark gradient and let the footer pick up the surface tokens. */
+  .ui-page-theme-fes.oobe-page {
+    background: linear-gradient(180deg, var(--fes-surface-1) 0%, var(--fes-surface-0) 100%) !important;
+  }
+  .ui-page-theme-fes.oobe-page .image-area {
+    background: linear-gradient(135deg, var(--fes-surface-2) 0%, var(--fes-surface-1) 100%);
+  }
+  .ui-page-theme-fes.oobe-page .image-area .guide-image {
+    background-color: var(--fes-surface-2);
+  }
+  .ui-page-theme-fes.oobe-page .ui-footer,
+  .ui-page-theme-fes.oobe-page .ui-footer .ui-btn {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1) !important;
+    border-top-color: var(--fes-line) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-footer .settings-progress,
+  .ui-page-theme-fes.oobe-page .ui-footer .fes-back-navigator {
+    color: var(--fes-ink-2) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-footer .fes-back-navigator:after {
+    border-bottom-color: var(--fes-ink-1) !important;
+    border-left-color: var(--fes-ink-1) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-header button {
+    color: var(--fes-ink-1) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-content .main-content .welcome-agreement,
+  .ui-page-theme-fes.oobe-page .ui-content .main-content .welcome-agreement-list a,
+  .ui-page-theme-fes.oobe-page .ui-content .main-content .detail-description,
+  .platform-ios .ui-page-theme-fes.oobe-page .main-content .welcome-agreement,
+  .platform-ios .ui-page-theme-fes.oobe-page .main-content .detail-description {
+    color: var(--fes-ink-3) !important;
+  }
+  .ui-page-theme-fes.oobe-page .manual-set-datetime .value {
+    color: var(--fes-ink-1) !important;
+  }
+  /* the toggle switch — Sony fills active with #000; in dark that
+     reads as the off state. Use the accent colour instead. */
+  .ui-page-theme-fes.oobe-page .ui-flipswitch.ui-flipswitch-active {
+    background-color: var(--fes-accent) !important;
+    border-color: var(--fes-accent) !important;
+  }
+
+  /* ── DARK: settings list rows ───────────────────────────────────
+     Sony's .ui-bar-fes/.ui-body-fes/.ui-group-theme-fes selectors
+     win on specificity over modern.css's existing list-row styles.
+     Targeted overrides scoped to prefers-color-scheme:dark. */
+  .ui-bar-fes .ui-listview > .ui-li-static,
+  .ui-body-fes .ui-listview > .ui-li-static,
+  .ui-group-theme-fes .ui-listview > .ui-li-static,
+  .ui-page-theme-fes .ui-listview > .ui-li-static,
+  .ui-page-theme-fes.settings-page .ui-listview > li {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1);
+  }
+  .ui-bar-fes .ui-listview > .ui-li-divider,
+  .ui-body-fes .ui-listview > .ui-li-divider,
+  .ui-group-theme-fes .ui-listview > .ui-li-divider,
+  .ui-page-theme-fes .ui-listview > .ui-li-divider {
+    color: var(--fes-ink-3) !important;
+    border-color: var(--fes-line) !important;
+    background-color: transparent !important;
+  }
+  .ui-bar-fes .ui-listview .fes-list-property-title,
+  .ui-body-fes .ui-listview .fes-list-property-title,
+  .ui-group-theme-fes .ui-listview .fes-list-property-title,
+  .ui-page-theme-fes .fes-list-property-title {
+    color: var(--fes-ink-1) !important;
+  }
+  .ui-page-theme-fes .fes-list-property-value {
+    color: var(--fes-ink-3) !important;
+  }
+  /* row separator + carat chevron */
+  .ui-bar-fes .ui-listview .ui-btn.ui-btn-icon-right.ui-icon-carat-r:after,
+  .ui-body-fes .ui-listview .ui-btn.ui-btn-icon-right.ui-icon-carat-r:after {
+    border-bottom-color: var(--fes-ink-3) !important;
+    border-left-color: var(--fes-ink-3) !important;
+  }
+  /* :active state — Sony uses #ededed which is invisible on dark surface */
+  .platform-android .ui-bar-fes .ui-listview .ui-btn:active,
+  .platform-android .ui-body-fes .ui-listview .ui-btn:active,
+  .platform-android .ui-group-theme-fes .ui-listview .ui-btn:active,
+  .platform-android .ui-page-theme-fes .ui-listview > li:active {
+    background-color: var(--fes-surface-2) !important;
+  }
+
+  /* ── DARK: edit pages ───────────────────────────────────────────
+     edit-pattern footer hardcodes bg:#fff, edit-save inherits the
+     oobe-page bg:#fff rule, pattern-select buttons hardcode #ccccd9
+     and #000. */
+  #page-edit-save {
+    background-color: var(--fes-surface-1) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area {
+    background-color: var(--fes-surface-1) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .select-content-list .content-listitem-base .content-listitem.selected {
+    border-color: var(--fes-ink-1) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .select-content-list .content-listitem-base .content-listitem .effect {
+    border-color: var(--fes-line-strong) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .footer-button-base .ui-btn.fes-button-alternative.select-btn {
+    color: var(--fes-ink-3) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .footer-button-base .ui-btn.fes-button-alternative.select-btn.selected,
+  #page-edit-pattern .footer-pattern-select-area .footer-button-base .ui-btn.fes-button-alternative.select-btn:active {
+    color: var(--fes-ink-1) !important;
+    border-color: var(--fes-ink-1) !important;
+  }
+  #page-edit-background .footer-button-base .fes-button-regular.ui-block-b {
+    color: var(--fes-ink-4) !important;  /* disabled state */
+  }
+  #page-edit-pattern .footer-pattern-select-area .adjust-filter-slider-area .edit-slider-container .center-guide {
+    background-color: var(--fes-line-strong) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .adjust-filter-slider-area .edit-slider-container .ui-slider-popup {
+    color: var(--fes-ink-1) !important;
+    background-color: var(--fes-surface-2) !important;
+  }
+  #page-edit-select-content .content-item-container {
+    border-color: var(--fes-line) !important;
+  }
+  #page-edit-select-content .content-item figure.default {
+    background-color: var(--fes-surface-3) !important;
+  }
+
+  /* ── DARK: base-connection ─────────────────────────────────────
+     The "connect your watch" page uses .image-area .guide-image
+     with a soft #f4f4f4 background — invisible on dark. */
+  .base-connection .image-area .guide-image {
+    background-color: var(--fes-surface-2) !important;
+  }
+
+  /* ── DARK: popups / dialogs / overlays ──────────────────────────
+     Sony's .ui-overlay-fes is a backdrop layer (bg:#000) — already
+     dark, leave it. The popup container itself gets surface-0 from
+     modern.css's existing .ui-popup-container rule. Verify the
+     content area too. */
+  .ui-popup .ui-content,
+  .ui-popup-container .ui-content {
+    background: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1);
+  }
+
   /* skin-image allow-list: the e-paper preview imagery must NOT be
      touched by any later filter/invert rules. Explicit identity
      filter to make this a hard lock. */
