@@ -127,16 +127,20 @@
                     '<span class="aigen-section-label">Style</span>' +
                     '<div class="aigen-styles" role="radiogroup" aria-label="Style preset">' + styleTiles + "</div>" +
                 "</div>" +
-                '<div class="aigen-mood-wrap">' +
-                    '<span class="aigen-section-label">Mood</span>' +
-                    '<select id="aigen-mood">' +
-                        '<option value="calm">Calm</option>' +
-                        '<option value="energetic">Energetic</option>' +
-                        '<option value="dark">Dark / moody</option>' +
-                        '<option value="bright">Bright / playful</option>' +
-                        '<option value="nostalgic">Nostalgic</option>' +
-                    "</select>" +
-                "</div>" +
+                '<details class="aigen-advanced">' +
+                    '<summary>Advanced</summary>' +
+                    '<div class="aigen-mood-wrap">' +
+                        '<span class="aigen-section-label">Mood (optional)</span>' +
+                        '<select id="aigen-mood">' +
+                            '<option value="" selected>Let the concept decide</option>' +
+                            '<option value="calm">Calm</option>' +
+                            '<option value="energetic">Energetic</option>' +
+                            '<option value="dark">Dark / moody</option>' +
+                            '<option value="bright">Bright / playful</option>' +
+                            '<option value="nostalgic">Nostalgic</option>' +
+                        "</select>" +
+                    "</div>" +
+                "</details>" +
                 '<div class="aigen-status" id="aigen-status">Describe a vibe and tap Generate.</div>' +
                 '<div class="aigen-history" id="aigen-history" hidden>' +
                     '<span class="aigen-section-label">Recent</span>' +
@@ -310,7 +314,7 @@
             "DISPLAY FORMAT: The screen is greyscale e-paper with only 4 tones: pure black, dark grey, light grey, and pure white. No colour exists on this device. Smooth gradients look terrible — they posterize into ugly steps. Design with flat tonal areas and hard tonal edges, like a screen-printed poster or a woodblock print.",
             "",
             "CONCEPT: " + opts.concept,
-            "MOOD: " + opts.mood,
+            opts.mood ? ("MOOD: " + opts.mood) : null,
             "STYLE: " + (opts.styleLabel || opts.styleId).toLowerCase(),
             "",
             "ART DIRECTION:",
@@ -335,7 +339,7 @@
             lines.push("");
             lines.push("VARIATION: keep the same concept, mood, and style direction. Change the specific visual composition, the tonal distribution, and the shape of the main focal element.");
         }
-        return lines.join("\n");
+        return lines.filter(function (l) { return l !== null; }).join("\n");
     }
 
     function getSecrets() {
@@ -365,7 +369,7 @@
         var system = "You are a design brief writer for the Sony FES Watch U — a fashion watch where the entire device surface (round face + both straps) is one continuous monochrome e-paper screen. Your job is to rewrite vague user concepts into vivid, concrete image-generation briefs of 1–2 sentences. Output must be present-tense, sensory, and specific. No meta-commentary, no 'Sure!', no quotes, no explanation. Maximum 40 words.";
         var user = [
             "Style: " + styleLabel + ".",
-            "Mood: " + mood + ".",
+            mood ? ("Mood: " + mood + ".") : "Mood: choose what fits the concept.",
             "User concept: " + rawConcept,
             "",
             "Rewrite this as a vivid, specific artwork brief for the FES Watch U skin.",
@@ -801,7 +805,7 @@
                 concept: meta.concept || "",
                 refinedConcept: meta.refinedConcept || "",
                 style: meta.style || "minimalist",
-                mood: meta.mood || "calm",
+                mood: meta.mood || "",
                 createdAt: new Date().toISOString(),
                 source: "in-app-aigen"
             };

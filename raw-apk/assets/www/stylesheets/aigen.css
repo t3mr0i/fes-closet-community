@@ -404,6 +404,46 @@
     padding: 0 2px;
 }
 
+/* ── Advanced disclosure ──────────────────────────────────────────────────── */
+
+#aigen-modal .aigen-advanced {
+    width: 100%;
+    border-top: 1px solid var(--aigen-line);
+    padding-top: 14px;
+    margin-top: 4px;
+}
+#aigen-modal .aigen-advanced > summary {
+    list-style: none;
+    cursor: pointer;
+    color: var(--aigen-ink-3);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 4px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color var(--aigen-dur) var(--aigen-ease);
+}
+#aigen-modal .aigen-advanced > summary::-webkit-details-marker { display: none; }
+#aigen-modal .aigen-advanced > summary::after {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--aigen-dur) var(--aigen-ease);
+    margin-left: auto;
+    opacity: 0.7;
+}
+#aigen-modal .aigen-advanced[open] > summary::after { transform: rotate(45deg); }
+#aigen-modal .aigen-advanced[open] > summary { color: var(--aigen-ink-2); }
+#aigen-modal .aigen-advanced > .aigen-mood-wrap { margin-top: 12px; }
+
 /* ── Mood select ──────────────────────────────────────────────────────────── */
 
 #aigen-modal .aigen-mood-wrap { width: 100%; }
