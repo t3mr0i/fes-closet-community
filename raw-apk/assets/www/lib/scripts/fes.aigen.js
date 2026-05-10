@@ -292,10 +292,22 @@
            better as labelled bullets than as one paragraph. */
         var dir = STYLE_DIRECTION[opts.styleId] || STYLE_DIRECTION.minimalist;
         var lines = [
-            "Design watchface artwork for a vertical narrow strap-screen display.",
-            "Exact pixel size: 152x704 (aspect ratio 1:4.6, very tall and thin).",
+            "You are creating a printed skin — a flat greyscale image — for a wearable device called the Sony FES Watch U.",
+            "The FES Watch U has a monochrome e-paper display that covers the entire device surface: both the round watch face AND both watch straps are one continuous e-paper screen.",
+            "Your image IS that surface, unrolled and laid out flat. No background, no environment, no table, no shadow — just the artwork itself.",
             "",
-            "FORMAT: 2-bit greyscale display — only 4 shades exist on the watch (black, dark grey, light grey, white). NO colour, no tinting, no sepia. Smooth gradients will banding-quantize, so design with bold tonal blocks and hard tonal transitions instead.",
+            "SHAPE OF THE IMAGE (152 px wide × 704 px tall):",
+            "  1. Upper strap: a short rectangle at the top (y=0–196), full width.",
+            "  2. Watch face: a large circle in the middle (y=196–508), full width of the canvas.",
+            "  3. Lower strap: a short rectangle at the bottom (y=508–704), full width.",
+            "The artwork flows seamlessly across all three zones — no gap, no border, no frame between them.",
+            "",
+            "CANVAS DIMENSIONS: 152 px wide × 704 px tall.",
+            "  - Upper strap region: x=0–152, y=0–196 (rectangular band).",
+            "  - Watch face region: x=0–152, y=196–508 (the design is circular here but the canvas is still the full 152 px wide — corners of this zone are background).",
+            "  - Lower strap region: x=0–152, y=508–704 (rectangular band).",
+            "",
+            "DISPLAY FORMAT: The screen is greyscale e-paper with only 4 tones: pure black, dark grey, light grey, and pure white. No colour exists on this device. Smooth gradients look terrible — they posterize into ugly steps. Design with flat tonal areas and hard tonal edges, like a screen-printed poster or a woodblock print.",
             "",
             "CONCEPT: " + opts.concept,
             "MOOD: " + opts.mood,
@@ -308,20 +320,20 @@
             "- Contrast: " + dir.contrast + ".",
             "- Extras: " + dir.extras + ".",
             "",
-            "COMPOSITION RULES (non-negotiable):",
-            "- Vertical reading order, top-to-bottom story.",
-            "- FILL THE FULL CANVAS with deliberate design from edge to edge. No empty sky on top + ground on bottom. No horizon-line landscapes. No big flat regions reserved as 'space for the clock'. Every region of the 152×704 must carry composition.",
-            "- SAFE ZONE for the time overlay: the watch firmware draws large clock digits in the MIDDLE band of the canvas (roughly y=240 to y=510, i.e. the central ~38% of the height). In that middle band, prefer calmer texture or simpler tonal blocks so the clock stays readable on top. The TOP and BOTTOM thirds carry NO overlay — put your strongest detail, focal element, and texture there. (Do NOT empty out the top — empty top is the wrong default.)",
-            "- Use the four available shades boldly: deep blacks, clean whites, and two distinct mid-greys arranged in tonal blocks. Subtle midtone variation will be lost — design as if posterized to 4 levels.",
-            "- The screen is small (~30 mm wide on a wrist) so silhouettes must be readable at thumbnail size.",
-            "- Edge-to-edge artwork. NO white border, NO padding, NO frame.",
-            "- NO text, NO numbers, NO logos, NO watermarks (the watch supplies its own time).",
+            "COMPOSITION RULES:",
+            "- The pattern or artwork must flow continuously and naturally across all three zones (upper strap → watch face circle → lower strap). Think of it like a textile print that wraps around the whole object.",
+            "- The watch firmware draws the time (large clock digits) inside the circular face area, centred at approximately x=76, y=352, radius 76 px. This means the central circle of the watch face will have the time overlaid on top of your artwork. Design the watch face zone (y=196–508) with a CALM, UNIFORM background — either a solid dark value or a solid light value — so the time digits remain readable. Put your interesting textures and focal elements in the strap regions.",
+            "- The two strap regions (top and bottom) are where the visual concept lives. They should be bold, detailed, and expressive.",
+            "- Use the 4 tones boldly. Large flat areas of a single tone read better than busy detail at this size.",
+            "- The watch is only 30 mm wide in real life. Shapes must be simple and readable at thumbnail size.",
+            "- Fill every pixel — no white margins, no border, no padding around the edges.",
+            "- Do not add any text, digits, clock hands, or logos. The watch firmware handles the time display.",
             "",
-            "OUTPUT: a single greyscale image, full bleed, ready to wrap onto a watch strap."
+            "OUTPUT: A single flat greyscale image, 152×704 px, showing the complete artwork as it would appear printed across the full surface of the FES Watch U."
         ];
         if (opts.vary) {
             lines.push("");
-            lines.push("VARIATION: keep concept, mood, and style direction. Change the specific composition, the value distribution, and the silhouette of the focal element.");
+            lines.push("VARIATION: keep the same concept, mood, and style direction. Change the specific visual composition, the tonal distribution, and the shape of the main focal element.");
         }
         return lines.join("\n");
     }
@@ -350,13 +362,15 @@
             console.warn("[aigen] rephrase skipped: no key");
             return rawConcept;
         }
-        var system = "You rewrite watchface design concepts into vivid, concrete image-generation briefs. Output is one or two sentences, present-tense, sensory and specific. NO meta talk, NO 'Sure!', NO quotes, NO explanation. Just the rewritten concept. Maximum 40 words.";
+        var system = "You are a design brief writer for the Sony FES Watch U — a fashion watch where the entire device surface (round face + both straps) is one continuous monochrome e-paper screen. Your job is to rewrite vague user concepts into vivid, concrete image-generation briefs of 1–2 sentences. Output must be present-tense, sensory, and specific. No meta-commentary, no 'Sure!', no quotes, no explanation. Maximum 40 words.";
         var user = [
             "Style: " + styleLabel + ".",
             "Mood: " + mood + ".",
             "User concept: " + rawConcept,
             "",
-            "Rewrite as a vivid, specific watchface concept brief. Strong tonal contrast. Vertical 1:4.6 portrait canvas — design FILLS the whole canvas top-to-bottom. Do NOT default to a landscape with sky on top and ground on bottom; instead pick a subject or pattern that occupies the full vertical strip."
+            "Rewrite this as a vivid, specific artwork brief for the FES Watch U skin.",
+            "Remember: the image is 152×704 px greyscale (4 tones only). It shows the watch face as a circle in the centre, with two short rectangular straps above and below. The concept must work as a pattern or texture that flows continuously across all three zones — top strap, circular face, bottom strap — like a single printed fabric.",
+            "Avoid describing scenes with a sky-and-ground horizon. Instead describe a bold repeating pattern, texture, motif, or abstract composition that fills the whole strip top-to-bottom."
         ].join("\n");
 
         try {

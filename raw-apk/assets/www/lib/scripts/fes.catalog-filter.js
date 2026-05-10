@@ -27,7 +27,7 @@
       "/res/data/api/store/skins-" + loc + ".json",
     ];
   };
-  var facets = null; // { genre, tag, studio, artist, _all, _counts }
+  var facets = null; // { genre, tag, artist, _all, _counts }
 
   function getCollection() {
     try {
@@ -58,12 +58,15 @@
     return step();
   }
 
+  // Fold studio into artist so the catalog has a single creator facet.
+  function creatorOf(s) { return s.artist || s.studio || ""; }
+
   function buildFacets(skins) {
-    var c = { genre: {}, tag: {}, studio: {}, artist: {} };
+    var c = { genre: {}, tag: {}, artist: {} };
     skins.forEach(function (s) {
-      if (s.genre)  c.genre[s.genre]   = (c.genre[s.genre]   || 0) + 1;
-      if (s.studio) c.studio[s.studio] = (c.studio[s.studio] || 0) + 1;
-      if (s.artist) c.artist[s.artist] = (c.artist[s.artist] || 0) + 1;
+      if (s.genre) c.genre[s.genre] = (c.genre[s.genre] || 0) + 1;
+      var who = creatorOf(s);
+      if (who) c.artist[who] = (c.artist[who] || 0) + 1;
       (s.tags || []).forEach(function (t) { c.tag[t] = (c.tag[t] || 0) + 1; });
     });
     var sortByCount = function (o) {
@@ -74,7 +77,6 @@
     return {
       genre:  sortByCount(c.genre),
       tag:    sortByCount(c.tag),
-      studio: sortByCount(c.studio),
       artist: sortByCount(c.artist),
       _all:   skins,
       _counts: c,
@@ -91,7 +93,7 @@
           var list = coll.models.map(function (m) {
             var a = (m.attributes || m);
             return { id: a.id, name: a.name, brief: a.brief,
-                     studio: a.studio, artist: a.artist,
+                     artist: a.artist || a.studio,
                      genre: a.genre, tags: a.tags || [] };
           });
           return { skins: list };
@@ -111,8 +113,11 @@
 
   // ---------- 2. FILTER STATE + SONY ADAPTER -----------------------------
 
-  var FACET_GROUPS = ["genre", "tag", "studio", "artist"];
-  var state = { genre: null, tag: null, studio: null, artist: null, q: "" };
+  // studio and artist are the same field in 95% of catalog entries; we
+  // expose only "artist" as a single facet (folding studio into artist
+  // when artist is missing).
+  var FACET_GROUPS = ["genre", "tag", "artist"];
+  var state = { genre: null, tag: null, artist: null, q: "" };
 
   function activeFilterCount() {
     var n = 0;
@@ -122,72 +127,205 @@
   }
 
   function matchSkin(s) {
-    if (state.genre  && s.genre !== state.genre) return false;
-    if (state.tag    && (s.tags || []).indexOf(state.tag) === -1) return false;
-    if (state.studio && s.studio !== state.studio) return false;
-    if (state.artist && s.artist !== state.artist) return false;
+    if (state.genre && s.genre !== state.genre) return false;
+    if (state.tag && (s.tags || []).indexOf(state.tag) === -1) return false;
+    if (state.artist && creatorOf(s) !== state.artist) return false;
     if (state.q) {
       var q = state.q.toLowerCase();
-      var hay = ((s.name || "") + " " + (s.brief || "") + " " +
-                 (s.studio || "") + " " + (s.artist || "")).toLowerCase();
+      var hay = ((s.name || "") + " " + (s.brief || "") + " " + creatorOf(s)).toLowerCase();
       if (hay.indexOf(q) === -1) return false;
     }
     return true;
   }
 
-  // Apply current filter to Sony's SkinCollection so the arc redraws.
-  // We snapshot the original models on first call; subsequent filter changes
-  // re-filter against that snapshot.
+  // Find Sony's HomeStorePage / HomeClosetPage controller via the global
+  // InstanceManager. Each home-page controller exposes _skinListView, which
+  // has a render(models, {refresh, showIndex}) method that re-paints the arc.
+  function findHomePageController(pageId) {
+    try {
+      var IM = window.FES && FES.Utils && FES.Utils.InstanceManager;
+      if (!IM || !IM.s_instances) return null;
+      for (var i = 0; i < IM.s_instances.length; i++) {
+        var c = IM.s_instances[i];
+        if (c && c.$page && c.$page.attr && c.$page.attr("id") === pageId) {
+          return c;
+        }
+        // some controllers expose $el on the page article
+        if (c && c.$el && c.$el.attr && c.$el.attr("id") === pageId) {
+          return c;
+        }
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  function _dbg(msg) {
+    var el = document.getElementById("fct-debug-toast");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "fct-debug-toast";
+      el.style.cssText = "position:fixed;bottom:80px;left:8px;right:8px;background:rgba(0,0,0,.9);color:#fff;font:11px monospace;padding:8px;border-radius:6px;z-index:99999;white-space:pre-wrap;word-break:break-all;pointer-events:none;max-height:140px;overflow:hidden";
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.textContent = ""; }, 4000);
+  }
+
+  // Sony lazy-paginates the catalog (~2 skins at a time). We can't wait for
+  // the user to scroll through 50 pages — we hydrate Sony's Backbone
+  // collection from our pre-loaded catalog JSON directly. Backbone.add with
+  // raw objects auto-instantiates Skin models.
+  var _hydrated = false;
+  function hydrateCollection() {
+    if (_hydrated) return;
+    var coll = getCollection();
+    if (!coll || typeof coll.add !== "function") return;
+    if (!facets || !facets._all.length) return;
+    var have = Object.create(null);
+    coll.models.forEach(function (m) {
+      var id = m.id || (m.attributes && m.attributes.id);
+      if (id) have[id] = 1;
+    });
+    var missing = facets._all.filter(function (s) { return !have[s.id]; });
+    if (missing.length) {
+      try { coll.add(missing, { silent: true, merge: true }); } catch (_) {}
+    }
+    try { coll._totalCount = coll.models.length; } catch (_) {}
+    _hydrated = true;
+  }
+
   function applyToArc() {
     var coll = getCollection();
+    if (!coll || !coll.models) { _dbg("no coll"); return; }
+    if (!facets || !facets._all.length) { _dbg("no facets._all"); return; }
+    hydrateCollection();
+    _applyFilterNow();
+  }
+
+  function _applyFilterNow() {
+    var coll = getCollection();
     if (!coll || !coll.models) return;
-    if (!facets || !facets._all.length) return;
+    var dbg = [];
+    dbg.push("coll.length=" + coll.length);
+    dbg.push("facets._all=" + facets._all.length);
+    dbg.push("state=" + JSON.stringify({g:state.genre,t:state.tag,a:state.artist}));
+
+    // Snapshot the now-hydrated model list. Always re-snapshot if collection
+    // grew (hydration can add models after first apply).
+    if (!coll._fesOriginalModels || coll._fesOriginalModels.length < coll.models.length) {
+      coll._fesOriginalModels = coll.models.slice();
+    }
+    var src = coll._fesOriginalModels;
+    dbg.push("src=" + src.length);
 
     var allowedSet = Object.create(null);
     facets._all.filter(matchSkin).forEach(function (s) { allowedSet[s.id] = 1; });
-
-    if (!coll._fesOriginalModels) coll._fesOriginalModels = coll.models.slice();
-    var src = coll._fesOriginalModels;
     var filtered = src.filter(function (m) {
       var id = (m && m.id) || (m && m.attributes && m.attributes.id);
       return allowedSet[id];
     });
-    if (typeof coll.reset === "function") {
-      coll.reset(filtered, { silent: true });
-      coll._totalCount = filtered.length;
-      coll.trigger("sync", coll, coll, { reset: true });
+    dbg.push("filtered=" + filtered.length);
+
+    try { coll.reset(filtered, { silent: true }); } catch (_) {}
+    // Sony's totalCount getter reads _totalContentCount. If that's higher than
+    // length, prepareSkinDataForArc pushes empty placeholders AND SkinList.fetch
+    // auto-loads more skins (length !== totalCount triggers a re-fetch).
+    // We set both to filtered.length to keep Sony's pagination quiet.
+    try { coll._totalContentCount = filtered.length; } catch (_) {}
+    try { coll._totalCount = filtered.length; } catch (_) {}
+
+    // Cancel any in-flight Sony fetch that might overwrite our reset.
+    var pcCancel = findHomePageController("page-home-store") ||
+                   findHomePageController("page-home-closet");
+    if (pcCancel && pcCancel._skinListView && pcCancel._skinListView._promiseFetch) {
+      try { pcCancel._skinListView._promiseFetch.abort(); } catch (_) {}
+      pcCancel._skinListView._promiseFetch = null;
     }
+    if (coll._promiseFetch) {
+      try { coll._promiseFetch.abort(); } catch (_) {}
+      coll._promiseFetch = null;
+    }
+
+    // Re-paint Sony's arc directly. Don't use SkinListView.render() because
+    // its tail calls this.fetch() which immediately re-pulls the unfiltered
+    // catalog from the server, overwriting our filtered set.
+    var pc = findHomePageController("page-home-store") ||
+             findHomePageController("page-home-closet");
+    var slv = pc && pc._skinListView;
+    if (slv) {
+      try {
+        if (typeof slv.cleanView === "function") slv.cleanView(true);
+        if (typeof slv.initArc === "function") {
+          slv.initArc(0);
+          dbg.push("arc-rebuilt");
+        }
+        // re-show no-skin message if filtered to 0
+        if (filtered.length === 0 && typeof slv.displayNoSkinsMessage === "function") {
+          slv.displayNoSkinsMessage();
+        } else if (typeof slv.hideNoSkinMessage === "function") {
+          slv.hideNoSkinMessage();
+        }
+      } catch (e) {
+        dbg.push("arc.err=" + e.message);
+      }
+    } else {
+      dbg.push("no-slv");
+    }
+    _dbg(dbg.join("\n"));
   }
 
-  // Sony header buttons live in the DOM but are visually hidden by our CSS.
-  // We forward taps via jQuery vclick so jQM's transition + back-stack works.
-  function clickSonyButton(selector) {
-    var btn = document.querySelector(selector);
-    if (!btn) return false;
-    if (window.$ && $.fn && $.fn.trigger) {
-      try { $(btn).trigger("vclick"); return true; } catch (_) {}
-    }
-    try { btn.click(); return true; } catch (_) {}
+  // Navigation helpers: drive jQM's router using the same hash-IDs Sony's
+  // templates use in data-navigate-to (e.g. "#home-closet"), with the same
+  // transitions. CDP.Framework.Router.navigate(hash, transition, reverse).
+  function _router() {
+    return (window.CDP && CDP.Framework && CDP.Framework.Router) || null;
+  }
+
+  function navigateTo(hash, transition) {
+    var r = _router();
+    if (!r) return false;
+    try { r.navigate(hash, transition || "platform-default", false); return true; } catch (_) {}
     return false;
   }
 
-  function navigateToCloset() {
-    if (clickSonyButton("#page-home-store .home-header .left-svg-button button.command-navigate")) return;
-    if (window.CDP && CDP.Framework && CDP.Framework.Router) {
-      try { CDP.Framework.Router.navigate("/templates/home-closet.html", "slant", false); } catch (_) {}
-    }
-  }
-
+  function navigateToCloset() { navigateTo("#home-closet", "slant"); }
   function navigateToCatalog() {
-    if (clickSonyButton("#page-home-closet .home-header .left-svg-button button.command-back")) return;
-    if (window.CDP && CDP.Framework && CDP.Framework.Router) {
-      try { CDP.Framework.Router.back(); return; } catch (_) {}
+    var r = _router();
+    if (r) {
+      try { r.back(); return; } catch (_) {}
     }
-    history.back();
+    navigateTo("#home-store", "slant");
+  }
+  function navigateToEditBackground() {
+    var r = _router();
+    if (r && typeof r.beginSubFlow === "function") {
+      try { r.beginSubFlow("#edit-background", { subFlow: { operation: "begin" } }, "platform-alternative"); return; } catch (_) {}
+    }
+    navigateTo("#edit-background", "platform-alternative");
+  }
+  function navigateToSettings() { navigateTo("#settings-general", "platform-default"); }
+
+  // Sony's setArcWindowSize() reads .home-header.outerHeight() to compute
+  // the available arc area. We hide the header via display:none, which makes
+  // outerHeight return 0 — Sony then thinks the full window height is
+  // available and renders the watch behind our floating toolbar.
+  //
+  // Fix: write a CSS variable with the live toolbar height onto the document
+  // root and let CSS push .main-page's content down with padding-top. Sony's
+  // arc lives inside .main-page (which is height:50% relative to its parent
+  // .two-pages-container), so padding-top on .main-page shifts the arc
+  // without breaking Sony's absolute-positioned .info-and-controllers
+  // (anchored to bottom:0 of .main-page).
+  function toolbarHeight() {
+    var bar = document.getElementById(TOOLBAR_ID);
+    if (!bar) return 0;
+    return Math.round(bar.getBoundingClientRect().height);
   }
 
-  function clickClosetHeaderButton(rightButtonSelector) {
-    clickSonyButton("#page-home-closet .home-header .right-buttons " + rightButtonSelector);
+  function publishToolbarHeight() {
+    var h = toolbarHeight();
+    document.documentElement.style.setProperty("--fct-toolbar-h", h + "px");
   }
 
   // ---------- 3. VIEW: toolbar, pills, sheet, suggest --------------------
@@ -292,18 +430,6 @@
     }
   }
 
-  function attachTap(btn, fn) {
-    // Direct on-element binding so jQM's global vclick capture can't swallow.
-    btn.addEventListener("click", function (e) {
-      e.preventDefault(); e.stopPropagation(); fn();
-    });
-    if (window.$ && $.fn) {
-      $(btn).on("vclick", function (e) {
-        e.preventDefault(); e.stopPropagation(); fn();
-      });
-    }
-  }
-
   function renderPillRow() {
     var row = document.querySelector("#" + TOOLBAR_ID + " [data-pill-row]");
     if (!row || !facets) return;
@@ -314,16 +440,17 @@
     allBtn.type = "button";
     allBtn.className = "fct-pill" + (allActive ? " is-active" : "");
     allBtn.textContent = "All";
-    attachTap(allBtn, resetAll);
+    allBtn.dataset.fctPill = "all";
     row.appendChild(allBtn);
 
     facets.genre.forEach(function (g) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "fct-pill fct-pill-genre" + (state.genre === g.value ? " is-active" : "");
+      b.dataset.fctPill = "genre";
+      b.dataset.fctValue = g.value;
       b.innerHTML = '<span class="fct-pill-label">' + escapeHtml(pretty(g.value)) + '</span>' +
                     '<span class="fct-pill-count">' + g.count + '</span>';
-      attachTap(b, function () { setSingle("genre", g.value); });
       row.appendChild(b);
     });
 
@@ -331,9 +458,10 @@
       var b = document.createElement("button");
       b.type = "button";
       b.className = "fct-pill fct-pill-tag" + (state.tag === t.value ? " is-active" : "");
+      b.dataset.fctPill = "tag";
+      b.dataset.fctValue = t.value;
       b.innerHTML = '<span class="fct-pill-label">#' + escapeHtml(pretty(t.value)) + '</span>' +
                     '<span class="fct-pill-count">' + t.count + '</span>';
-      attachTap(b, function () { setSingle("tag", t.value); });
       row.appendChild(b);
     });
   }
@@ -378,7 +506,6 @@
     };
     add("tag", facets.tag);
     add("artist", facets.artist);
-    add("studio", facets.studio);
     hits = hits.slice(0, 8);
     if (!hits.length) { box.hidden = true; return; }
     box.innerHTML = hits.map(function (h) {
@@ -416,10 +543,27 @@
   }
 
   function refresh() {
+    // Update pill active-states in place — re-rendering blows away the
+    // pills' DOM mid-tap on iOS, which can cancel synthetic clicks.
+    syncPillActiveStates();
     applyToArc();
-    renderPillRow();
     renderSheet();
     updateBadge();
+  }
+
+  function syncPillActiveStates() {
+    var row = document.querySelector("#" + TOOLBAR_ID + " [data-pill-row]");
+    if (!row) return;
+    var pills = row.querySelectorAll("[data-fct-pill]");
+    pills.forEach(function (p) {
+      var kind = p.dataset.fctPill;
+      var val  = p.dataset.fctValue;
+      var active = false;
+      if (kind === "all")   active = !state.genre && !state.tag;
+      else if (kind === "genre") active = state.genre === val;
+      else if (kind === "tag")   active = state.tag === val;
+      p.classList.toggle("is-active", active);
+    });
   }
 
   function openSheet()  { renderSheet(); var s = document.getElementById(SHEET_ID); if (s) s.hidden = false; }
@@ -429,26 +573,39 @@
     if (toolbar.dataset.fctBound === "1") return;
     toolbar.dataset.fctBound = "1";
 
-    // Top icon buttons - delegate through the toolbar.
+    // Single delegated tap handler.
     var onTap = function (e) {
       var t = e.target;
       if (!t || !t.closest) return;
+
+      var pill = t.closest("[data-fct-pill]");
+      if (pill) {
+        e.preventDefault(); e.stopPropagation();
+        var kind = pill.dataset.fctPill;
+        var val  = pill.dataset.fctValue;
+        if (kind === "all")   return resetAll();
+        if (kind === "genre") return setSingle("genre", val);
+        if (kind === "tag")   return setSingle("tag", val);
+        return;
+      }
+
       var hit = function (sel, fn) {
         if (t.closest(sel)) {
-          e.preventDefault(); e.stopPropagation(); fn(); return true;
+          e.preventDefault(); e.stopPropagation();
+          fn();
+          return true;
         }
         return false;
       };
       if (hit("#fct-closet-btn",   navigateToCloset)) return;
       if (hit("#fct-catalog-btn",  navigateToCatalog)) return;
-      if (hit("#fct-add-btn",      function () { clickClosetHeaderButton(".button-add"); })) return;
-      if (hit("#fct-settings-btn", function () { clickClosetHeaderButton(".button-settings"); })) return;
+      if (hit("#fct-add-btn",      navigateToEditBackground)) return;
+      if (hit("#fct-settings-btn", navigateToSettings)) return;
       if (hit("#fct-search-btn",   toggleSearch)) return;
       if (hit("#fct-filter-btn",   openSheet)) return;
       if (hit(".fct-search-clear", clearSearch)) return;
     };
-    toolbar.addEventListener("click", onTap, true);
-    if (window.$ && $.fn) $(toolbar).on("vclick", onTap);
+    toolbar.addEventListener("click", onTap);
 
     // Search input
     var input = toolbar.querySelector(".fct-search-input");
@@ -565,9 +722,14 @@
 
     if (page.id === "page-home-closet") {
       setToolbarMode("closet");
-      return;
+    } else {
+      setToolbarMode("catalog");
     }
-    setToolbarMode("catalog");
+    // After mode switch (which changes the toolbar height), publish the new
+    // height so CSS can push .main-page down by exactly that amount.
+    requestAnimationFrame(publishToolbarHeight);
+    setTimeout(publishToolbarHeight, 200);
+    if (page.id === "page-home-closet") return;
 
     loadFacets().then(function () {
       renderPillRow();
@@ -584,8 +746,32 @@
     });
   }
 
+  // Detail-page detection: Sony's two-pages-container slides horizontally to
+  // reveal the .detail-page. We watch for the transform style change and add
+  // an `is-detail-active` class to the page so CSS can hide our toolbar.
+  function watchDetailPage(page) {
+    var twoPages = page.querySelector(".two-pages-container");
+    if (!twoPages || twoPages._fctDetailWatched) return;
+    twoPages._fctDetailWatched = true;
+    var update = function () {
+      var t = twoPages.style.transform || "";
+      var isDetail = t.indexOf("translate") !== -1 && t !== "translate3d(0,0,0)" && t !== "translate3d(0px, 0px, 0px)";
+      page.classList.toggle("is-detail-active", isDetail);
+      document.body.classList.toggle("fct-detail-active", isDetail);
+    };
+    var mo = new MutationObserver(update);
+    mo.observe(twoPages, { attributes: true, attributeFilter: ["style"] });
+    update();
+  }
+
   function init() {
-    document.addEventListener("pageshow",       syncToolbarToActivePage);
+    document.addEventListener("pageshow", function (ev) {
+      syncToolbarToActivePage(ev);
+      var page = ev.target;
+      if (page && (page.id === "page-home-store" || page.id === "page-home-closet")) {
+        watchDetailPage(page);
+      }
+    });
     document.addEventListener("pagebeforeshow", syncToolbarToActivePage);
     document.addEventListener("pagehide", function () {
       setTimeout(syncToolbarToActivePage, 60);

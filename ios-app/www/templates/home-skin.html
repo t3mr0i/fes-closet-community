@@ -1,4 +1,4 @@
-<arcticle><script type="text/template" id="arc-content-template"><section class="content-container" data-skin-id="{{id}}">
+<arcticle><script type="text/template" id="arc-content-template"><section class="content-container" data-skin-id="{{id}}"{{#community}} data-community="1"{{/community}}>
             <section class="main-content">
                 <div class="image-item loading">{{index}}</div>
             </section>
@@ -6,8 +6,10 @@
         <p class="skin-name"></p>
         <p class="skin-expire-date"></p>
         {{#store}}
+        {{#community}}
         <button class="try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="" data-i18n="store.common.try">store.common.try</button>
         <button class="purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id=""><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
+        {{/community}}
         {{/store}}
         {{^store}}
         <button class="transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="" data-i18n="closet.common.install">closet.common.install</button>
@@ -53,8 +55,10 @@
 
                 <section class="fes-cv-actions">
                     {{#store}}
+                    {{#community}}
                     <button class="fes-cv-action fes-cv-action-primary purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id="{{id}}"><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
                     <button class="fes-cv-action fes-cv-action-secondary try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="store.common.try">store.common.try</button>
+                    {{/community}}
                     {{/store}}
                     {{^store}}
                     <button class="fes-cv-action fes-cv-action-primary transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.install">closet.common.install</button>
@@ -81,8 +85,10 @@
         </section>
         <section class="footer-buttons">
             {{#store}}
+            {{#community}}
             <button class="purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id="{{id}}"><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
             <button class="try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="store.common.try">store.common.try</button>
+            {{/community}}
             {{/store}}
             {{^store}}
             <button class="transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.install">closet.common.install</button>

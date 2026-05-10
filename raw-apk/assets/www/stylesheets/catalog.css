@@ -19,9 +19,9 @@
  * permanently hidden — fes.catalog-filter.js builds its own floating shell. */
 #catalog-filter-bar { display: none !important; }
 
-/* Hide Sony's home-header on BOTH catalog and closet pages. Our toolbar
- * replaces them. Sony's buttons inside the header still work — they're just
- * not visible; we trigger them via vclick from the toolbar. */
+/* Hide Sony's home-header. Our toolbar fully replaces it. We don't need
+ * to keep Sony's buttons reachable any more — fes.catalog-filter.js
+ * drives jQM's router directly. */
 #page-home-store .home-header,
 #page-home-closet .home-header { display: none !important; }
 
@@ -221,32 +221,45 @@
   color: rgba(255, 255, 255, 0.92);
 }
 
-/* Push the arc + info-strip down, but use margin-top on .skin-list-window
- * (which has position:relative;overflow:hidden and is what Sony's Arc reads)
- * — NOT padding on .main-page (which would create scrollable overflow that
- * fights Hammer.js pan recognizers). */
-#page-home-store .skin-list-window {
-  margin-top: 92px;
+/* When Sony's detail-page is sliding into view, hide our toolbar so the
+ * detail's own header (back button, title) is reachable at the top. */
+#page-home-store.is-detail-active ~ #fes-catalog-toolbar,
+#page-home-closet.is-detail-active ~ #fes-catalog-toolbar {
+  display: none !important;
 }
-.platform-ios #page-home-store .skin-list-window {
-  margin-top: 130px;
+/* The toolbar is appended to <body>, so the sibling combinator above
+ * doesn't always match — fall back to a body-level class set by JS. */
+body.fct-detail-active #fes-catalog-toolbar { display: none !important; }
+body.fct-detail-active #page-home-store .main-page,
+body.fct-detail-active #page-home-closet .main-page {
+  padding-top: 0;
 }
-#page-home-closet .skin-list-window {
-  margin-top: 50px;
+
+/* Push the .main-page contents down by exactly the toolbar's measured
+ * height (set by fes.catalog-filter.js as --fct-toolbar-h). Sony's arc
+ * computes its own size from .main-page's content-box, so padding-top
+ * here naturally squeezes the arc into the visible area below the toolbar.
+ * .info-and-controllers is anchored bottom:0 of the same .main-page, so
+ * it isn't affected. */
+#page-home-store .main-page,
+#page-home-closet .main-page {
+  padding-top: var(--fct-toolbar-h, 0px);
+  box-sizing: border-box;
+  overflow: hidden;
 }
-.platform-ios #page-home-closet .skin-list-window {
-  margin-top: 88px;
-}
-/* Prevent the page from becoming vertically scrollable: Sony's pages have
- * .ui-content that holds the .root-container; both should not overflow. */
+/* Prevent the page wrapper from becoming vertically scrollable — would
+ * fight Hammer.js pan recognizers in the arc. */
 #page-home-store .ui-content,
 #page-home-closet .ui-content {
   overflow: hidden !important;
-  -webkit-overflow-scrolling: auto;
 }
-#page-home-store .main-page,
-#page-home-closet .main-page {
-  overflow: hidden;
+
+/* Compact info-strip: stock 225px is too tall — the catalog filter now
+ * sits in our toolbar, not below the watch. Shrunk to 170px so the
+ * info block rises closer to the watch image, closing the dead gap. */
+#page-home-store .main-page .info-and-controllers,
+#page-home-closet .main-page .info-and-controllers {
+  height: 170px;
 }
 
 /* tag pills look softer than genre pills */
@@ -483,9 +496,10 @@
 }
 
 /* The arc/skin-list-window starts at the top of .main-page. Push it down so
- * it doesn't sit beneath the floating filter bar. */
-#page-home-store .main-page > .skin-list-window {
-  margin-top: 46px;
+ * the watch sits closer to the info strip below (reduces dead gap). */
+#page-home-store .main-page > .skin-list-window,
+#page-home-closet .main-page > .skin-list-window {
+  margin-top: 80px;
 }
 
 .catalog-filter-bar--hoisted .catalog-genre-pill,
