@@ -1,0 +1,1569 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FES Closet Community</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f4;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #626972;
+      --line: #d8ddd4;
+      --accent: #21695f;
+      --accent-strong: #174d46;
+      --accent-soft: #e6efec;
+      --warn: #9b5d16;
+      --hero-grad: linear-gradient(135deg, #21695f 0%, #15413a 60%, #0e2924 100%);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px/1.45 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a { color: inherit; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #eef1ea;
+    }
+
+    .wrap {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: end;
+      padding: 28px 0 22px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 8px 0 0;
+      max-width: 720px;
+      color: var(--muted);
+    }
+
+    .status {
+      min-width: 260px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.7);
+      padding: 12px 14px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status strong {
+      display: block;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .hero {
+      background: var(--hero-grad);
+      color: #f3eee2;
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hero h2 {
+      font-size: 20px;
+      margin: 0 0 6px;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 580px;
+      color: rgba(243, 238, 226, 0.85);
+      font-size: 14px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 8px 14px;
+      text-decoration: none;
+      font-weight: 650;
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .button.secondary {
+      background: #ffffff;
+      color: var(--accent-strong);
+    }
+
+    .button.invert {
+      background: #f3eee2;
+      border-color: #f3eee2;
+      color: #15413a;
+    }
+
+    .button.invert.secondary {
+      background: transparent;
+      color: #f3eee2;
+      border-color: rgba(243, 238, 226, 0.5);
+    }
+
+    main { padding: 22px 0 48px; }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .tabs {
+      display: inline-grid;
+      grid-auto-flow: column;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    .tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font: inherit;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      justify-self: end;
+      flex-wrap: wrap;
+    }
+
+    .search,
+    .sort {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font: inherit;
+    }
+
+    .search { width: min(280px, 100%); }
+    .sort { width: auto; }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .skin {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      border: 1px solid #232629;
+      background: #14171a;
+      color: #e8e7e1;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    /* Source-of-skin accent strip at the top of each card */
+    .skin::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, transparent);
+      z-index: 2;
+    }
+
+    .skin[data-source="community"] { --card-accent: linear-gradient(90deg, #21695f, #3aa491); }
+    .skin[data-source="official"]  { --card-accent: linear-gradient(90deg, #c9a86a, #e2c98e); }
+    .skin[data-source="generated"] { --card-accent: linear-gradient(90deg, #6a4ed1, #b58cff); }
+
+    .skin:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, .35);
+      border-color: #2e3438;
+    }
+
+    /* Ambient background per card. The accent is set inline via --ambient
+       extracted from the watchface preview (skin-card-ambient.js). */
+    .preview {
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 22px 0 14px;
+      min-height: 270px;
+      background:
+        radial-gradient(circle at 50% 38%, var(--ambient, #2a2d31) 0%, transparent 65%),
+        #14171a;
+      transition: background .25s ease;
+      overflow: hidden;
+    }
+
+    /* Soft glow around the watch */
+    .preview::before {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 180px;
+      height: 320px;
+      transform: translate(-50%, -50%);
+      background: var(--ambient, transparent);
+      filter: blur(45px);
+      opacity: 0.32;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 152:704 -> 1:4.63. Larger now to make the watch feel hero. */
+    .watch {
+      position: relative;
+      z-index: 1;
+      width: 78px;
+      height: 360px;
+      background: #050608;
+      border: 1px solid #1f2225;
+      border-radius: 18px;
+      padding: 7px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 0 0 4px #0c0e10,
+        0 18px 36px rgba(0, 0, 0, 0.55),
+        0 0 60px var(--ambient, transparent);
+      display: grid;
+      place-items: center;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .skin:hover .watch {
+      transform: scale(1.03);
+    }
+
+    .watch-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #1a1d20;
+      display: grid;
+      place-items: center;
+      color: #6c7278;
+      font-size: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .watch-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .body {
+      display: grid;
+      gap: 6px;
+      padding: 14px 14px 16px;
+    }
+
+    .title {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    h2.skin-name {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.25;
+      letter-spacing: 0;
+      text-transform: capitalize;
+      color: #f4f1ea;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-community {
+      background: rgba(58, 164, 145, 0.14);
+      color: #7fd6c1;
+    }
+
+    .badge-official {
+      background: rgba(226, 201, 142, 0.14);
+      color: #e2c98e;
+    }
+
+    .badge-generated {
+      background: rgba(181, 140, 255, 0.14);
+      color: #c8a8ff;
+    }
+
+    .creator,
+    .desc {
+      margin: 0;
+      color: #9aa1a8;
+      font-size: 13px;
+    }
+
+    .desc {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .actions.row-2 { grid-template-columns: 1fr 1fr; }
+
+    /* Buttons inside dark cards need a dark-theme override */
+    .skin .actions .button {
+      background: #f4f1ea;
+      border-color: #f4f1ea;
+      color: #14171a;
+    }
+
+    .skin .actions .button.secondary {
+      background: transparent;
+      border-color: rgba(244, 241, 234, 0.22);
+      color: #d8d4c9;
+    }
+
+    .skin .actions .button:hover {
+      filter: brightness(0.95);
+    }
+
+    .actions .button { padding: 7px 8px; font-size: 12px; min-height: 32px; }
+
+    .empty {
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 18px;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    .notice {
+      margin-top: 22px;
+      border: 1px solid #e1c58f;
+      background: #fff8e8;
+      color: #5e4215;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 13px;
+    }
+
+    code {
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 4px;
+      padding: 2px 5px;
+    }
+
+    /* Generator panel */
+    .gen-panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 10px;
+      padding: 18px;
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 20px;
+    }
+
+    .gen-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .gen-form label {
+      font-size: 13px;
+      font-weight: 600;
+      display: grid;
+      gap: 4px;
+    }
+
+    .gen-form input[type=text],
+    .gen-form textarea,
+    .gen-form select {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 10px;
+      font: inherit;
+      background: #fff;
+    }
+
+    .gen-form textarea { resize: vertical; min-height: 80px; }
+
+    .gen-form .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .gen-preview {
+      display: grid;
+      place-items: center;
+      background: #1d2024;
+      border-radius: 10px;
+      padding: 18px;
+      min-height: 280px;
+    }
+
+    .gen-status {
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 16px;
+    }
+
+    .gen-status.error { color: #b6452b; }
+    .gen-status.ok { color: var(--accent-strong); }
+
+    /* Suggestion chips below the prompt */
+    .gen-suggest {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .gen-suggest .chip {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+
+    .gen-suggest .chip:hover {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      border-color: var(--accent);
+    }
+
+    /* Style tile carousel */
+    .gen-styles {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px 6px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .gen-style-tile {
+      flex: 0 0 auto;
+      width: 64px;
+      border: 2px solid transparent;
+      background: #1d2024;
+      border-radius: 10px;
+      padding: 4px;
+      cursor: pointer;
+      display: grid;
+      gap: 4px;
+      transition: border-color .12s, transform .12s;
+    }
+
+    .gen-style-tile:hover {
+      transform: translateY(-1px);
+    }
+
+    .gen-style-tile[aria-pressed="true"] {
+      border-color: var(--accent);
+    }
+
+    .gen-style-tile .tile-img {
+      width: 100%;
+      aspect-ratio: 1 / 4.6;
+      background: #2a2d31;
+      border-radius: 6px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      color: #6c7278;
+      font-size: 9px;
+      letter-spacing: 0.5px;
+    }
+
+    .gen-style-tile .tile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gen-style-tile .tile-label {
+      font-size: 10px;
+      text-align: center;
+      color: #d4d6c8;
+      text-transform: capitalize;
+    }
+
+    /* History strip */
+    .gen-history {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #2a2d31;
+    }
+
+    .gen-history-title {
+      font-size: 11px;
+      color: #6c7278;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .gen-history-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .gen-history-item {
+      flex: 0 0 auto;
+      width: 40px;
+      border: 2px solid transparent;
+      background: transparent;
+      padding: 0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color .12s;
+    }
+
+    .gen-history-item[aria-pressed="true"] {
+      border-color: var(--accent);
+    }
+
+    .gen-history-item .h-img {
+      width: 100%;
+      aspect-ratio: 1 / 4.6;
+      background: #2a2d31;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .gen-history-item .h-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Loading shimmer on the preview while generating */
+    .watch-screen.is-loading::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.06) 50%, transparent 70%);
+      animation: shimmer 1.4s infinite linear;
+    }
+    .watch-screen.is-loading { position: relative; }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @media (max-width: 760px) {
+      .topbar,
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .controls { justify-self: stretch; }
+      .search { width: 100%; }
+      .gen-panel { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div>
+        <h1>FES Closet Community</h1>
+        <p class="lead">Offline catalog for FES Watch U skins. Community designs, AI-generated watchfaces, and bundled official skins are served from GitHub Pages — no Sony server required.</p>
+      </div>
+      <div class="status" id="status">
+        <strong>Loading catalog</strong>
+        Reading local mirror files.
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="hero" id="hero">
+      <div>
+        <h2>Made a skin? Share it with the community.</h2>
+        <p>Open a GitHub issue with your <code>skin.zip</code> — we'll review, sign, and publish it to this catalog so every owner of a FES Watch U can install it.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="button invert" href="https://github.com/t3mr0i/fes-closet-community/issues/new?labels=skin-submission&amp;title=Skin+submission&amp;body=Drag+and+drop+your+skin.zip+here+plus+a+short+description.+Add+a+preview+image+if+possible." target="_blank" rel="noopener">Submit a skin</a>
+        <a class="button invert secondary" href="https://github.com/t3mr0i/fes-closet-community" target="_blank" rel="noopener">View source</a>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="tabs" role="tablist" aria-label="Skin categories">
+        <button class="tab" role="tab" aria-selected="true" data-tab="community">Community</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="generated">Generated</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="official">Official</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="generator">AI generator</button>
+      </div>
+      <div></div>
+      <div class="controls">
+        <input class="search" id="search" type="search" placeholder="Search skins" autocomplete="off">
+        <select class="sort" id="sort" aria-label="Sort">
+          <option value="recent">Newest first</option>
+          <option value="name">Name A–Z</option>
+          <option value="creator">Creator A–Z</option>
+          <option value="kind">Kind</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="meta-row" id="meta"></div>
+    <section class="grid" id="grid" aria-live="polite"></section>
+
+    <div class="notice">
+      Transfer still happens in the patched FES Closet app over Bluetooth LE. This page hosts and exposes the packages; the app should point its store endpoints to <code>https://t3mr0i.github.io/fes-closet-community/api/</code> and <code>https://t3mr0i.github.io/fes-closet-community/storage/</code>.
+    </div>
+  </main>
+
+  <script>
+    // ============================================================
+    // OpenAI key (HARDCODED PER USER REQUEST — see CLAUDE.md note).
+    // This is public the moment Pages serves it. Rotate at first
+    // sign of quota abuse.
+    // ============================================================
+    const OPENAI_API_KEY = "__OPENAI_API_KEY__";
+    const OPENAI_MODEL = "gpt-image-2";
+    // gpt-image-2 supports any size with aspect ratio <= 3:1. The watchface
+    // is 152x704 (1:4.6) — taller than allowed — so we request 1024x3072
+    // (1:3) and crop the top/bottom in the rasterizer.
+    const OPENAI_SIZE = "1024x3072";
+
+    const STYLE_PRESETS = [
+      { id: "minimalist", label: "Minimalist" },
+      { id: "editorial", label: "Editorial" },
+      { id: "abstract", label: "Abstract" },
+      { id: "nature", label: "Nature" },
+      { id: "geometric", label: "Geometric" },
+      { id: "brutalist", label: "Brutalist" },
+      { id: "anime", label: "Anime" },
+    ];
+
+    const PROMPT_SUGGESTIONS = [
+      "minimal warm horizon at dusk",
+      "neon Tokyo skyline at night",
+      "misty mountain morning",
+      "deep ocean fade, blue to black",
+      "brutalist concrete with one orange seam",
+      "soft sunset gradient, pink to gold",
+    ];
+
+    const HISTORY_KEY = "fes-gen-history-v1";
+    const HISTORY_LIMIT = 8;
+
+    const COMMUNITY_CREATOR_ID = "community-0000-0000-0000-000000000001";
+    const root = location.pathname.endsWith("/")
+      ? location.pathname
+      : location.pathname.replace(/\/[^/]*$/, "/");
+    const state = {
+      tab: "community",
+      query: "",
+      sort: "recent",
+      skins: [],
+      generated: [],
+      creators: new Map(),
+    };
+
+    function url(path) {
+      const clean = String(path || "").replace(/^\/+/, "");
+      return `${root}${clean}`;
+    }
+
+    function storageUrl(value) {
+      return String(value || "").replace("<STORAGE_DIRECTORY>/", url("storage/"));
+    }
+
+    function text(value, fallback = "") {
+      return String(value || fallback).trim();
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function badgeClass(kind) {
+      const k = String(kind || "").toLowerCase();
+      if (k === "community") return "badge badge-community";
+      if (k === "generated") return "badge badge-generated";
+      return "badge badge-official";
+    }
+
+    function watchPreview(image) {
+      const inner = image
+        ? `<img src="${escapeHtml(image)}" alt="" loading="lazy">`
+        : `<span>no preview</span>`;
+      return `<div class="watch"><div class="watch-screen">${inner}</div></div>`;
+    }
+
+    function skinCard(item) {
+      const primaryHref = item.skin || item.zip;
+      const primaryLabel = item.skin ? "Install on watch" : "Download ZIP";
+      const extras = [];
+      if (item.skin && item.zip) {
+        extras.push(`<a class="button secondary" href="${escapeHtml(item.zip)}">Design bundle</a>`);
+      }
+      if (item.detail && !item.skin) {
+        extras.push(`<a class="button secondary" href="${escapeHtml(item.detail)}">Details</a>`);
+      }
+      const actionsClass = extras.length ? "actions row-2" : "actions";
+      const dataImage = item.image ? ` data-image="${escapeHtml(item.image)}"` : "";
+
+      return `
+        <article class="skin" data-source="${escapeHtml(item.source || "")}"${dataImage}>
+          <div class="preview">${watchPreview(item.image)}</div>
+          <div class="body">
+            <div class="title">
+              <h2 class="skin-name">${escapeHtml(item.name)}</h2>
+              <span class="${badgeClass(item.kind)}">${escapeHtml(item.kind)}</span>
+            </div>
+            <p class="creator">${escapeHtml(item.creator)}</p>
+            <p class="desc">${escapeHtml(item.description || item.brief || "No description.")}</p>
+            <div class="${actionsClass}">
+              <a class="button" href="${escapeHtml(primaryHref)}">${primaryLabel}</a>
+              ${extras.join("\n              ")}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    // Sample the average color of each card's preview image and apply it as
+    // an --ambient CSS variable so the card can paint a halo of the
+    // watchface's dominant tone behind the watch mockup.
+    const ambientCache = new Map();
+
+    function applyAmbient(card, image) {
+      if (!image) return;
+      if (ambientCache.has(image)) {
+        card.style.setProperty("--ambient", ambientCache.get(image));
+        return;
+      }
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.referrerPolicy = "no-referrer";
+      img.onload = () => {
+        try {
+          const c = document.createElement("canvas");
+          // small thumb is enough for an average
+          const w = 16, h = 70;
+          c.width = w; c.height = h;
+          const ctx = c.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          const data = ctx.getImageData(0, 0, w, h).data;
+          let r = 0, g = 0, b = 0, n = 0;
+          for (let i = 0; i < data.length; i += 4) {
+            r += data[i]; g += data[i + 1]; b += data[i + 2]; n++;
+          }
+          r = Math.round(r / n); g = Math.round(g / n); b = Math.round(b / n);
+          // Mute very dark / very bright averages so the halo always reads
+          const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          if (lum < 30) { r += 40; g += 40; b += 40; }
+          if (lum > 220) { r -= 40; g -= 40; b -= 40; }
+          const col = `rgba(${r}, ${g}, ${b}, 0.55)`;
+          ambientCache.set(image, col);
+          card.style.setProperty("--ambient", col);
+        } catch { /* tainted canvas / CORS — skip ambient */ }
+      };
+      img.src = image;
+    }
+
+    function applyAmbientToAllCards() {
+      document.querySelectorAll(".skin[data-image]").forEach((card) => {
+        applyAmbient(card, card.dataset.image);
+      });
+    }
+
+    function normalizeOfficialSkin(skin) {
+      const creator = state.creators.get(skin.creatorId);
+      const zipUrl = storageUrl(skin.zip);
+      const isCommunity = skin.creatorId === COMMUNITY_CREATOR_ID;
+      return {
+        id: skin.id,
+        kind: isCommunity ? "Community" : "Official",
+        name: text(skin.name, skin.id),
+        creator: creator ? creator.name : skin.creatorId,
+        brief: skin.brief,
+        description: skin.description,
+        image: storageUrl(skin.thumbnail || skin.storeImage || skin.detailImage),
+        preview: storageUrl(skin.storeImage || skin.detailImage || skin.thumbnail),
+        detail: skin.detailImage ? storageUrl(skin.detailImage) : "",
+        zip: "",
+        skin: zipUrl,
+        source: isCommunity ? "community" : "official",
+        publishDate: skin.publishDate || skin.modifiedDate || "",
+      };
+    }
+
+    function normalizeGenerated(entry) {
+      return {
+        id: entry.slug,
+        kind: "Generated",
+        name: entry.slug.replace(/-/g, " "),
+        creator: entry.creator || "GitHub Actions generator",
+        brief: entry.request && entry.request.direction,
+        description: entry.request && entry.request.direction,
+        image: url(entry.preview),
+        preview: url(entry.preview),
+        detail: url(entry.spec),
+        zip: url(entry.package),
+        skin: entry.skin ? url(entry.skin) : "",
+        source: "generated",
+        publishDate: entry.createdAt || "",
+      };
+    }
+
+    function sortItems(items) {
+      const arr = items.slice();
+      switch (state.sort) {
+        case "name":
+          arr.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "creator":
+          arr.sort((a, b) => a.creator.localeCompare(b.creator));
+          break;
+        case "kind":
+          arr.sort((a, b) => a.kind.localeCompare(b.kind) || a.name.localeCompare(b.name));
+          break;
+        case "recent":
+        default:
+          arr.sort((a, b) => String(b.publishDate || "").localeCompare(String(a.publishDate || "")));
+      }
+      return arr;
+    }
+
+    function activeItems() {
+      const items = state.tab === "generated"
+        ? state.generated
+        : state.skins.filter((skin) => skin.source === state.tab);
+      const q = state.query.toLowerCase();
+      const filtered = q
+        ? items.filter((item) =>
+            [item.name, item.creator, item.description, item.brief, item.kind]
+              .some((value) => String(value || "").toLowerCase().includes(q)))
+        : items;
+      return sortItems(filtered);
+    }
+
+    function renderMeta(items) {
+      const communityCount = state.skins.filter((item) => item.source === "community").length;
+      const officialCount = state.skins.filter((item) => item.source === "official").length;
+      const generatedCount = state.generated.length;
+      document.getElementById("meta").innerHTML = `
+        <span class="pill">${items.length} shown</span>
+        <span class="pill">${communityCount} community</span>
+        <span class="pill">${generatedCount} generated</span>
+        <span class="pill">${officialCount} official</span>
+      `;
+    }
+
+    function render() {
+      document.querySelectorAll(".tab").forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.tab === state.tab));
+      });
+
+      const grid = document.getElementById("grid");
+      const meta = document.getElementById("meta");
+      const controls = document.querySelector(".controls");
+
+      if (state.tab === "generator") {
+        meta.innerHTML = "";
+        controls.style.visibility = "hidden";
+        grid.innerHTML = generatorPanelHtml();
+        wireGenerator();
+        return;
+      }
+
+      controls.style.visibility = "visible";
+      const items = activeItems();
+      renderMeta(items);
+      grid.innerHTML = items.length
+        ? items.map(skinCard).join("")
+        : `<div class="empty">No skins match the current filter.</div>`;
+      applyAmbientToAllCards();
+    }
+
+    async function loadJson(path, fallback) {
+      try {
+        const response = await fetch(url(path), { cache: "no-store" });
+        if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+        return await response.json();
+      } catch (error) {
+        console.warn(`Failed to load ${path}`, error);
+        return fallback;
+      }
+    }
+
+    async function boot() {
+      const [skinsData, creatorsData, generatedData] = await Promise.all([
+        loadJson("api/store/skins-en-us.json", { skins: [] }),
+        loadJson("api/store/creators-en-us.json", { creators: [] }),
+        loadJson("generated/index.json", { watchfaces: [] }),
+      ]);
+
+      state.creators = new Map((creatorsData.creators || []).map((creator) => [creator.id, creator]));
+      state.skins = (skinsData.skins || []).map(normalizeOfficialSkin);
+      state.generated = (generatedData.watchfaces || []).map(normalizeGenerated);
+
+      document.getElementById("status").innerHTML = `
+        <strong>GitHub Pages mirror</strong>
+        ${state.skins.length + state.generated.length} packages indexed.
+      `;
+      render();
+    }
+
+    document.querySelectorAll(".tab").forEach((button) => {
+      button.addEventListener("click", () => {
+        state.tab = button.dataset.tab;
+        render();
+      });
+    });
+
+    document.getElementById("search").addEventListener("input", (event) => {
+      state.query = event.target.value;
+      render();
+    });
+
+    document.getElementById("sort").addEventListener("change", (event) => {
+      state.sort = event.target.value;
+      render();
+    });
+
+    // ============================================================
+    // OpenAI AI generator
+    // ============================================================
+    function hasLocalKey() {
+      return typeof OPENAI_API_KEY === "string"
+        && OPENAI_API_KEY.length > 0
+        && !OPENAI_API_KEY.startsWith("__");
+    }
+
+    function styleTileImg(styleId) {
+      // Try the pre-rendered tile from the workflow first; fall back to a solid placeholder.
+      return `<img src="${url(`img/style-tiles/${styleId}.png`)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${styleId}'}))">`;
+    }
+
+    function generatorPanelHtml() {
+      const localPath = hasLocalKey();
+
+      const styleTiles = STYLE_PRESETS.map((s, i) => `
+        <button type="button" class="gen-style-tile" data-style="${s.id}" aria-pressed="${i === 0}" ${localPath ? "" : "disabled"}>
+          <div class="tile-img">${styleTileImg(s.id)}</div>
+          <div class="tile-label">${s.label}</div>
+        </button>
+      `).join("");
+
+      const suggestions = PROMPT_SUGGESTIONS.map((p) => `
+        <button type="button" class="chip" data-prompt="${escapeHtml(p)}" ${localPath ? "" : "disabled"}>${escapeHtml(p)}</button>
+      `).join("");
+
+      const cta = localPath
+        ? `
+            <div class="actions row-2">
+              <button class="button" id="gen-go" type="button">Generate</button>
+              <button class="button secondary" id="gen-variation" type="button" disabled>Try variation</button>
+            </div>
+            <div class="actions row-2">
+              <button class="button secondary" id="gen-download" type="button" disabled>Download skin.zip</button>
+              <a class="button secondary" id="gen-submit" target="_blank" rel="noopener" style="pointer-events:none;opacity:0.5">Submit to community</a>
+            </div>
+            <div class="gen-status" id="gen-status">Generated images render at 152×704 — the FES U Watch's exact pixel size.</div>
+            <p style="font-size:12px;color:var(--muted);margin:0">
+              Runs locally in your browser using OpenAI gpt-image-2. The resulting <code>skin.zip</code> works
+              directly with the patched FES Closet app.
+            </p>
+          `
+        : `
+            <div class="actions">
+              <a class="button" target="_blank" rel="noopener"
+                 href="https://github.com/t3mr0i/fes-closet-community/actions/workflows/generate-ai-watchface.yml">
+                 Run GitHub Action to generate
+              </a>
+            </div>
+            <div class="gen-status">
+              The hosted catalog generates AI watchfaces server-side. Trigger the workflow above with your prompt;
+              the resulting skin.zip will appear in the Generated tab automatically once the action commits.
+            </div>
+            <p style="font-size:12px;color:var(--muted);margin:0">
+              Running locally? Set <code>OPENAI_API_KEY</code> at the top of <code>index.html</code> to enable the
+              browser-side generator and skip the round-trip.
+            </p>
+          `;
+      const disabled = localPath ? "" : "disabled";
+
+      return `
+        <div class="gen-panel">
+          <div class="gen-form">
+            <label>
+              Watchface concept
+              <textarea id="gen-prompt" ${disabled} placeholder="e.g. minimal warm desert at dusk, soft horizon line, large minute markers"></textarea>
+            </label>
+            <div class="gen-suggest" id="gen-suggest">${suggestions}</div>
+
+            <div>
+              <label style="display:block;margin-bottom:4px">Style</label>
+              <div class="gen-styles" id="gen-styles" role="radiogroup" aria-label="Style preset">${styleTiles}</div>
+            </div>
+
+            <div class="form-row">
+              <label>
+                Mood
+                <select id="gen-mood" ${disabled}>
+                  <option value="calm">Calm</option>
+                  <option value="energetic">Energetic</option>
+                  <option value="dark">Dark / moody</option>
+                  <option value="bright">Bright / playful</option>
+                  <option value="nostalgic">Nostalgic</option>
+                </select>
+              </label>
+              <label>
+                Display name
+                <input id="gen-name" type="text" ${disabled} placeholder="My watchface">
+              </label>
+            </div>
+
+            ${cta}
+          </div>
+          <div>
+            <div class="gen-preview" id="gen-preview">
+              <div class="watch"><div class="watch-screen"><span>preview</span></div></div>
+            </div>
+            <div class="gen-history" id="gen-history" hidden>
+              <div class="gen-history-title">Recent in this session</div>
+              <div class="gen-history-strip" id="gen-history-strip"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildPrompt(opts) {
+      // Watch screen aspect: 152x704 (very tall, narrow vertical strip)
+      // Reading top-to-bottom on the wrist.
+      const lines = [
+        `Design a watchface artwork for a vertical narrow display, exact pixel size 152x704 (aspect ratio 1:4.6).`,
+        `Style: ${opts.style}. Mood: ${opts.mood}.`,
+        `Concept: ${opts.concept}.`,
+        `Composition rules:`,
+        `- Vertical reading order top to bottom.`,
+        `- Leave the upper third visually quiet so a digital time readout remains legible against the artwork (the watch overlays digits separately).`,
+        `- High contrast, no text, no logos, no watermarks.`,
+        `- Sharp at small render sizes (final image will be displayed only ~30 mm wide on the wrist).`,
+        `- Edge-to-edge artwork, no white border, no padding.`,
+        `Render only the artwork as a single PNG/JPEG image.`,
+      ];
+      if (opts.vary) {
+        lines.push(`Generate a fresh variation: keep the concept and style, change the specific composition, color accents, and details.`);
+      }
+      return lines.join("\n");
+    }
+
+    async function callOpenAI(prompt) {
+      const res = await fetch("https://api.openai.com/v1/images/generations", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${OPENAI_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: OPENAI_MODEL,
+          prompt,
+          size: OPENAI_SIZE,
+          n: 1,
+        }),
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`OpenAI ${res.status}: ${errText.slice(0, 300)}`);
+      }
+      const data = await res.json();
+      const b64 = data?.data?.[0]?.b64_json;
+      if (!b64) throw new Error("OpenAI response had no image. Try a different prompt.");
+      return { data: b64, mime: "image/png" };
+    }
+
+    function dataUrlFromInline(inline) {
+      return `data:${inline.mime};base64,${inline.data}`;
+    }
+
+    async function rasterizeTo152x704(dataUrl) {
+      // The model won't deliver exact 152×704 pixel size — re-rasterize via canvas
+      // to 152x704, cover-fit, then re-encode as PNG.
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      await new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = () => reject(new Error("Could not decode generated image"));
+        img.src = dataUrl;
+      });
+      const W = 152, H = 704;
+      const canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext("2d");
+      // cover-fit
+      const sourceRatio = img.width / img.height;
+      const targetRatio = W / H;
+      let sx = 0, sy = 0, sw = img.width, sh = img.height;
+      if (sourceRatio > targetRatio) {
+        // source is wider -> crop sides
+        sw = img.height * targetRatio;
+        sx = (img.width - sw) / 2;
+      } else {
+        // source is taller -> crop top/bottom
+        sh = img.width / targetRatio;
+        sy = (img.height - sh) / 2;
+      }
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+      return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+    }
+
+    // Minimal ZIP writer (store-only, no compression). Sufficient for skin.zip.
+    function makeStoreZip(files) {
+      // files: [{ name, data: Uint8Array }]
+      const encoder = new TextEncoder();
+      const chunks = [];
+      const central = [];
+      let offset = 0;
+      const crcTable = (() => {
+        const t = new Uint32Array(256);
+        for (let i = 0; i < 256; i++) {
+          let c = i;
+          for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+          t[i] = c >>> 0;
+        }
+        return t;
+      })();
+      function crc32(bytes) {
+        let c = 0xFFFFFFFF;
+        for (let i = 0; i < bytes.length; i++) c = crcTable[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+        return (c ^ 0xFFFFFFFF) >>> 0;
+      }
+      for (const f of files) {
+        const nameBytes = encoder.encode(f.name);
+        const data = f.data;
+        const crc = crc32(data);
+        const localHeader = new Uint8Array(30 + nameBytes.length);
+        const dv = new DataView(localHeader.buffer);
+        dv.setUint32(0, 0x04034b50, true);
+        dv.setUint16(4, 20, true);                 // version
+        dv.setUint16(6, 0, true);                  // flags
+        dv.setUint16(8, 0, true);                  // method = store
+        dv.setUint16(10, 0, true);                 // mod time
+        dv.setUint16(12, 0, true);                 // mod date
+        dv.setUint32(14, crc, true);
+        dv.setUint32(18, data.length, true);       // compressed
+        dv.setUint32(22, data.length, true);       // uncompressed
+        dv.setUint16(26, nameBytes.length, true);
+        dv.setUint16(28, 0, true);                 // extra
+        localHeader.set(nameBytes, 30);
+        chunks.push(localHeader, data);
+
+        const cdEntry = new Uint8Array(46 + nameBytes.length);
+        const cdv = new DataView(cdEntry.buffer);
+        cdv.setUint32(0, 0x02014b50, true);
+        cdv.setUint16(4, 20, true);                // version made
+        cdv.setUint16(6, 20, true);                // version needed
+        cdv.setUint16(8, 0, true);
+        cdv.setUint16(10, 0, true);
+        cdv.setUint16(12, 0, true);
+        cdv.setUint16(14, 0, true);
+        cdv.setUint32(16, crc, true);
+        cdv.setUint32(20, data.length, true);
+        cdv.setUint32(24, data.length, true);
+        cdv.setUint16(28, nameBytes.length, true);
+        cdv.setUint16(30, 0, true);
+        cdv.setUint16(32, 0, true);
+        cdv.setUint16(34, 0, true);
+        cdv.setUint16(36, 0, true);
+        cdv.setUint32(38, 0, true);                // external attrs
+        cdv.setUint32(42, offset, true);           // local header offset
+        cdEntry.set(nameBytes, 46);
+        central.push(cdEntry);
+
+        offset += localHeader.length + data.length;
+      }
+      const cdSize = central.reduce((s, c) => s + c.length, 0);
+      const cdOffset = offset;
+      central.forEach((c) => { chunks.push(c); offset += c.length; });
+
+      const eocd = new Uint8Array(22);
+      const edv = new DataView(eocd.buffer);
+      edv.setUint32(0, 0x06054b50, true);
+      edv.setUint16(4, 0, true);
+      edv.setUint16(6, 0, true);
+      edv.setUint16(8, files.length, true);
+      edv.setUint16(10, files.length, true);
+      edv.setUint32(12, cdSize, true);
+      edv.setUint32(16, cdOffset, true);
+      edv.setUint16(20, 0, true);
+      chunks.push(eocd);
+
+      let totalLen = 0;
+      for (const c of chunks) totalLen += c.length;
+      const out = new Uint8Array(totalLen);
+      let pos = 0;
+      for (const c of chunks) { out.set(c, pos); pos += c.length; }
+      return new Blob([out], { type: "application/zip" });
+    }
+
+    let lastGenerated = null; // { pngBlob, name, concept, style, mood, dataUrl }
+
+    function setStatus(msg, kind = "") {
+      const el = document.getElementById("gen-status");
+      if (!el) return;
+      el.className = `gen-status ${kind}`;
+      el.textContent = msg;
+    }
+
+    // ---------- history (localStorage of recent generations) ----------
+
+    function readHistory() {
+      try {
+        const raw = localStorage.getItem(HISTORY_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch { return []; }
+    }
+
+    function writeHistory(items) {
+      try { localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, HISTORY_LIMIT))); }
+      catch { /* quota exceeded — drop oldest */ }
+    }
+
+    function pushHistory(entry) {
+      const items = readHistory();
+      items.unshift(entry);
+      writeHistory(items);
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const wrap = document.getElementById("gen-history");
+      const strip = document.getElementById("gen-history-strip");
+      if (!wrap || !strip) return;
+      const items = readHistory();
+      if (!items.length) { wrap.hidden = true; return; }
+      wrap.hidden = false;
+      strip.innerHTML = items.map((it, i) => `
+        <button type="button" class="gen-history-item" data-idx="${i}" aria-pressed="false" title="${escapeHtml(it.concept || "")}">
+          <div class="h-img"><img src="${it.dataUrl}" alt=""></div>
+        </button>
+      `).join("");
+    }
+
+    function restoreFromHistory(idx) {
+      const items = readHistory();
+      const it = items[idx];
+      if (!it) return;
+      document.getElementById("gen-prompt").value = it.concept || "";
+      const styleBtn = document.querySelector(`.gen-style-tile[data-style="${it.style}"]`);
+      if (styleBtn) selectStyleTile(styleBtn);
+      const moodSel = document.getElementById("gen-mood");
+      if (moodSel && it.mood) moodSel.value = it.mood;
+      // Repaint preview
+      document.getElementById("gen-preview").innerHTML =
+        `<div class="watch"><div class="watch-screen"><img src="${it.dataUrl}" alt=""></div></div>`;
+      // Mark active history item
+      document.querySelectorAll(".gen-history-item").forEach((b, i) => {
+        b.setAttribute("aria-pressed", String(i === idx));
+      });
+      // Mark this as lastGenerated so download/submit/variation work without re-running
+      // (we stored a dataURL — convert back to blob lazily on download)
+      lastGenerated = {
+        pngBlob: null, // will be regenerated from dataUrl if needed
+        dataUrl: it.dataUrl,
+        name: slugify(it.name || it.concept || "my-watchface"),
+        concept: it.concept,
+        style: it.style,
+        mood: it.mood,
+      };
+      const dlBtn = document.getElementById("gen-download");
+      const subBtn = document.getElementById("gen-submit");
+      const varBtn = document.getElementById("gen-variation");
+      if (dlBtn) dlBtn.disabled = false;
+      if (varBtn) varBtn.disabled = false;
+      enableSubmit(subBtn, it);
+    }
+
+    function slugify(s) {
+      return String(s || "my-watchface")
+        .replace(/[^a-z0-9-]+/gi, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase()
+        .slice(0, 48) || "my-watchface";
+    }
+
+    async function dataUrlToBlob(dataUrl) {
+      const res = await fetch(dataUrl);
+      return await res.blob();
+    }
+
+    function enableSubmit(subBtn, entry) {
+      if (!subBtn) return;
+      const title = `Skin submission: ${entry.concept || entry.name || "my-watchface"}`.slice(0, 80);
+      const body = [
+        "Generated with the FES Closet AI generator (OpenAI gpt-image-2).",
+        "",
+        "**Concept:** " + (entry.concept || ""),
+        "**Style:** " + (entry.style || ""),
+        "**Mood:** " + (entry.mood || ""),
+        "",
+        "Drop the generated `skin.zip` file in the box below to attach it. A preview image is also welcome.",
+      ].join("\n");
+      const href = "https://github.com/t3mr0i/fes-closet-community/issues/new"
+        + "?labels=skin-submission"
+        + "&title=" + encodeURIComponent(title)
+        + "&body=" + encodeURIComponent(body);
+      subBtn.href = href;
+      subBtn.style.pointerEvents = "auto";
+      subBtn.style.opacity = "1";
+    }
+
+    function selectStyleTile(button) {
+      document.querySelectorAll(".gen-style-tile").forEach((b) =>
+        b.setAttribute("aria-pressed", String(b === button))
+      );
+    }
+
+    function currentStyle() {
+      const active = document.querySelector('.gen-style-tile[aria-pressed="true"]');
+      return active ? active.dataset.style : STYLE_PRESETS[0].id;
+    }
+
+    async function runGeneration({ varyOnly = false } = {}) {
+      const goBtn = document.getElementById("gen-go");
+      const varBtn = document.getElementById("gen-variation");
+      const dlBtn = document.getElementById("gen-download");
+      const subBtn = document.getElementById("gen-submit");
+      const previewWrap = document.getElementById("gen-preview");
+
+      const concept = document.getElementById("gen-prompt").value.trim();
+      const style = currentStyle();
+      const mood = document.getElementById("gen-mood").value;
+      const name = document.getElementById("gen-name").value.trim();
+
+      if (!concept) { setStatus("Describe what you want first.", "error"); return; }
+
+      goBtn.disabled = true; varBtn.disabled = true; dlBtn.disabled = true;
+      // shimmer
+      const screen = previewWrap.querySelector(".watch-screen");
+      if (screen) screen.classList.add("is-loading");
+      setStatus("Calling OpenAI…");
+
+      try {
+        const promptText = buildPrompt({ concept, style, mood, vary: varyOnly });
+        const inline = await callOpenAI(promptText);
+        const sourceDataUrl = dataUrlFromInline(inline);
+
+        setStatus("Rasterizing to 152×704…");
+        const pngBlob = await rasterizeTo152x704(sourceDataUrl);
+
+        // Convert blob to dataUrl for history persistence
+        const dataUrl = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.readAsDataURL(pngBlob);
+        });
+
+        previewWrap.innerHTML =
+          `<div class="watch"><div class="watch-screen"><img src="${dataUrl}" alt=""></div></div>`;
+
+        const entry = {
+          name: slugify(name || concept),
+          concept, style, mood, dataUrl,
+          createdAt: new Date().toISOString(),
+        };
+        lastGenerated = { ...entry, pngBlob };
+
+        pushHistory(entry);
+        dlBtn.disabled = false;
+        varBtn.disabled = false;
+        enableSubmit(subBtn, entry);
+        setStatus("Ready. Download the skin.zip or try a variation.", "ok");
+      } catch (err) {
+        console.error(err);
+        setStatus(err.message || String(err), "error");
+        if (screen) screen.classList.remove("is-loading");
+      } finally {
+        goBtn.disabled = false;
+        const screen2 = document.querySelector("#gen-preview .watch-screen");
+        if (screen2) screen2.classList.remove("is-loading");
+      }
+    }
+
+    function wireGenerator() {
+      const goBtn = document.getElementById("gen-go");
+      if (!goBtn) return; // workflow-fallback panel — nothing to wire
+
+      goBtn.addEventListener("click", () => runGeneration({ varyOnly: false }));
+
+      const varBtn = document.getElementById("gen-variation");
+      if (varBtn) varBtn.addEventListener("click", () => runGeneration({ varyOnly: true }));
+
+      const dlBtn = document.getElementById("gen-download");
+      if (dlBtn) dlBtn.addEventListener("click", async () => {
+        if (!lastGenerated) return;
+        let pngBlob = lastGenerated.pngBlob;
+        if (!pngBlob && lastGenerated.dataUrl) {
+          pngBlob = await dataUrlToBlob(lastGenerated.dataUrl);
+        }
+        if (!pngBlob) return;
+        const pngBytes = new Uint8Array(await pngBlob.arrayBuffer());
+        const config = {
+          version: "1.0.0",
+          revision: Date.now(),
+          components: [{ type: "background", image: "bg.png", layout: { size: [152, 704] } }],
+        };
+        const configBytes = new TextEncoder().encode(JSON.stringify(config, null, 2));
+        const zip = makeStoreZip([
+          { name: "config.json", data: configBytes },
+          { name: "bg.png", data: pngBytes },
+        ]);
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(zip);
+        a.download = `${lastGenerated.name}.skin.zip`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      });
+
+      // Suggestion chips
+      document.querySelectorAll(".gen-suggest .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const promptEl = document.getElementById("gen-prompt");
+          promptEl.value = chip.dataset.prompt;
+          promptEl.focus();
+        });
+      });
+
+      // Style tiles
+      document.querySelectorAll(".gen-style-tile").forEach((tile) => {
+        tile.addEventListener("click", () => selectStyleTile(tile));
+      });
+
+      // History strip clicks
+      document.getElementById("gen-history-strip")?.addEventListener("click", (e) => {
+        const btn = e.target.closest(".gen-history-item");
+        if (!btn) return;
+        restoreFromHistory(Number(btn.dataset.idx));
+      });
+
+      renderHistory();
+    }
+
+    boot();
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<article data-role="page" id="page-dev-arc" data-theme="a"><header data-role="header" data-position="inline"><h1>Arc Page</h1><a href="#" data-rel="back">Back</a></header><section data-role="content" style="padding: 0"><section style="padding:1em"><div><button id="button-reset" data-icon="refresh" data-theme="a">Reset</button> <a href="#setting-popup-1" data-rel="popup" data-icon="gear" data-role="button" data-inline=" =true">設定1</a> <a href="#setting-popup-2" data-rel="popup" data-icon="gear" data-role="button" data-inline=" =true">設定2</a> <a href="#setting-popup-3" data-rel="popup" data-icon="gear" data-role="button" data-inline=" =true">設定3</a> <a href="#setting-popup-4" data-rel="popup" data-icon="gear" data-role="button" data-inline=" =true">設定4</a></div><div><button id="button-move-prev" data-inline="true">Prev</button> <button id="button-move-next" data-inline="true">Next</button></div></section><div id="arc-store-window" style="width: 800px; height: 800px; position:relative"></div><div id="target-index"><div id="index-a"></div><div id="index-b"></div></div></section><div data-role="popup" id="setting-popup-4" data-theme="a"><label for="recycle">DOM をリサイクル (軽くなるかも)</label><input id="recycle" type="checkbox" checked="checked"><label for="scroll-effect">スクロール中の演出</label><input id="scroll-effect" type="checkbox" checked="checked"><label for="scroll-effect-scale">スクロール時の表示倍率</label><input id="scroll-effect-scale" type="range" min="0.1" max="2" value="0.8" step="0.1"><label for="tap-effect">タップ時の演出</label><input id="tap-effect" type="checkbox" checked="checked"><label for="tap-effect-angle">タップ時演出強度 [deg]</label><input id="tap-effect-angle" type="range" min="0" max="180" value="10"></div><div data-role="popup" id="setting-popup-1" data-theme="a"><label for="arc-radius">半径</label><input id="arc-radius" type="number" value="1050"><label for="circle-division">円の分割数</label><input id="circle-division" type="number" value="36"><label for="contents-count">コンテンツの数</label><input id="contents-count" type="number" value="1000"></div><div data-role="popup" id="setting-popup-2" data-theme="a"><label for="content-width">コンテンツの幅</label><input id="content-width" type="number" value="150"><label for="content-height">コンテンツの高さ</label><input id="content-height" type="number" value="200"><label for="store-window-width">窓の幅</label><input id="store-window-width" type="number" value="800"><label for="store-window-height">窓の高さ</label><input id="store-window-height" type="number" value="200"><label for="view-angle">視野角 (deg)</label><input id="view-angle" type="number" value="270"><label for="snap-duration">スナップ時間 (msec)</label><input id="snap-duration" type="number" value="250"></div><div data-role="popup" id="setting-popup-3" data-theme="a" style="width:400px"><label for="scroll-speed-rate">スクロールの速度</label><input id="scroll-speed-rate" type="range" value="1" min="0.1" max="2" step="0.05"><label for="scroll-speed-decay">スクロール速度の減衰度</label><input id="scroll-speed-decay" type="range" value="0.002" max="0.01" min="0.0001" step="0.0001"></div><script type="text/template" id="arc-content-template-1">{{#flipsnapContents}}
+        <section class="content-container">
+            {{#header}}
+            <section class="header-content">
+                <p class="content-description">{{description}}</p>
+            </section>
+            {{/header}}
+            <section class="main-content">
+                <div class="image-item" {{#image}} style="background-image:url('{{image}}');{{/image}}{{#color}}style=" background-color:{{color}};"{{/color}}></div>
+            </section>
+            {{#footer}}
+            <section class="footer-content">
+                <p class="content-title">{{title}}</p>
+                <p class="content-description">{{description}}</p>
+            </section>
+            {{/footer}}
+        </section>
+        {{/flipsnapContents}}</script><script type="text/template" id="arc-content-template-2"><section class="content-container">
+            <section class="main-content">
+                <div class="image-item">{{index}}</div>
+            </section>
+        </section></script></article>

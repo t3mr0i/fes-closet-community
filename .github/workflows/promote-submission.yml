@@ -1,0 +1,96 @@
+name: Promote Community Submission
+
+# Manually promote a pending submission from submissions/pending/<slug>/
+# into the public catalog. Run from the Actions tab → "Promote Community
+# Submission" → Run workflow → enter the slug.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Submission slug (the folder name under submissions/pending/)"
+        required: true
+        type: string
+      reject:
+        description: "Reject and delete instead of promoting"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: promote-submission
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Promote or reject
+        env:
+          SLUG: ${{ inputs.slug }}
+          REJECT: ${{ inputs.reject }}
+        run: |
+          set -euo pipefail
+          SUBMISSION_DIR="submissions/pending/${SLUG}"
+          if [ ! -d "$SUBMISSION_DIR" ]; then
+            echo "::error::Submission $SLUG not found at $SUBMISSION_DIR"
+            exit 1
+          fi
+          if [ ! -f "$SUBMISSION_DIR/skin.zip" ] || [ ! -f "$SUBMISSION_DIR/metadata.json" ] || [ ! -f "$SUBMISSION_DIR/preview.png" ]; then
+            echo "::error::Submission $SLUG missing one of skin.zip / metadata.json / preview.png"
+            exit 1
+          fi
+
+          if [ "$REJECT" = "true" ]; then
+            mkdir -p submissions/rejected
+            mv "$SUBMISSION_DIR" "submissions/rejected/${SLUG}"
+            echo "Rejected $SLUG → submissions/rejected/"
+          else
+            CREATOR_ID="community-0000-0000-0000-000000000001"
+            # Use slug as skin id (lowercased + alphanumeric)
+            SKIN_ID=$(echo "$SLUG" | tr -cd 'a-zA-Z0-9-' | tr 'A-Z' 'a-z')
+            STORAGE_DIR="server-mirror/public/storage/${CREATOR_ID}/${SKIN_ID}"
+            mkdir -p "$STORAGE_DIR"
+            cp "$SUBMISSION_DIR/skin.zip" "$STORAGE_DIR/skin.zip"
+            cp "$SUBMISSION_DIR/preview.png" "$STORAGE_DIR/storeImage.png"
+            cp "$SUBMISSION_DIR/preview.png" "$STORAGE_DIR/thumbnail.png"
+            cp "$SUBMISSION_DIR/preview.png" "$STORAGE_DIR/detailImage.png"
+            cp "$SUBMISSION_DIR/preview.png" "$STORAGE_DIR/smallImage.png"
+            cp "$SUBMISSION_DIR/preview.png" "$STORAGE_DIR/customImage1.png"
+            cp "$SUBMISSION_DIR/preview.png" "$STORAGE_DIR/trialImage.png"
+
+            # Append entry to skins-*.json catalogs
+            node .github/scripts/append-skin-entry.mjs \
+              --skinId "$SKIN_ID" \
+              --creatorId "$CREATOR_ID" \
+              --metadata "$SUBMISSION_DIR/metadata.json"
+
+            mkdir -p submissions/approved
+            mv "$SUBMISSION_DIR" "submissions/approved/${SLUG}"
+            echo "Promoted $SLUG → catalog as $SKIN_ID"
+          fi
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          if [ "${{ inputs.reject }}" = "true" ]; then
+            git commit -m "submission: reject ${{ inputs.slug }}"
+          else
+            git commit -m "submission: promote ${{ inputs.slug }} to catalog"
+          fi
+          git push

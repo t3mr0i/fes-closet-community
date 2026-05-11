@@ -1,0 +1,20 @@
+<article id="page-edit-pattern" class="edit-page fes-fixed-page" data-role="page" data-theme="fes"><header data-role="header" data-position="fixed" data-tap-toggle="false"><button class="command-back fes-back-navigator ui-btn ui-btn-icon-left fes-header-button"></button><h1 data-i18n="edit.pattern.title">edit.pattern.title</h1><button id="edit-pattern-button-next" class="command-navigate ui-btn ui-btn-right fes-header-button" data-navigate-to="#edit-save" data-i18n="app.common.next">app.common.next</button></header><section data-role="content" class="fes-fixed-screen"><div class="zoom-area"><div class="watch-guide"></div><div class="edit-area"></div></div><div class="activity-indicator show"></div><div class="command-zoom-in btn-zoom in"></div><div class="command-zoom-out btn-zoom out"></div></section><footer class="footer-pattern-select-area"><section class="edit-controller select-content enabled"><section class="select-content-list face-selector selected"></section><section class="select-content-list filter-selector"></section><section class="footer-button-base ui-grid-a"><button class="command-switch-content face-selector fes-material-ripple ui-btn ui-block-a fes-button-alternative select-btn selected" data-content-type="face" data-i18n="edit.pattern.selectWatchFace">edit.pattern.selectWatchFace</button> <button class="command-switch-content filter-selector fes-material-ripple ui-btn ui-block-b fes-button-alternative select-btn" data-content-type="filter" data-i18n="edit.pattern.applyFilters">edit.pattern.applyFilters</button></section></section><section class="edit-controller adjust-filter-value"><section class="adjust-filter-slider-area"></section><section class="footer-button-base ui-grid-a"><button class="command-edit-cancel fes-material-ripple ui-btn ui-block-a fes-button-regular" data-i18n="app.common.cancel">app.common.cancel</button> <button class="command-edit-apply fes-material-ripple ui-btn ui-block-b fes-button-regular" data-i18n="app.common.done">app.common.done</button></section></section></footer></article><article><script type="text/template" id="edit-pattern-face-listitem">{{#items}}
+        <div class="content-listitem-base">
+            <div class="content-listitem command-item-selected" data-item-index="{{index}}">
+                <p class="item-name">&nbsp;</p>
+                <figure style="background-image:url('{{src}}')"></figure>
+                <div class="effect circle"></div>
+            </div>
+        </div>
+        {{/items}}</script><script type="text/template" id="edit-pattern-filter-listitem">{{#items}}
+        <div class="content-listitem-base">
+            <div class="content-listitem command-item-selected" data-item-id="{{id}}" data-has-variable="{{variable}}">
+                <p class="item-name">{{name}}</p>
+                <figure></figure>
+                <div class="effect"></div>
+            </div>
+        </div>
+        {{/items}}</script><script type="text/template" id="edit-pattern-filter-slider"><div class="fes-slider-full edit-slider-container">
+            <div class="center-guide"></div>
+            <input type="range" name="edit-effect-slider" id="edit-effect-slider" data-popup-enabled="true" data-highlight="true" step="1" min="0" max="100" value="{{percent}}" />
+        </div></script></article>

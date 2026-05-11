@@ -1,0 +1,98 @@
+<arcticle><script type="text/template" id="arc-content-template"><section class="content-container" data-skin-id="{{id}}"{{#community}} data-community="1"{{/community}}>
+            <section class="main-content">
+                <div class="image-item loading">{{index}}</div>
+            </section>
+        </section></script><script type="text/template" id="skin-info-and-controllers"><p class="creator-name"></p>
+        <p class="skin-name"></p>
+        <p class="skin-expire-date"></p>
+        {{#store}}
+        {{#community}}
+        <button class="try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="" data-i18n="store.common.try">store.common.try</button>
+        <button class="purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id=""><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
+        {{/community}}
+        {{/store}}
+        {{^store}}
+        <button class="transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="" data-i18n="closet.common.install">closet.common.install</button>
+        <section class="bottom-buttons">
+            <button class="delete-skin command-delete-skin ui-btn fes-button-transparent" data-skin-id="" data-i18n="closet.common.delete">closet.common.delete</button>
+            <button class="share-skin command-share-skin ui-btn fes-button-transparent" data-skin-id="" data-i18n="closet.common.share">closet.common.share</button>
+        </section>
+        {{/store}}
+        <p class="index-and-total"></p></script><script type="text/template" id="skin-detail"><section class="skin-detail-contents-wrapper fes-cv">
+            <section class="skin-detail-contents">
+                <section class="skin-images-wrapper">
+                    <section class="viewport">
+                        <section class="skin-images">
+                            <figure class="detail-image skin-image loading"></figure>
+                            {{#customImage1}}
+                            <figure class="custom-image-1 skin-image loading"></figure>
+                            {{/customImage1}}
+                            {{#customImage2}}
+                            <figure class="custom-image-2 skin-image loading"></figure>
+                            {{/customImage2}}
+                            {{#customImage3}}
+                            <figure class="custom-image-3 skin-image loading"></figure>
+                            {{/customImage3}}
+                        </section>
+                    </section>
+                    <section class="indicators"></section>
+                </section>
+
+                <section class="fes-cv-hero">
+                    {{#studio}}<p class="fes-cv-eyebrow">{{studio}}</p>{{/studio}}
+                    <h2 class="fes-cv-title">{{name}}</h2>
+                    {{#creator}}<p class="fes-cv-byline">by <span>{{name}}</span></p>{{/creator}}
+                    {{#endDate}}<p class="fes-cv-expire">{{endDate}}</p>{{/endDate}}
+                </section>
+
+                <hr class="fes-cv-rule">
+
+                {{#genre}}{{#country}}
+                <p class="fes-cv-meta">{{genre}} &nbsp;·&nbsp; {{country}}</p>
+                {{/country}}{{/genre}}
+                {{#genre}}{{^country}}<p class="fes-cv-meta">{{genre}}</p>{{/country}}{{/genre}}
+                {{^genre}}{{#country}}<p class="fes-cv-meta">{{country}}</p>{{/country}}{{/genre}}
+
+                <section class="fes-cv-actions">
+                    {{#store}}
+                    {{#community}}
+                    <button class="fes-cv-action fes-cv-action-primary purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id="{{id}}"><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
+                    <button class="fes-cv-action fes-cv-action-secondary try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="store.common.try">store.common.try</button>
+                    {{/community}}
+                    {{/store}}
+                    {{^store}}
+                    <button class="fes-cv-action fes-cv-action-primary transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.install">closet.common.install</button>
+                    {{/store}}
+                </section>
+
+                {{#skinDetail}}{{#description}}
+                <p class="fes-cv-body fes-cv-body-lead"><span class="fes-cv-leadmark">—</span>{{description}}</p>
+                {{/description}}{{/skinDetail}}
+
+                {{#creator}}
+                <p class="fes-cv-section-label">— About the designer</p>
+                <div class="fes-cv-creator-row">
+                    {{#icon}}<figure class="fes-cv-avatar"><figure class="creator-icon" style="background-image:url('{{icon}}');"></figure></figure>{{/icon}}
+                    <p class="fes-cv-creator-name">{{name}}</p>
+                </div>
+                {{#introduction}}<p class="fes-cv-body">{{introduction}}</p>{{/introduction}}
+                {{#url}}<p class="fes-cv-link"><a class="command-openurl-external" href="#" data-navigate-to="{{{url}}}" data-no-vclick-handle="true">→ {{{url}}}</a></p>{{/url}}
+                {{/creator}}
+            </section>
+        </section>
+        <section class="header-buttons">
+            <button class="command-back-to-main back-to-main ui-btn"></button>
+        </section>
+        <section class="footer-buttons">
+            {{#store}}
+            {{#community}}
+            <button class="purchase-skin command-purchase-skin ui-btn fes-button-regular" data-skin-id="{{id}}"><p class="label"></p><figure class="activity-indicator disabled"></figure></button>
+            <button class="try-skin command-try-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="store.common.try">store.common.try</button>
+            {{/community}}
+            {{/store}}
+            {{^store}}
+            <button class="transfer-skin command-transfer-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.install">closet.common.install</button>
+            <button class="delete-skin command-delete-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.delete">closet.common.delete</button>
+            <button class="share-skin command-share-skin ui-btn fes-button-regular" data-skin-id="{{id}}" data-i18n="closet.common.share">closet.common.share</button>
+            {{/store}}
+        </section></script><script type="text/template" id="skin-images-indicator"><div class="indicator" data-index="{{index}}"></div></script></arcticle>

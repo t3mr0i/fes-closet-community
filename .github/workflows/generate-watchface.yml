@@ -1,0 +1,85 @@
+name: Generate Watchface
+
+on:
+  workflow_dispatch:
+    inputs:
+      direction:
+        description: "Natural-language direction"
+        required: true
+        default: "minimal editorial watchface with a warm accent"
+        type: string
+      style:
+        description: "Style bucket"
+        required: false
+        default: "minimal"
+        type: string
+      mood:
+        description: "Mood or tone"
+        required: false
+        default: "calm"
+        type: string
+      language:
+        description: "Locale"
+        required: false
+        default: "en-US"
+        type: string
+      must_include:
+        description: "Comma separated list"
+        required: false
+        default: "time,date,battery"
+        type: string
+      avoid:
+        description: "Comma separated list"
+        required: false
+        default: "clutter,overlap,low contrast"
+        type: string
+      palette:
+        description: "Comma separated hex colors"
+        required: false
+        default: "#101318,#F4F1EA,#D0A85C"
+        type: string
+      slug:
+        description: "Optional stable slug"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: generate-watchface
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate watchface assets
+        env:
+          WATCHFACE_DIRECTION: ${{ inputs.direction }}
+          WATCHFACE_STYLE: ${{ inputs.style }}
+          WATCHFACE_MOOD: ${{ inputs.mood }}
+          WATCHFACE_LANGUAGE: ${{ inputs.language }}
+          WATCHFACE_MUST_INCLUDE: ${{ inputs.must_include }}
+          WATCHFACE_AVOID: ${{ inputs.avoid }}
+          WATCHFACE_PALETTE: ${{ inputs.palette }}
+          WATCHFACE_SLUG: ${{ inputs.slug }}
+        run: node server-mirror/scripts/generate-watchface.mjs
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add server-mirror/public/generated
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+            exit 0
+          fi
+          git commit -m "generate watchface assets"
+          git push

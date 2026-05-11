@@ -1,0 +1,1056 @@
+/* Catalog filter shell + skin-detail view.
+ *
+ * Sections:
+ *   1. legacy filter-bar (hidden, replaced by toolbar)
+ *   2. #fes-catalog-toolbar - floating top shell on store + closet
+ *   3. #fes-catalog-filter-sheet - bottom sheet for full facet picker
+ *   4. .fes-cv-* - isolated detail-page styles
+ *
+ * Uses tokens defined in modern.css (--fes-*). #fff appears only in
+ * active-state inverted text on dark backgrounds. */
+
+/* ---------- filter bar (above the arc on store list) ---------- */
+.catalog-filter-bar,
+.catalog-filter-bar * {
+  box-sizing: border-box;
+}
+
+/* The legacy Sony catalog filter bar (in the home-store template) is
+ * permanently hidden — fes.catalog-filter.js builds its own floating shell. */
+#catalog-filter-bar { display: none !important; }
+
+/* Hide Sony's home-header. Our toolbar fully replaces it. We don't need
+ * to keep Sony's buttons reachable any more — fes.catalog-filter.js
+ * drives jQM's router directly. */
+#page-home-store .home-header,
+#page-home-closet .home-header { display: none !important; }
+
+/* Kill ALL page transitions on the two home pages — slant, slide, fade,
+ * platform-default, platform-alternative — so the toolbar swap is instant.
+ * jQuery Mobile applies these as classes on the page itself during transition. */
+#page-home-store,
+#page-home-store *,
+#page-home-store::before,
+#page-home-store::after,
+#page-home-closet,
+#page-home-closet *,
+#page-home-closet::before,
+#page-home-closet::after {
+  animation-duration: 0.001ms !important;
+  animation-delay: 0ms !important;
+}
+#page-home-store.slant::before,
+#page-home-store.slant.in::before,
+#page-home-store.slant.out::before,
+#page-home-store.slant.in.reverse::before,
+#page-home-store.slant.out.reverse::before,
+#page-home-closet.slant::before,
+#page-home-closet.slant.in::before,
+#page-home-closet.slant.out::before,
+#page-home-closet.slant.in.reverse::before,
+#page-home-closet.slant.out.reverse::before {
+  display: none !important;
+}
+
+/* ============================================================
+ * fes-catalog-toolbar - top floating shell on the store page
+ * ============================================================ */
+#fes-catalog-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 90;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  padding-top: env(safe-area-inset-top, 0px);
+  font-family: var(--fes-font-text);
+  color: var(--fes-ink-1);
+}
+.platform-ios #fes-catalog-toolbar {
+  /* iPhone safe-area-inset-top is ~47-59px; that's exactly what we want as
+   * top padding (no extra). The row1 below sits flush under the status bar. */
+  padding-top: env(safe-area-inset-top, 47px);
+}
+#fes-catalog-toolbar .fct-row1 {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0;
+  gap: 0;
+}
+#fes-catalog-toolbar .fct-row1[hidden],
+#fes-catalog-toolbar .fct-pill-row[hidden],
+#fes-catalog-toolbar .fct-search-row[hidden] {
+  display: none !important;
+}
+#fes-catalog-toolbar .fct-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#fes-catalog-toolbar .fct-icon-btn {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--fes-ink-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+}
+#fes-catalog-toolbar .fct-icon-btn:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+#fes-catalog-toolbar .fct-badge {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: #c4954b;
+  color: #1a1408;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+#fes-catalog-toolbar .fct-badge[hidden] {
+  display: none;
+}
+
+/* search row */
+#fes-catalog-toolbar .fct-search-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+#fes-catalog-toolbar .fct-search-input {
+  flex: 1;
+  height: 36px;
+  padding: 0 12px;
+  border: 0;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--fes-ink-1);
+  outline: none;
+  -webkit-appearance: none;
+}
+#fes-catalog-toolbar .fct-search-clear {
+  width: 32px; height: 32px;
+  border: 0; border-radius: 999px;
+  background: transparent;
+  color: #555;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* pill scroller */
+#fes-catalog-toolbar .fct-pill-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 4px 12px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#fes-catalog-toolbar .fct-pill-row::-webkit-scrollbar { display: none; }
+
+#fes-catalog-toolbar .fct-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--fes-ink-1);
+  font: 600 11px/1 var(--fes-font-text);
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+#fes-catalog-toolbar .fct-pill.is-active {
+  background: var(--fes-ink-1);
+  color: #fff;
+  border-color: var(--fes-ink-1);
+}
+#fes-catalog-toolbar .fct-pill-count {
+  display: inline-block;
+  min-width: 18px;
+  height: 16px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.07);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+#fes-catalog-toolbar .fct-pill.is-active .fct-pill-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* When Sony's detail-page is sliding into view, hide our toolbar so the
+ * detail's own header (back button, title) is reachable at the top. */
+#page-home-store.is-detail-active ~ #fes-catalog-toolbar,
+#page-home-closet.is-detail-active ~ #fes-catalog-toolbar {
+  display: none !important;
+}
+/* The toolbar is appended to <body>, so the sibling combinator above
+ * doesn't always match — fall back to a body-level class set by JS. */
+body.fct-detail-active #fes-catalog-toolbar { display: none !important; }
+body.fct-detail-active #page-home-store .main-page,
+body.fct-detail-active #page-home-closet .main-page {
+  padding-top: 0;
+}
+
+/* Push the .main-page contents down by exactly the toolbar's measured
+ * height (set by fes.catalog-filter.js as --fct-toolbar-h). Sony's arc
+ * computes its own size from .main-page's content-box, so padding-top
+ * here naturally squeezes the arc into the visible area below the toolbar.
+ * .info-and-controllers is anchored bottom:0 of the same .main-page, so
+ * it isn't affected. */
+#page-home-store .main-page,
+#page-home-closet .main-page {
+  padding-top: var(--fct-toolbar-h, 0px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* Prevent the page wrapper from becoming vertically scrollable — would
+ * fight Hammer.js pan recognizers in the arc. */
+#page-home-store .ui-content,
+#page-home-closet .ui-content {
+  overflow: hidden !important;
+}
+
+/* Compact info-strip: stock 225px is too tall — the catalog filter now
+ * sits in our toolbar, not below the watch. Shrunk to 170px so the
+ * info block rises closer to the watch image, closing the dead gap. */
+#page-home-store .main-page .info-and-controllers,
+#page-home-closet .main-page .info-and-controllers {
+  height: 170px;
+}
+
+/* tag pills look softer than genre pills */
+#fes-catalog-toolbar .fct-pill-tag {
+  border-style: dashed;
+  background: transparent;
+}
+#fes-catalog-toolbar .fct-pill-tag.is-active {
+  border-style: solid;
+  background: #c4954b;
+  color: #1a1408;
+  border-color: #c4954b;
+}
+#fes-catalog-toolbar .fct-pill-tag.is-active .fct-pill-count {
+  background: rgba(26, 20, 8, 0.18);
+  color: rgba(26, 20, 8, 0.7);
+}
+
+#fes-catalog-toolbar .fct-icon-btn svg {
+  display: block;
+  pointer-events: none;
+  margin: 0 auto;
+}
+
+/* search auto-complete suggestions */
+#fes-catalog-toolbar .fct-suggest {
+  background: var(--fes-surface-0);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  max-height: 280px;
+  overflow-y: auto;
+}
+#fes-catalog-toolbar .fct-suggest[hidden] { display: none !important; }
+#fes-catalog-toolbar .fct-sg-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: 500 14px/1.2 var(--fes-font-text);
+  color: var(--fes-ink-1);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+#fes-catalog-toolbar .fct-sg-row:last-child { border-bottom: 0; }
+#fes-catalog-toolbar .fct-sg-row:active { background: rgba(0, 0, 0, 0.04); }
+#fes-catalog-toolbar .fct-sg-kind {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+#fes-catalog-toolbar .fct-sg-value {
+  flex: 1;
+  text-transform: capitalize;
+}
+#fes-catalog-toolbar .fct-sg-count {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.45);
+}
+@media (prefers-color-scheme: dark) {
+  #fes-catalog-toolbar .fct-suggest { background: #1a1816; }
+  #fes-catalog-toolbar .fct-sg-row { color: #f4f0e6; border-bottom-color: rgba(244, 240, 230, 0.06); }
+  #fes-catalog-toolbar .fct-sg-kind { background: rgba(244, 240, 230, 0.08); color: rgba(244, 240, 230, 0.6); }
+}
+
+/* ============================================================
+ * fes-catalog-filter-sheet - bottom sheet for full facet picker
+ * ============================================================ */
+#fes-catalog-filter-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: block;
+}
+#fes-catalog-filter-sheet[hidden] { display: none; }
+#fes-catalog-filter-sheet .fcs-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(20, 18, 14, 0.32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+#fes-catalog-filter-sheet .fcs-panel {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  max-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fes-surface-0);
+  border-radius: 18px 18px 0 0;
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.18);
+  font-family: var(--fes-font-text);
+  color: var(--fes-ink-1);
+  animation: fcs-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes fcs-rise {
+  from { transform: translateY(20%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+#fes-catalog-filter-sheet .fcs-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+#fes-catalog-filter-sheet .fcs-title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+}
+#fes-catalog-filter-sheet .fcs-reset {
+  background: transparent; border: 0; color: #c4954b;
+  font: 600 13px/1 inherit;
+  cursor: pointer;
+}
+#fes-catalog-filter-sheet .fcs-close {
+  width: 32px; height: 32px;
+  border: 0; border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 18px; cursor: pointer;
+}
+#fes-catalog-filter-sheet .fcs-body {
+  flex: 1; overflow-y: auto;
+  padding: 12px 18px 18px;
+}
+#fes-catalog-filter-sheet .fcs-group {
+  margin-top: 16px;
+}
+#fes-catalog-filter-sheet .fcs-group:first-child { margin-top: 4px; }
+#fes-catalog-filter-sheet .fcs-group h4 {
+  margin: 0 0 8px;
+  font: 700 11px/1 inherit;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+}
+#fes-catalog-filter-sheet .fcs-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+#fes-catalog-filter-sheet .fcs-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: var(--fes-surface-0);
+  color: var(--fes-ink-1);
+  font: 500 12px/1 inherit;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+#fes-catalog-filter-sheet .fcs-chip.is-active {
+  background: var(--fes-ink-1);
+  color: #fff;
+  border-color: var(--fes-ink-1);
+}
+#fes-catalog-filter-sheet .fcs-count {
+  display: inline-block;
+  min-width: 18px; padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+#fes-catalog-filter-sheet .fcs-chip.is-active .fcs-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.85);
+}
+#fes-catalog-filter-sheet .fcs-empty {
+  font-size: 13px; color: rgba(0, 0, 0, 0.45);
+}
+#fes-catalog-filter-sheet .fcs-foot {
+  padding: 12px 18px 6px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+#fes-catalog-filter-sheet .fcs-apply {
+  width: 100%;
+  height: 46px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--fes-ink-1);
+  color: #fff;
+  font: 700 13px/1 inherit;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* dark mode - sheet + toolbar adapt */
+@media (prefers-color-scheme: dark) {
+  #fes-catalog-toolbar {
+    background: rgba(20, 18, 15, 0.86);
+    border-bottom-color: rgba(244, 240, 230, 0.10);
+    color: #f4f0e6;
+  }
+  #fes-catalog-toolbar .fct-icon-btn { color: #f4f0e6; }
+  #fes-catalog-toolbar .fct-icon-btn:active { background: rgba(255, 255, 255, 0.08); }
+  #fes-catalog-toolbar .fct-pill {
+    background: rgba(244, 240, 230, 0.06);
+    border-color: rgba(244, 240, 230, 0.18);
+    color: #f4f0e6;
+  }
+  #fes-catalog-toolbar .fct-pill.is-active {
+    background: #f4f0e6;
+    color: #1a1408;
+    border-color: #f4f0e6;
+  }
+  #fes-catalog-toolbar .fct-pill-count {
+    background: rgba(244, 240, 230, 0.08);
+    color: rgba(244, 240, 230, 0.6);
+  }
+  #fes-catalog-toolbar .fct-search-input {
+    background: rgba(244, 240, 230, 0.10);
+    color: #f4f0e6;
+  }
+  #fes-catalog-filter-sheet .fcs-panel {
+    background: #1a1816;
+    color: #f4f0e6;
+  }
+  #fes-catalog-filter-sheet .fcs-chip {
+    background: rgba(244, 240, 230, 0.04);
+    border-color: rgba(244, 240, 230, 0.18);
+    color: #f4f0e6;
+  }
+}
+
+/* The arc/skin-list-window starts at the top of .main-page. Push it down so
+ * the watch sits closer to the info strip below (reduces dead gap). */
+#page-home-store .main-page > .skin-list-window,
+#page-home-closet .main-page > .skin-list-window {
+  margin-top: 80px;
+}
+
+.catalog-filter-bar--hoisted .catalog-genre-pill,
+.catalog-filter-bar--hoisted .catalog-chip {
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* horizontally scrollable genre pill row */
+.catalog-genre-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  padding: 2px 16px 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.catalog-genre-row::-webkit-scrollbar {
+  display: none;
+}
+.catalog-genre-pill {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid #000;
+  background: var(--fes-surface-0);
+  color: #000;
+  font-family: var(--fes-font-text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 999px;
+}
+.catalog-genre-pill.active {
+  background: #000;
+  color: #fff;
+}
+.catalog-genre-pill-more {
+  border-style: dashed;
+}
+.catalog-genre-pill-more.active {
+  border-style: solid;
+}
+
+.catalog-empty {
+  margin: 14px 0 4px;
+  padding: 18px 16px;
+  border: 1px solid #ededed;
+  background: var(--fes-surface-0);
+  text-align: center;
+}
+.catalog-empty[hidden] {
+  display: none;
+}
+.catalog-empty-text {
+  margin: 0 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #000;
+}
+.catalog-empty-reset {
+  display: inline-block;
+  padding: 9.76px 16px;
+  background: #000;
+  color: #fff;
+  border: 0;
+  font-family: var(--fes-font-text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.catalog-filter-panel {
+  position: relative;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 14px 16px 18px;
+  border: 0;
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #ededed;
+  background: var(--fes-surface-0);
+  max-height: 60vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  z-index: 9;
+}
+.catalog-filter-panel[hidden] {
+  display: none;
+}
+.catalog-filter-panel[hidden] {
+  display: none;
+}
+.catalog-filter-group + .catalog-filter-group {
+  margin-top: 12px;
+}
+.catalog-filter-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 6px;
+}
+.catalog-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.catalog-chip {
+  border: 1px solid #000;
+  background: var(--fes-surface-0);
+  color: #000;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 11px;
+  line-height: 1.2;
+  cursor: pointer;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: capitalize;
+}
+.catalog-chip.active {
+  background: #000;
+  color: #fff;
+}
+.catalog-chip-count {
+  display: inline-block;
+  min-width: 18px;
+  text-align: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.catalog-chip.active .catalog-chip-count {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+.catalog-chip-empty {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.4);
+}
+.catalog-filter-reset {
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: 0;
+  color: rgba(0, 0, 0, 0.6);
+  text-decoration: underline;
+  cursor: pointer;
+}
+#page-home-store.catalog-empty-active .skin-list-window {
+  opacity: 0.25;
+  pointer-events: none;
+}
+#page-home-store.catalog-empty-active .no-skin {
+  display: none !important;
+}
+
+/* ---------- isolated detail view (fes-cv-*) ---------- */
+.fes-cv {
+  background: #fafafa;
+  color: var(--fes-ink-1);
+  -webkit-overflow-scrolling: touch;
+}
+
+#page-home-store .detail-page .fes-cv .skin-detail-contents,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents {
+  padding-bottom: 104px;
+  background: #fafafa;
+}
+
+/* The stock detail page offsets every paragraph by -31px for the old centered
+ * layout. Reset it inside the catalog view so text flows normally. */
+#page-home-store .detail-page .fes-cv .skin-detail-contents h2,
+#page-home-store .detail-page .fes-cv .skin-detail-contents h3,
+#page-home-store .detail-page .fes-cv .skin-detail-contents p,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents h2,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents h3,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents p {
+  position: static;
+  top: auto;
+  height: auto;
+  min-height: 0;
+  vertical-align: baseline;
+  overflow: visible;
+}
+
+#page-home-store .detail-page .fes-cv .skin-images-wrapper,
+#page-home-closet .detail-page .fes-cv .skin-images-wrapper {
+  background: #f1f1f1;
+  border-bottom: 1px solid rgba(24, 24, 24, 0.08);
+  overflow-x: hidden;
+}
+
+#page-home-store .detail-page .fes-cv .skin-images-wrapper .viewport .skin-images figure,
+#page-home-closet .detail-page .fes-cv .skin-images-wrapper .viewport .skin-images figure {
+  background-position: center 46%;
+}
+
+#page-home-store .detail-page .fes-cv .skin-images-wrapper .indicators,
+#page-home-closet .detail-page .fes-cv .skin-images-wrapper .indicators {
+  right: 20px;
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+}
+
+#page-home-store .detail-page .fes-cv .skin-images-wrapper .indicators .indicator,
+#page-home-closet .detail-page .fes-cv .skin-images-wrapper .indicators .indicator {
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  border-radius: 999px;
+  background: rgba(24, 24, 24, 0.24);
+}
+
+#page-home-store .detail-page .fes-cv .skin-images-wrapper .indicators .indicator.active,
+#page-home-closet .detail-page .fes-cv .skin-images-wrapper .indicators .indicator.active {
+  width: 8px;
+  height: 8px;
+  margin: 0;
+  background: var(--fes-ink-1);
+}
+
+.fes-cv .fes-cv-hero {
+  padding: 34px 24px 0;
+  text-align: left;
+}
+
+.fes-cv .fes-cv-eyebrow,
+.fes-cv .fes-cv-meta,
+.fes-cv .fes-cv-section-label {
+  font-family: var(--fes-font-text);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fes-ink-1);
+}
+
+.fes-cv .fes-cv-eyebrow {
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.fes-cv .fes-cv-title {
+  margin: 0;
+  padding: 0;
+  max-width: 9ch;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 39px;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0;
+  color: var(--fes-ink-1);
+}
+
+.fes-cv .fes-cv-byline {
+  margin: 8px 0 0;
+  padding: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgba(24, 24, 24, 0.68);
+}
+
+.fes-cv .fes-cv-byline span {
+  color: var(--fes-ink-1);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.fes-cv .fes-cv-expire {
+  margin: 10px 0 0;
+  font-family: var(--fes-font-text);
+  font-size: 11px;
+  color: rgba(24, 24, 24, 0.54);
+}
+
+.fes-cv .fes-cv-rule {
+  margin: 30px 24px 18px;
+  border: 0;
+  border-top: 1px solid rgba(24, 24, 24, 0.88);
+  height: 0;
+}
+
+.fes-cv .fes-cv-meta {
+  margin: 0 24px 28px;
+  padding: 0;
+  color: rgba(24, 24, 24, 0.8);
+}
+
+.fes-cv .fes-cv-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 0 24px 30px;
+}
+
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 0;
+  border: 1px solid #181818;
+  font-family: var(--fes-font-text);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 44px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action-primary,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action-primary {
+  background: var(--fes-ink-1);
+  color: #fff;
+}
+
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action-secondary,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action-secondary {
+  background: #fafafa;
+  color: var(--fes-ink-1);
+}
+
+#page-home-store .detail-page .fes-cv .fes-cv-actions .purchase-skin .label,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .purchase-skin .label {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: center;
+  pointer-events: none;
+}
+
+#page-home-store .detail-page .fes-cv .fes-cv-actions .activity-indicator,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .activity-indicator {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  margin-top: -8px;
+  pointer-events: none;
+}
+
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action:active,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action:active {
+  -webkit-transform: translateY(1px);
+  transform: translateY(1px);
+}
+
+.fes-cv .fes-cv-body {
+  margin: 0 24px;
+  padding: 0;
+  max-width: 32em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.62;
+  letter-spacing: 0;
+  color: var(--fes-ink-1);
+}
+
+.fes-cv .fes-cv-body-lead {
+  margin-bottom: 34px;
+}
+
+.fes-cv .fes-cv-leadmark {
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--fes-ink-1);
+  font-weight: 400;
+}
+
+.fes-cv .fes-cv-body + .fes-cv-body {
+  margin-top: 14px;
+}
+
+.fes-cv .fes-cv-section-label {
+  margin: 0 24px 18px;
+  padding: 24px 0 0;
+  border-top: 1px solid rgba(24, 24, 24, 0.14);
+}
+
+.fes-cv .fes-cv-creator-row {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 16px;
+  margin: 0 24px 18px;
+  min-height: 54px;
+}
+
+#page-home-store .fes-cv .fes-cv-avatar,
+#page-home-closet .fes-cv .fes-cv-avatar {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 54px;
+  height: 54px;
+  margin: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(24, 24, 24, 0.9);
+  background: var(--fes-surface-0);
+  overflow: hidden;
+  -webkit-transform: none;
+  transform: none;
+}
+
+#page-home-store .fes-cv .fes-cv-avatar .creator-icon,
+#page-home-closet .fes-cv .fes-cv-avatar .creator-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-transform: none;
+  transform: none;
+}
+
+#page-home-store .detail-page .fes-cv .skin-detail-contents .fes-cv-creator-name,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents .fes-cv-creator-name {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--fes-ink-1);
+  line-height: 1.25;
+  text-align: left;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.fes-cv .fes-cv-link {
+  margin: 20px 24px 0;
+  padding: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15px;
+  line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fes-cv .fes-cv-link a {
+  color: var(--fes-ink-1);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(24, 24, 24, 0.9);
+  padding-bottom: 2px;
+}
+
+#page-home-store .detail-page .header-buttons,
+#page-home-closet .detail-page .header-buttons {
+  z-index: 12;
+}
+
+#page-home-store .detail-page .header-buttons button.back-to-main,
+#page-home-closet .detail-page .header-buttons button.back-to-main {
+  background: rgba(250, 250, 250, 0.76);
+}
+
+#page-home-store .detail-page .footer-buttons,
+#page-home-closet .detail-page .footer-buttons {
+  background: rgba(250, 250, 250, 0.96);
+  border-top: 1px solid rgba(24, 24, 24, 0.12);
+  z-index: 12;
+}
+
+#page-home-store .detail-page .footer-buttons button,
+#page-home-closet .detail-page .footer-buttons button {
+  background: var(--fes-ink-1);
+  color: #fff;
+  border: 0;
+  font-family: var(--fes-font-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+#page-home-store .detail-page .footer-buttons button:active,
+#page-home-closet .detail-page .footer-buttons button:active {
+  -webkit-transform: translateY(1px);
+  transform: translateY(1px);
+}
+
+@media screen and (max-width: 420px) {
+  .fes-cv .fes-cv-hero {
+    padding: 30px 22px 0;
+  }
+
+  .fes-cv .fes-cv-title {
+    font-size: 35px;
+  }
+
+  .fes-cv .fes-cv-body {
+    margin-right: 22px;
+    margin-left: 22px;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .fes-cv .fes-cv-rule,
+  .fes-cv .fes-cv-meta,
+  .fes-cv .fes-cv-actions,
+  .fes-cv .fes-cv-section-label,
+  .fes-cv .fes-cv-creator-row,
+  .fes-cv .fes-cv-link {
+    margin-right: 22px;
+    margin-left: 22px;
+  }
+}

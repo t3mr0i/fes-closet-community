@@ -1,0 +1,13 @@
+{
+    "version": "<%= version %>",
+    "revision": <%= revision %>,
+    "components": [
+        {
+            "type": "background",
+            "image": "bg.png",
+            "layout": {
+                "size": [152, 704]
+            }
+        }
+    ]
+}

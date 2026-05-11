@@ -1,0 +1,19 @@
+{
+  "name": "FES Closet Community Mirror",
+  "version": 1,
+  "paths": {
+    "skins": {
+      "en-US": "/api/store/skins-en-us.json",
+      "ja-JP": "/api/store/skins-ja-jp.json",
+      "zh-CN": "/api/store/skins-zh-cn.json"
+    },
+    "creators": {
+      "en-US": "/api/store/creators-en-us.json",
+      "ja-JP": "/api/store/creators-ja-jp.json",
+      "zh-CN": "/api/store/creators-zh-cn.json"
+    },
+    "storage": "/storage/",
+    "firmware": "/fw/version.json"
+  }
+}
+

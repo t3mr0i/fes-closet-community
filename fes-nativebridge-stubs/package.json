@@ -1,0 +1,9 @@
+{
+  "name": "fes-nativebridge-stubs",
+  "version": "1.0.0",
+  "description": "Stub iOS native classes for Sony FES NativeBridge",
+  "cordova": {
+    "id": "fes-nativebridge-stubs",
+    "platforms": ["ios"]
+  }
+}

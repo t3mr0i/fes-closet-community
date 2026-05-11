@@ -1,0 +1,410 @@
+{
+  "app": {
+    "name": "FES Closet",
+    "namecn": "FES Closet (China)",
+    "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+    "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+    "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+    "common": {
+      "backAllCaps": "上一步",
+      "nextAllCaps": "下一步",
+      "doneAllCaps": "完成",
+      "startAllCaps": "开始",
+      "skipAllCaps": "跳过",
+      "cancelAllCaps": "取消",
+      "ok": "确定",
+      "back": "上一步",
+      "next": "下一步",
+      "done": "完成",
+      "skip": "跳过",
+      "cancel": "取消",
+      "close": "关闭",
+      "transfer": "发送",
+      "preparing": "准备中",
+      "save": "保存",
+      "delete": "删除",
+      "remove": "删除",
+      "unregister": "取消注册",
+      "refresh": "刷新",
+      "select": "选择",
+      "reset": "初始化",
+      "retry": "重试",
+      "restore": "恢复",
+      "settings": "设置",
+      "support": "Community Catalog",
+      "update": "更新",
+      "later": "以后再说",
+      "share": "分享"
+    },
+    "utility": {
+      "fraction": "{{count}}/{{total}}",
+      "bracket": "({{content}})",
+      "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+    },
+    "url": {
+      "eula": "https://t3mr0i.github.io/fes-closet-community/",
+      "tos": "https://t3mr0i.github.io/fes-closet-community/",
+      "pp": "https://t3mr0i.github.io/fes-closet-community/",
+      "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+      "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+      "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+    },
+    "os": {
+      "cameraUsageDescription": "创建图案的时候使用。",
+      "libraryUsageDescription": "创建图案的时候使用。",
+      "bluetoothUsageDescription": "和手表通信的时候使用。",
+      "contactsUsageDescription": "指定图片给联系人。",
+      "photoLibraryAddUsageDescription": "保存图案的图片。"
+    }
+  },
+  "store": {
+    "title": "CATALOG",
+    "common": {
+      "moneyUnit": "¥",
+      "moneyDelimiter": ",",
+      "buy": "购买",
+      "buyFor": "",
+      "buyPrice": "{{price}}",
+      "buyTransaction": "免费获取",
+      "install": "免费获取",
+      "getAgain": "重新获取",
+      "try": "试用",
+      "purchased": "下载完成",
+      "designer": "设计师"
+    },
+    "information": {
+      "offline": "离线",
+      "offlineDetail": "无网络连接。",
+      "serverAccessLimitation": "服务器目前太忙。\n请稍后重试。",
+      "serverMaintenance": "正在维护中，暂时无法使用。 \n预计服务恢复时间: {{time}}",
+      "serverMaintenanceEmergency": "The original store is offline. The community catalog is statically hosted.",
+      "support": "Community Catalog",
+      "notAvailable": "在您的国家/地区不可用。",
+      "closeout": "在线商店服务已终止。"
+    }
+  },
+  "closet": {
+    "title": "样式柜",
+    "common": {
+      "delete": "删除",
+      "share": "分享",
+      "install": "发送",
+      "installed": "使用中"
+    },
+    "information": {
+      "empty": "无图案"
+    }
+  },
+  "edit": {
+    "background": {
+      "title": "创建",
+      "selectLibrary": "相册",
+      "selectGallery": "图库",
+      "launchCamera": "相机",
+      "aiGenerate": "AI"
+    },
+    "pattern": {
+      "title": "编辑",
+      "selectWatchFace": "表盘",
+      "applyFilters": "滤镜"
+    },
+    "save": {
+      "title": "保存",
+      "description": "图案名称",
+      "unavailable": "无法使用 {{param}}。",
+      "unavailableCharacter": "使用了不可用的字符。",
+      "limitString": "请最多输入 {{numOfString}} 个字符。"
+    },
+    "selectContent": {
+      "title": "所有照片"
+    }
+  },
+  "dialog": {
+    "settingsUpdated": "设置已更新",
+    "skipSettings": {
+      "title": "跳过设置？",
+      "description": "手表设置也可以从此应用程序的设置菜单更改。"
+    },
+    "deletePattern": {
+      "title": "删除图案？",
+      "description": "从在线商店下载的图案可以再次保存到样式柜。"
+    },
+    "unregisterWatch": {
+      "title": "取消注册手表？"
+    },
+    "restorePurchase": {
+      "title": "恢复图案？"
+    },
+    "selectRemove": {
+      "title": "删除图案",
+      "description_plural": "手表只可以保存 {{count}} 种图案。\n请删除其他图案。"
+    },
+    "progress": {
+      "title": "正在发送图案...",
+      "titleTry": "正在发送试用图案...",
+      "description": "请保持智能手机画面的显示状态，并将手机靠近手表后盖。",
+      "estimateTimePrefix": "剩余时间",
+      "done": {
+        "title": "发送完成",
+        "descriptionTry": "3分钟后将自动删除试用图案，或按手表上的按钮立刻进行删除。",
+        "descriptionShare": "分享图案的图片。\n#feswatchu",
+        "descriptionShareCN": "分享图案的图片。\n#FesWatch#"
+      }
+    },
+    "install": {
+      "titleStart": "将图案发送到手表？",
+      "descriptionAfterSave": "图案已保存到样式柜。您也可以立即将其发送到手表。",
+      "description": "发送时请保持智能手机靠近手表的后盖。",
+      "estimateTimePrefix": "预计发送时间"
+    },
+    "error": {
+      "title": {
+        "general": "错误",
+        "authentication": "无法进行身份验证",
+        "purchase": "无法购买图案",
+        "save": "无法保存图案",
+        "delete": "无法删除图案",
+        "remove": "无法删除图案",
+        "restorePurchase": "无法恢复",
+        "needNotToRestorePurchase": "无需恢复",
+        "resetFi": "无法初始化手表",
+        "skinCorrupted": "图案已损坏",
+        "transferPattern": "无法发送图案",
+        "transferUpdate": "无法更新手表系统软件",
+        "transfer": "无法发送",
+        "bluetooth": "打开蓝牙以允许“{{appName}}”连接到手表。",
+        "location": "启用定位服务以允许“{{appName}}”连接到手表。",
+        "connectionToWatch": "无法连接",
+        "registration": "无法注册",
+        "setting": "无法更新设置",
+        "sd_connection": "错误",
+        "sd_download": "错误",
+        "sd_duplication": "取消下载"
+      },
+      "message": {
+        "sd_download": "Check the community catalog or try again.",
+        "sd_duplication": "已下载。请确认样式柜。",
+        "errorCode": "错误代码: {{errorCode}}",
+        "serverGeneral": "请稍后重试。",
+        "internetAccess": "请检查网络连接并重试。",
+        "account": "请检查帐户并重试。",
+        "save": "可用存储不足。您可以在“设置”中管理存储。",
+        "restorePurchase": "可用存储不足。您可以在“设置”中管理存储。",
+        "needNotToRestorePurchase": "没有可恢复的图案。",
+        "hasRestoreFailedProducts": "部分图案的恢复失败。\n请稍后再试。",
+        "resetFi": "Check the community catalog or try again.",
+        "skinCorrupted": "Check the community catalog or try again.",
+        "transfer": "请在发送时保持本应用程序的显示状态并重试。",
+        "compatibility": "不支持此手表。",
+        "batteryFi": "手表的电池电量低。请充电后重试。",
+        "batteryApp": "智能手机的电池电量低。请充电后重试。",
+        "transferUpdate": "Firmware updates are no longer provided through Sony servers in this community build.",
+        "connectionToWatch": "请检查以下项并重试:\n手表电量充足。\n智能手机距离手表足够近。\n蓝牙已打开。",
+        "registrationFull": "此应用程序只能注册 {{count}} 块手表。请从此应用程序取消注册其他手表。",
+        "registrationFull_plural": "此应用程序只能注册 {{count}} 块手表。请从此应用程序取消注册其他手表。",
+        "registrationAnotherApp": "此手表已注册到其他智能手机。请初始化此手表。",
+        "disconnected": "与手表失去连接。请连接手表并重试。",
+        "location": "智能手机的定位服务已关闭。请开启定位服务并重试。"
+      },
+      "install": {
+        "title": "无法发送图案",
+        "description": "Check the community catalog or try again.",
+        "titleAlready": "重新发送?",
+        "descriptionAlready": "已将此图案发送到手表。"
+      }
+    },
+    "update": {
+      "title": "更新应用程序",
+      "description": "已有应用程序的新版本可用。是否要进行更新？",
+      "detail": "更新内容："
+    },
+    "updateinfo": {
+      "title": "通知",
+      "description": "■手表使用时请注意\n切勿挤压手表，或弯曲、扭曲或扩展表带，使其超过表带缠绕手腕所需的最小范围。"
+    },
+    "systemupdate": {
+      "title": "通知",
+      "description": "请更新手表系统软件至最新版本{{version}}。"
+    },
+    "remove": {
+      "title": "删除图案",
+      "description": "删除的图案可以再次从样式柜发送到手表。"
+    }
+  },
+  "fi": {
+    "common": {
+      "update": "正在更新…",
+      "search": "正在搜索手表…"
+    }
+  },
+  "settings": {
+    "general": {
+      "title": "设置",
+      "fi": {
+        "section": "手表",
+        "setting": "手表设置",
+        "registration": "手表注册"
+      },
+      "app": {
+        "section": "应用程序",
+        "storeSettings": "Community Catalog",
+        "support": "Community Catalog",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "version": "应用程序版本",
+        "legal": "Licenses"
+      }
+    },
+    "fi": {
+      "title": "手表设置",
+      "setting": {
+        "section": "设置",
+        "time": "日期和时间",
+        "timeDisplayMode": "时间显示模式",
+        "skinAutoChange": "自动更改样式",
+        "skinManage": "管理手表中的图案",
+        "unregistration": "取消注册手表",
+        "reset": "初始化手表"
+      },
+      "information": {
+        "section": "关于",
+        "fwUpdate": "更新手表系统软件",
+        "fwLatest": "最新",
+        "fwVersion": "手表系统软件版本",
+        "modelName": "型号",
+        "serialNo": "序列号"
+      }
+    },
+    "skinManage": {
+      "title": "图案管理",
+      "titleSelectingNone": "选择图案",
+      "titleSelecting": "已选择 {{count}} 种图案",
+      "titleSelecting_plural": "已选择 {{count}} 种图案",
+      "remove": "删除",
+      "unknownContent": "不在样式柜中的图案"
+    },
+    "dateTime": {
+      "title": "日期和时间",
+      "sync": "按照智能手机上的时间/日期设置时间"
+    },
+    "timeDisplayMode": {
+      "title": "时间显示模式",
+      "always": "始终显示",
+      "alwaysBatteryInfo": "电池续航时间：短",
+      "watchAction": "自动显示时间",
+      "watchActionBatteryInfo": "电池续航时间：短",
+      "buttonPush": "按下按钮时",
+      "buttonPushBatteryInfo": "电池续航时间：标准",
+      "description": "设置显示时间的时机。",
+      "descriptionDetailTitle": "自动显示时间是指在以下情况下显示时间： \n- 手臂下垂，然后抬起手臂以查看手表上的时间。\n- 扭转手腕。"
+    },
+    "skinAutoChange": {
+      "title": "自动更改样式",
+      "off": "关",
+      "byDay": "每天",
+      "byHour": "每小时",
+      "byMinute10": "每 10 分钟",
+      "byMinute": "每 1 分钟",
+      "byMinimumDuration": "每 5 秒钟",
+      "description": "手表图案能够以固定时间间隔进行更改。"
+    },
+    "store": {
+      "title": "样式柜设置",
+      "setting": {
+        "restorePurchase": "恢复预装图案"
+      },
+      "description": "Designs are loaded from the community catalog. Legacy Sony purchase restore and server services are disabled."
+    },
+    "resetFi": {
+      "title": "初始化手表",
+      "start": "初始化手表",
+      "description": "初始化手表？",
+      "descriptionDetail1": "手表将恢复出厂设置。\n此操作无法撤消。",
+      "descriptionDetail2": "正在搜索手表…",
+      "descriptionDetail3": "在 10 秒内按住手表上的按钮 2 秒。",
+      "estimateTimePrefix": "剩余时间"
+    },
+    "legal": {
+      "title": "法律声明",
+      "eula": "最终用户许可协议",
+      "tos": "服务条款",
+      "pp": "隐私策略",
+      "oss": "开源许可证",
+      "sendInformation": "非个人信息的处理",
+      "sendInformationDescription": "关于此应用程序以及在此应用程序上注册的设备的使用情况信息，客户同意，在通过某种方式对信息进行组合/处理后，使得通过该信息已无法识别特定用户的情况下，可将该信息提供给第三方"
+    },
+    "fwUpdate": {
+      "title": "软件更新",
+      "start": "开始手表系统软件更新",
+      "description": "是否更新手表的系统软件？",
+      "descriptionDetail1": "提供更新以改进手表的功能。\n更新最多需要10分钟，并且在开始后不能取消。",
+      "descriptionDetail2": "正在向手表发送数据...",
+      "descriptionDetail3": "请保持智能手机画面的显示状态，并将手机靠近手表后盖。",
+      "descriptionDetail4": "在 10 秒内按住手表上的按钮 2 秒。"
+    },
+    "restorePurchase": {
+      "title": "正在恢复图案...",
+      "progress": "({{count}}/{{max}})"
+    },
+    "oss": {
+      "title": "开源许可证"
+    }
+  },
+  "connection": {
+    "title": "连接到手表",
+    "description": "连接智能手机和手表",
+    "descriptionDetail1": "如果手表中未显示蓝牙图标，请按住手表上的按钮 2 秒。",
+    "descriptionDetail2": "将手表靠近智能手机，连接将变得稳定。"
+  },
+  "oobe": {
+    "registration": {
+      "title": "连接到手表",
+      "description": "连接智能手机和手表",
+      "descriptionDetail1": "如果手表中未显示蓝牙图标，请按住手表上的按钮 2 秒。",
+      "descriptionDetail2": "将手表靠近智能手机，连接将变得稳定。",
+      "descriptionDetail3": "在从智能手机向手表执行最后一次操作 5 分钟后，连接将自动切断。"
+    },
+    "dateTime": {
+      "title": "日期和时间",
+      "sync": "按照智能手机上的时间/日期设置时间",
+      "description": "设置时间和日期"
+    },
+    "welcome": {
+      "title": "FES COMMUNITY",
+      "description": "FES Watch U 的社区应用。\n生成、定制并通过蓝牙安装您自己的表盘。",
+      "start": "开始使用"
+    },
+    "timeDisplayMode": {
+      "title": "时间显示模式",
+      "always": "始终显示",
+      "alwaysBatteryInfo": "电池续航时间：短",
+      "watchAction": "自动显示时间",
+      "watchActionBatteryInfo": "电池续航时间：短",
+      "buttonPush": "按下按钮时",
+      "buttonPushBatteryInfo": "电池续航时间：标准",
+      "description": "设置显示时间的时机",
+      "descriptionDetailTitle": "自动显示时间是指在以下情况下显示时间： \n- 手臂下垂，然后抬起手臂以查看手表上的时间。\n- 扭转手腕。"
+    },
+    "skinAutoChange": {
+      "title": "自动更改样式",
+      "off": "关",
+      "byDay": "每天",
+      "byHour": "每小时",
+      "byMinute10": "每 10 分钟",
+      "byMinute": "每 1 分钟",
+      "byMinimumDuration": "每 5 秒钟",
+      "description": "手表图案能够以固定时间间隔进行更改。"
+    }
+  },
+  "sd": {
+    "download": {
+      "title": "正在下载",
+      "description": "正在下载特设图案。"
+    },
+    "complete": {
+      "title": "下载完成",
+      "description": "特设图案已添加至样式柜。"
+    }
+  },
+  "EOF": "EOF"
+}

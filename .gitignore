@@ -1,0 +1,20 @@
+*.apk
+*.keystore
+*.before-offline-patch
+apk-update-files.txt
+.DS_Store
+
+# Editor/OS
+.vscode/
+.idea/
+*.swp
+
+# Tooling caches
+.wrangler/
+node_modules/
+
+# Cordova build output (per-project gitignore also covers ios-app/)
+platforms/
+
+.lazyweb/
+.mcp.json

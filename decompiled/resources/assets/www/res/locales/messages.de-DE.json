@@ -1,0 +1,414 @@
+{
+    "app": {
+        "name": "FES Closet",
+        "namecn": "FES Closet (China)",
+        "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+        "sd_supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+        "common": {
+            "backAllCaps": "ZURÜCK",
+            "nextAllCaps": "WEITER",
+            "doneAllCaps": "ERLEDIGT",
+            "startAllCaps": "START",
+            "skipAllCaps": "ÜBERSPRINGEN",
+            "cancelAllCaps": "ABBRECHEN",
+            "ok": "OK",
+            "back": "Zurück",
+            "next": "Weiter",
+            "done": "Erledigt",
+            "skip": "Übersrpingen",
+            "cancel": "Abbrechen",
+            "close": "Schließen",
+            "transfer": "Senden",
+            "preparing": "Vorbereitung",
+            "save": "Speichern",
+            "delete": "Löschen",
+            "remove": "Entfernen",
+            "unregister": "Abmelden",
+            "refresh": "Aktualisieren",
+            "select": "Auswahl",
+            "reset": "Initialisieren",
+            "retry": "Wiederholen",
+            "restore": "Wiederherstellen",
+            "settings": "Einstellungen",
+            "support": "Community-Katalog",
+            "update": "Aktualisieren",
+            "later": "Später",
+            "share": "TEILEN"
+        },
+        "utility": {
+            "fraction": "{{count}}/{{total}}",
+            "bracket": "({{content}})",
+            "yyyymmdd": "{{yyyy}}/{{mm}}/{{dd}}"
+        },
+        "url": {
+            "eula": "https://t3mr0i.github.io/fes-closet-community/",
+            "tos": "https://t3mr0i.github.io/fes-closet-community/",
+            "pp": "https://t3mr0i.github.io/fes-closet-community/",
+            "eulacn": "https://t3mr0i.github.io/fes-closet-community/",
+            "toscn": "https://t3mr0i.github.io/fes-closet-community/",
+            "ppcn": "https://t3mr0i.github.io/fes-closet-community/"
+        },
+        "os": {
+            "cameraUsageDescription": "Wird für die Erstellung von Mustern verwendet.",
+            "libraryUsageDescription": "Wird für die Erstellung von Mustern verwendet.",
+            "bluetoothUsageDescription": "Wird für die Verbindung mit der Uhr verwendet.",
+            "contactsUsageDescription": "Bild dem Kontakt zuordnen",
+            "photoLibraryAddUsageDescription": "Speichern des Musters"
+        }
+    },
+    "store": {
+        "title": "KATALOG",
+        "common": {
+            "moneyUnit": "€",
+            "moneyDelimiter": ",",
+            "buy": "KAUFEN",
+            "buyFor": "zum",
+            "buyPrice": "{{price}}",
+            "buyTransaction": "KOSTENLOS ERHALTEN",
+            "install": "KOSTENLOS ERHALTEN",
+            "getAgain": "WIEDER ERHALTEN",
+            "try": "PROBIEREN",
+            "purchased": "HERUNTERGELADEN",
+            "designer": "DESIGNER"
+        },
+        "information": {
+            "offline": "Offline",
+            "offlineDetail": "Keine Internetverbindung.",
+            "serverAccessLimitation": "Server sind derzeit überlastet. \nBitte versuchen Sie es zu einem späteren Zeitpunkt erneut.",
+            "serverMaintenance": "Vorübergehend nicht für die Wartung verfügbar.\nServicewiederanlaufszeit um: {{time}}",
+            "serverMaintenanceEmergency": "Der originale Store ist offline. Der Community-Katalog wird statisch gehostet.",
+            "support": "Community-Katalog",
+            "notAvailable": "Nicht verfügbar in Ihrem Land / Region.",
+            "closeout": "Der Geschäftsservice wurde beendet."
+        }
+    },
+    "closet": {
+        "title": "CLOSET",
+        "common": {
+            "delete": "LÖSCHEN",
+            "share": "TEILEN",
+            "install": "SENDEN",
+            "installed": "AKTIV"
+        },
+        "information": {
+            "empty": "Keine Muster"
+        }
+    },
+    "edit": {
+        "background": {
+            "title": "ERSTELLEN",
+            "selectLibrary": "BIBLIOTHEK",
+            "selectGallery": "GALERIE",
+            "launchCamera": "KAMERA"
+        },
+        "pattern": {
+            "title": "BEARBEITEN",
+            "selectWatchFace": "VORDERSEITE",
+            "applyFilters": "FILTER"
+        },
+        "save": {
+            "title": "SPEICHERN",
+            "description": "Mustername",
+            "unavailable": "{{param}} kann nicht verwendet werden.",
+            "unavailableCharacter": "Nicht verfügbare Zeichen werden verwendet.",
+            "limitString": "Bitte geben Sie {{numOfString}} Zeichen oder weniger ein."
+        },
+        "selectContent": {
+            "title": "ALLE FOTOS"
+        }
+    },
+    "dialog": {
+        "settingsUpdated": "Einstellungen aktualisiert",
+        "skipSettings": {
+            "title": "Einstellungen überspringen?",
+            "description": "Uhreinstellungen können auch im Einstellungsbildschirm in dieser App geändert werden."
+        },
+        "deletePattern": {
+            "title": "Muster löschen?",
+            "description": "Aus dem Store heruntergeladene Muster können wieder im Closet gespeichert werden"
+        },
+        "unregisterWatch": {
+            "title": "Die Registrierung der Uhr aufheben?"
+        },
+        "restorePurchase": {
+            "title": "Muster wiederherstellen?"
+        },
+        "selectRemove": {
+            "title": "Entfernen Sie die Muster",
+            "description_plural": "Die Uhr kann nur {{count}} gespeicherte Muster haben.\n Bitte entfernen Sie andere Muster."
+        },
+        "progress": {
+            "title": "Muster wird gesendet...",
+            "titleTry": "Try-Muster wird gesendet...",
+            "description": "Halten Sie das Smartphone in der Nähe der Rückseite der Uhr, während die Uhr angezeigt wird.",
+            "estimateTimePrefix": "Verbleibende Zeit",
+            "done": {
+                "title": "Senden abgeschlossen",
+                "descriptionTry": "Das Test-Muster wird nach 3 Minuten entfernt. Sie können aber auch den Knopf auf der Uhr drücken.",
+                "descriptionShare": "Das Bild des Musters kann geteilt werden.\n#feswatchu",
+                "descriptionShareCN": "Das Bild des Musters kann geteilt werden.\n#feswatchu"
+            }
+        },
+        "install": {
+            "titleStart": "Senden Sie das Muster auf die Uhr?",
+            "descriptionAfterSave": "Das Muster ist im Closet gespeichert. Es kann jetzt auch an die Uhr gesendet werden",
+            "description": "Halten Sie das Smartphone in der Nähe der Rückseite der Uhr beim Senden.",
+            "estimateTimePrefix": "Geschätzte Sendezeit"
+        },
+        "error": {
+            "title": {
+                "general": "Fehler",
+                "authentication": "Kann nicht authentifizieren",
+                "purchase": "Kann kein Muster kaufen",
+                "save": "Kann Muster nicht speichern",
+                "delete": "Muster kann nicht gelöscht werden",
+                "remove": "Muster kann nicht entfernt werden",
+                "restorePurchase": "Wiederherstellung nicht möglich.",
+                "needNotToRestorePurchase": "Wiederherstellung nicht benötigt.",
+                "resetFi": "Uhr kann nicht initialisiert werden",
+                "skinCorrupted": "Musterdatei ist beschädigt.",
+                "transferPattern": "Muster kann nicht gesendet werden",
+                "transferUpdate": "Systemsoftware kann nicht aktualisiert werden",
+                "transfer": "Senden nicht möglich",
+                "bluetooth": "Schalten Sie die Bluetooth-Funktion ein, um \"{{appName}}\" zu ermöglichen, sie mit der Uhr zu verbinden.",
+                "location": "Schalten Sie die Lokalisierungsdienste ein, um \"{{appName}}\" zu ermöglichen, sie mit der Uhr zu verbinden.",
+                "connectionToWatch": "Verbindung kann nicht hergestellt werden",
+                "registration": "Registrierung nicht möglich",
+                "setting": "Einstellungen können nicht aktualisiert werden",
+                "sd_connection": "Fehler",
+                "sd_download": "Fehler",
+                "sd_duplication": "Download gestoppt"
+            },
+            "message": {
+                "sd_download": "Pruefe den Community-Katalog oder versuche es erneut.",
+                "sd_duplication": "Bereits heruntergeladen. Prüfen Sie den Closet.",
+                "errorCode": "Fehlercode: {{errorCode}}",
+                "serverGeneral": "Bitte versuche es später erneut.",
+                "internetAccess": "Überprüfen Sie die Netzwerkverbindung und versuchen Sie es erneut.",
+                "account": "Bitte überprüfen Sie das Konto und versuchen Sie es erneut.",
+                "save": "Es ist nicht ausreichend Speicher verfügbar. Sie können Ihren Speicher in den Einstellungen verwalten",
+                "restorePurchase": "Es ist nicht ausreichend Speicher verfügbar. Sie können Ihren Speicher in den Einstellungen verwalten",
+                "needNotToRestorePurchase": "Es gibt keine wiederherzustellenden Muster.",
+                "hasRestoreFailedProducts": "Wiederherstellung fehlgeschlagen für einige Muster.\nBitte versuchen Sie es später erneut.",
+                "resetFi": "Pruefe den Community-Katalog oder versuche es erneut.",
+                "skinCorrupted": "Pruefe den Community-Katalog oder versuche es erneut.",
+                "transfer": "Lassen Sie diesen Bildschirm der App bei Senden geöffnet und versuchen Sie es erneut",
+                "compatibility": "Diese Uhr wird nicht unterstützt.",
+                "batteryFi": "Die Akkuladung der Uhr ist niedrig. Laden Sie den Akku auf und versuchen Sie es erneut.",
+                "batteryApp": "Die Akkuladung des Smartphones ist niedrig. Laden Sie den Akku auf und versuchen Sie es erneut.",
+                "transferUpdate": "Firmware-Updates werden in dieser Community-Version nicht mehr ueber Sony-Server bereitgestellt.",
+                "connectionToWatch": "Bitte überprüfen Sie die Folgende Punkte und versuchen Sie es erneut:\nDie Uhr ist ausreichend aufgeladen.\nDas Smartphone ist nahe genug an der Uhr.\nBluetooth ist auf dem Smartphone eingeschaltet.",
+                "registrationFull": "Diese App kann nur {{count}} Uhr(en) registrieren. Bitte entfernen Sie die Registrierung anderer Uhren von dieser App.",
+                "registrationFull_plural": "Diese App kann nur {{count}} Uhr(en) registrieren. Bitte entfernen Sie die Registrierung anderer Uhren von dieser App.",
+                "registrationAnotherApp": "Diese Uhr wurde bereits für ein anderes Smartphone registriert. Bitte initialisieren Sie die Uhr.",
+                "disconnected": "Die Verbindung zur Uhr ist verloren gegangen. Bitte verbinden Sie die Uhr und versuchen Sie es erneut.",
+                "location": "Die Ortungsdienste des Smartphones sind ausgeschaltet. Bitte aktivieren Sie die Ortungsdienste und versuchen Sie es erneut."
+            },
+            "install": {
+                "title": "Kann kein Muster senden",
+                "description": "Pruefe den Community-Katalog oder versuche es erneut.",
+                "titleAlready": "Wieder absenden?",
+                "descriptionAlready": "Dieses Muster wurde bereits an die Uhr gesendet."
+            }
+        },
+        "update": {
+            "title": "App aktualisieren",
+            "description": "Eine neue Version der App ist verfügbar. Möchten Sie es aktualisieren?",
+            "detail": "Was gibt's Neues :"
+        },
+        "updateinfo": {
+            "title": "Information",
+            "description": "App-Version : {{version}}"
+        },
+        "systemupdate": {
+            "title": "Information",
+            "description": "Bitte aktualisieren Sie die Systemsoftware auf die Version {{version}}."
+        },
+        "remove": {
+            "title": "Muster entfernen",
+            "description": "Die entfernte Muster können wieder von Closet-App zur Uhr gesendet werden."
+        }
+    },
+    "fi": {
+        "common": {
+            "update": "Aktualisierung...",
+            "search": "Auf der Suche nach der Uhr..."
+        }
+    },
+    "settings": {
+        "general": {
+            "title": "EINSTELLUNGEN",
+            "fi": {
+                "section": "UHR",
+                "setting": "Einstellungen der Uhr",
+                "registration": "Registrierung der Uhr"
+            },
+            "app": {
+                "section": "APP",
+                "storeSettings": "Community-Katalog",
+                "support": "Community-Katalog",
+                "supportURL": "https://t3mr0i.github.io/fes-closet-community/",
+                "supportURLcn": "https://t3mr0i.github.io/fes-closet-community/",
+                "version": "App-Version",
+                "legal": "Lizenzen"
+            }
+        },
+        "fi": {
+            "title": "EINSTELLUNGEN DER UHR",
+            "setting": {
+                "section": "EINSTELLUNGEN",
+                "time": "Datum und Uhrzeit",
+                "timeDisplayMode": "Anzeige Modus",
+                "skinAutoChange": "Automatische Stiländerung",
+                "skinManage": "Muster der Uhr verwalten",
+                "unregistration": "Die Registrierung der Uhr aufheben",
+                "reset": "Uhr initialisieren"
+            },
+            "information": {
+                "section": "ÜBER",
+                "fwUpdate": "Aktualisieren Sie die Systemsoftware",
+                "fwLatest": "Neueste",
+                "fwVersion": "Systemsoftware Version",
+                "modelName": "Modell",
+                "serialNo": "Seriennummer"
+            }
+        },
+        "skinManage": {
+            "title": "MUSTER",
+            "titleSelectingNone": "AUSWAHL",
+            "titleSelecting": "{{count}} AUSGEWÄHLT",
+            "titleSelecting_plural": "{{count}} AUSGEWÄHLT",
+            "remove": "Entfernen",
+            "unknownContent": "Muster nicht im Closet-App gefunden"
+        },
+        "dateTime": {
+            "title": "DATUM & UHRZEIT",
+            "sync": "Stellen Sie die Uhrzeit genau auf die Uhrzeit/Datum auf dem Smartphone ein"
+        },
+        "timeDisplayMode": {
+            "title": "ANZEIGE MODUS",
+            "always": "Immer auf",
+            "alwaysBatteryInfo": "Batterielebensdauer - Kurz",
+            "watchAction": "Automatische Zeitanzeige",
+            "watchActionBatteryInfo": "Batterielebensdauer - Kurz",
+            "buttonPush": "Beim Drücken der Taste",
+            "buttonPushBatteryInfo": "Batterielebensdauer - Standard",
+            "description": "Stellen Sie die Zeitsteuerung für die Anzeige der Uhrzeit ein.",
+            "descriptionDetailTitle": "Automatische Zeitanzeige tritt auf, wenn:\n- Ihr Arm unten ist, wenn Sie ihn anheben, um auf die Uhr zu schauen.\n- Sie Ihr Handgelenk drehen."
+        },
+        "skinAutoChange": {
+            "title": "AUTOMATISCHE STILÄNDERUNG",
+            "off": "AUS",
+            "byDay": "Jeden Tag",
+            "byHour": "Jede Stunde",
+            "byMinute10": "Alle 10 Minuten",
+            "byMinute": "Jede Minute",
+            "byMinimumDuration": "Alle 5 Sekunden",
+            "description": "Die Uhrmuster können in festen Intervallen geändert werden"
+        },
+        "store": {
+            "title": "DIE EINSTELLUNG DER CLOSET-APP",
+            "setting": {
+                "restorePurchase": "Vorinstallierter Muster wiederherstellen"
+            },
+            "description": "Designs werden aus dem Community-Katalog geladen. Alte Sony-Kaufwiederherstellung und Serverdienste sind deaktiviert."
+        },
+        "resetFi": {
+            "title": "UHR INITIALISIEREN",
+            "start": "Uhr initialisieren",
+            "description": "Initialisieren Sie die Uhr?",
+            "descriptionDetail1": "Die Uhr wird auf die Standardwerte zurückgesetzt.\nDas kann nicht rückgängig gemacht werden.",
+            "descriptionDetail2": "Auf der Suche nach der Uhr...",
+            "descriptionDetail3": "Drücken und halten Sie den Knopf auf der Uhr für 2 Sekunden, bevor 10 Sekunden vergangen sind.",
+            "estimateTimePrefix": "Verbleibende Zeit"
+        },
+        "legal": {
+            "title": "IMPRESSUM",
+            "eula": "Endbenutzer-Lizenzvereinbarung",
+            "tos": "Nutzungsbedingungen",
+            "pp": "Datenschutzbestimmungen",
+            "oss": "Open-Source-Lizenzen",
+            "sendInformation": "Umgang mit nicht personenbezogenen Daten",
+            "sendInformationDescription": "In Bezug auf den Nutzungsstatus dieser App und des in dieser App registrierten Geräts stimmt der Nutzer zu, dass nicht-persönliche Informationen des Kunden einer dritten Partei übermittelt werden, solange die Informationen in einer Weise bereitgestellt/verarbeitet werden, dass der Kunde nicht identifiziert werden kann"
+        },
+        "fwUpdate": {
+            "title": "SOFTWARE-AKTUALISIERUNG",
+            "start": "Starten des Systemsoftware-Updates",
+            "description": "Aktualisieren der Systemsoftware?",
+            "descriptionDetail1": "Ein Update zur Verbesserung der Funktionen der Uhr ist jetzt verfügbar.\nDas Update kann bis zu 10 Minuten dauert. Es ist nicht mehr möglich nach dem Start abzubrechen.",
+            "descriptionDetail2": "Daten an die Uhr senden...",
+            "descriptionDetail3": "Zeigen Sie diesen Dialog weiterhin an und halten Sie das Smartphone in der Nähe der Uhr.",
+            "descriptionDetail4": "Drücken und halten Sie den Knopf auf der Uhr für 2 Sekunden, bevor 10 Sekunden vergangen sind."
+        },
+        "restorePurchase": {
+            "title": "Muster wiederherstellen...",
+            "progress": "({{count}} / {{max}})"
+        },
+        "oss": {
+            "title": "Open-Source-Lizenzen"
+        }
+    },
+    "connection": {
+        "title": "VERBINDE",
+        "description": "Verbinde das Smartphone und die Uhr",
+        "descriptionDetail1": "Wenn das Bluetooth-Symbol nicht auf der Uhr erscheint, drücken Sie und halten Sie den Knopf auf der Uhr 2 Sekunden lang. ",
+        "descriptionDetail2": "Die Verbindung wird stabil, wenn Sie die Uhr in die Nähe des Smartphones bringen."
+    },
+    "oobe": {
+        "registration": {
+            "title": "VERBINDE",
+            "description": "Verbinde das Smartphone und die Uhr",
+            "descriptionDetail1": "Wenn das Bluetooth-Symbol nicht auf der Uhr erscheint, drücken Sie und halten Sie den Knopf auf der Uhr 2 Sekunden lang. ",
+            "descriptionDetail2": "Die Verbindung wird stabil, wenn Sie die Uhr in die Nähe des Smartphones bringen.",
+            "descriptionDetail3": "Die Verbindung wird nach 5 Minuten nach der letzten Interaktion des Smartphones mit der Uhr getrennt."
+        },
+        "dateTime": {
+            "title": "DATUN UND UHRZEIT",
+            "sync": "Stellen Sie die Uhrzeit genau auf die Uhrzeit/Datum auf dem Smartphone ein",
+            "description": "Stellen Sie die Uhrzeit und das Datum ein"
+        },
+        "welcome": {
+            "title": "WILLKOMMEN",
+            "description": "Sie können FES Watch U konfigurieren oder neue Muster herunterladen/erstellen.\nSchalten Sie das Muster in ein Design um, welches Ihnen gefällt!",
+            "agreement": "Bitte bestätigen und akzeptieren Sie die folgenden Bedingungen, um diesen Service nutzen zu können.",
+            "eula": "ENDBENUTZER-LIZENZVEREINBARUNG",
+            "tos": "Nutzungsbedingungen",
+            "pp": "Datenschutzbestimmungen",
+            "start": "ZUSTIMMEN",
+            "moreInfo": "WEITERE INFORMATIONEN"
+        },
+        "timeDisplayMode": {
+            "title": "ANZEIGE MODUS",
+            "always": "Immer an",
+            "alwaysBatteryInfo": "Batterielebensdauer - Kurz",
+            "watchAction": "Automatische Zeitanzeige",
+            "watchActionBatteryInfo": "Batterielebensdauer - Kurz",
+            "buttonPush": "Beim Drücken der Taste",
+            "buttonPushBatteryInfo": "Batterielebensdauer - Standard",
+            "description": "Stellen Sie das Timing für die Anzeige der Uhrzeit ein",
+            "descriptionDetailTitle": "Automatische Zeitanzeige tritt auf, wenn:\n- Ihr Arm unten ist, wenn Sie ihn anheben, um auf die Uhr zu schauen.\n- Sie Ihr Handgelenk drehen."
+        },
+        "skinAutoChange": {
+            "title": "AUTOMATISCHE STILÄNDERUNG",
+            "off": "AUS",
+            "byDay": "Jeden Tag",
+            "byHour": "Jede Stunde",
+            "byMinute10": "Alle 10 Minuten",
+            "byMinute": "Jede 1 Minute",
+            "byMinimumDuration": "Alle 5 Sekunden",
+            "description": "Die Uhrmuster können in festen Intervallen geändert werden"
+        }
+    },
+    "sd": {
+        "download": {
+            "title": "Download läuft",
+            "description": "Das Special Design wird heruntergeladen."
+        },
+        "complete": {
+            "title": "Download abgeschlossen",
+            "description": "Das Special Design wurde zum Closet hinzugefügt."
+        }
+    },
+    "EOF": "EOF"
+}

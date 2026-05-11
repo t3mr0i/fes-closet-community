@@ -1,0 +1,54 @@
+{
+    "version": "<%= version %>",
+    "revision": <%= revision %>,
+    "components": [
+        {
+            "image": "bg.png",
+            "layout": {
+                "size": [
+                    152, 
+                    704
+                ]
+            }, 
+            "type": "background"
+        }, 
+        {
+            "parts": [
+                {
+                    "image": {
+                        "hour": "hour.png", 
+                        "min": "min.png"
+                    }, 
+                    "layouts": [
+                        {
+                            "translate": [
+                                72,
+                                <%= translateY_295 %>
+                            ]
+                        }, 
+                        {
+                            "translate": [
+                                72,
+                                <%= translateY_295 %>
+                            ]
+                        }
+                    ], 
+                    "type": "analog"
+                }
+            ], 
+            "type": "watch"
+        }, 
+        {
+            "enable": true,
+            "image": "event1.png",
+            "index": 0,
+            "layout": {
+                "translate": [
+                    66,
+                    <%= translateY_361 %>
+                ]
+            }, 
+            "type": "event"
+        }
+    ]
+}

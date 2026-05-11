@@ -1,0 +1,801 @@
+/* FES Community catalog/closet shell.
+ *
+ * Replaces Sony's home-header on the catalog and closet pages with a single
+ * floating toolbar that switches mode based on which page is active. The
+ * filter UI (genre/tag pills, full facet sheet, search with auto-complete)
+ * is wired to Sony's SkinCollection so the arc reflects the filter.
+ *
+ * File sections:
+ *   1. Catalog data: fetch + facet-build from the bundled catalog JSON
+ *   2. Filter state + filter -> Sony arc adapter
+ *   3. View: toolbar, pill-row, bottom-sheet, suggest-box rendering
+ *   4. Page lifecycle: hook into jQM page events + DOM observation
+ *
+ * Sony's hidden buttons (in the templates) stay in the DOM; we trigger them
+ * via jQuery vclick to preserve Sony's transition + back-stack.
+ */
+(function () {
+  "use strict";
+
+  // ---------- 1. CATALOG DATA --------------------------------------------
+
+  var STORE_INSTANCE = 2;
+  var CATALOG_URLS = function (loc) {
+    return [
+      "https://t3mr0i.github.io/fes-closet-community/api/store/skins-" + loc + ".json",
+      "res/data/api/store/skins-" + loc + ".json",
+      "/res/data/api/store/skins-" + loc + ".json",
+    ];
+  };
+  var facets = null; // { genre, tag, artist, _all, _counts }
+
+  function getCollection() {
+    try {
+      return window.FES && FES.Model && FES.Model.SkinCollection &&
+             FES.Model.SkinCollection.getInstance(STORE_INSTANCE);
+    } catch (e) { return null; }
+  }
+
+  function localeKey() {
+    try {
+      var lang = (window.$ && $.i18n && $.i18n.language) || "en-US";
+      var l = lang.toLowerCase();
+      if (l === "ja-jp") return "ja-jp";
+      if (l === "zh-cn" || l === "zh-sg") return "zh-cn";
+    } catch (_) {}
+    return "en-us";
+  }
+
+  function fetchJsonChain(urls) {
+    var i = 0;
+    var step = function () {
+      if (i >= urls.length) return Promise.reject(new Error("no source"));
+      return fetch(urls[i++]).then(function (r) {
+        if (!r.ok) throw new Error("status " + r.status);
+        return r.json();
+      }).catch(step);
+    };
+    return step();
+  }
+
+  // Fold studio into artist so the catalog has a single creator facet.
+  function creatorOf(s) { return s.artist || s.studio || ""; }
+
+  function buildFacets(skins) {
+    var c = { genre: {}, tag: {}, artist: {} };
+    skins.forEach(function (s) {
+      if (s.genre) c.genre[s.genre] = (c.genre[s.genre] || 0) + 1;
+      var who = creatorOf(s);
+      if (who) c.artist[who] = (c.artist[who] || 0) + 1;
+      (s.tags || []).forEach(function (t) { c.tag[t] = (c.tag[t] || 0) + 1; });
+    });
+    var sortByCount = function (o) {
+      return Object.keys(o)
+        .map(function (k) { return { value: k, count: o[k] }; })
+        .sort(function (a, b) { return b.count - a.count || a.value.localeCompare(b.value); });
+    };
+    return {
+      genre:  sortByCount(c.genre),
+      tag:    sortByCount(c.tag),
+      artist: sortByCount(c.artist),
+      _all:   skins,
+      _counts: c,
+    };
+  }
+
+  function loadFacets() {
+    if (facets) return Promise.resolve(facets);
+    return fetchJsonChain(CATALOG_URLS(localeKey()))
+      .catch(function () {
+        // Fall back to whatever Sony's SkinCollection has in memory.
+        var coll = getCollection();
+        if (coll && coll.models && coll.models.length) {
+          var list = coll.models.map(function (m) {
+            var a = (m.attributes || m);
+            return { id: a.id, name: a.name, brief: a.brief,
+                     artist: a.artist || a.studio,
+                     genre: a.genre, tags: a.tags || [] };
+          });
+          return { skins: list };
+        }
+        throw new Error("no source");
+      })
+      .then(function (data) {
+        var list = (data && data.skins) ? data.skins : (Array.isArray(data) ? data : []);
+        facets = buildFacets(list);
+        return facets;
+      })
+      .catch(function () {
+        facets = buildFacets([]);
+        return facets;
+      });
+  }
+
+  // ---------- 2. FILTER STATE + SONY ADAPTER -----------------------------
+
+  // studio and artist are the same field in 95% of catalog entries; we
+  // expose only "artist" as a single facet (folding studio into artist
+  // when artist is missing).
+  var FACET_GROUPS = ["genre", "tag", "artist"];
+  var state = { genre: null, tag: null, artist: null, q: "" };
+
+  function activeFilterCount() {
+    var n = 0;
+    FACET_GROUPS.forEach(function (g) { if (state[g]) n++; });
+    if (state.q) n++;
+    return n;
+  }
+
+  function matchSkin(s) {
+    if (state.genre && s.genre !== state.genre) return false;
+    if (state.tag && (s.tags || []).indexOf(state.tag) === -1) return false;
+    if (state.artist && creatorOf(s) !== state.artist) return false;
+    if (state.q) {
+      var q = state.q.toLowerCase();
+      var hay = ((s.name || "") + " " + (s.brief || "") + " " + creatorOf(s)).toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  }
+
+  // Find Sony's HomeStorePage / HomeClosetPage controller via the global
+  // InstanceManager. Each home-page controller exposes _skinListView, which
+  // has a render(models, {refresh, showIndex}) method that re-paints the arc.
+  function findHomePageController(pageId) {
+    try {
+      var IM = window.FES && FES.Utils && FES.Utils.InstanceManager;
+      if (!IM || !IM.s_instances) return null;
+      for (var i = 0; i < IM.s_instances.length; i++) {
+        var c = IM.s_instances[i];
+        if (c && c.$page && c.$page.attr && c.$page.attr("id") === pageId) {
+          return c;
+        }
+        // some controllers expose $el on the page article
+        if (c && c.$el && c.$el.attr && c.$el.attr("id") === pageId) {
+          return c;
+        }
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  // Sony lazy-paginates the catalog (~2 skins at a time). We can't wait for
+  // the user to scroll through 50 pages — we hydrate Sony's Backbone
+  // collection from our pre-loaded catalog JSON directly. Backbone.add with
+  // raw objects auto-instantiates Skin models.
+  function hydrateOne(c) {
+    if (!c || typeof c.add !== "function") return;
+    if (c._fesHydrated) return;
+    if (!facets || !facets._all.length) return;
+    var have = Object.create(null);
+    c.models.forEach(function (m) {
+      var id = m.id || (m.attributes && m.attributes.id);
+      if (id) have[id] = 1;
+    });
+    var missing = facets._all.filter(function (s) { return !have[s.id]; });
+    if (missing.length) {
+      try { c.add(missing, { silent: true, merge: true }); } catch (_) {}
+    }
+    try { c._totalCount = c.models.length; } catch (_) {}
+    try { c._totalContentCount = c.models.length; } catch (_) {}
+    c._fesHydrated = true;
+  }
+  function hydrateCollection() {
+    hydrateOne(getCollection());
+    var pc = findHomePageController("page-home-store") ||
+             findHomePageController("page-home-closet");
+    var slvColl = pc && pc._skinListView && pc._skinListView.collection;
+    if (slvColl) hydrateOne(slvColl);
+  }
+
+  function applyToArc() {
+    var coll = getCollection();
+    if (!coll || !coll.models) return;
+    if (!facets || !facets._all.length) return;
+    hydrateCollection();
+    _applyFilterNow();
+  }
+
+  function _applyFilterNow() {
+    var coll = getCollection();
+    if (!coll || !coll.models) return;
+
+    // The SkinListView holds its own SkinCollection instance — separate from
+    // the SkinCollection.getInstance(2) singleton. Filter that one instead.
+    var pc = findHomePageController("page-home-store") ||
+             findHomePageController("page-home-closet");
+    var slv = pc && pc._skinListView;
+    var target = (slv && slv.collection) || coll;
+
+    if (!target._fesOriginalModels || target._fesOriginalModels.length < target.models.length) {
+      target._fesOriginalModels = target.models.slice();
+    }
+    var src = target._fesOriginalModels;
+
+    var allowedSet = Object.create(null);
+    facets._all.filter(matchSkin).forEach(function (s) { allowedSet[s.id] = 1; });
+    var filtered = src.filter(function (m) {
+      var id = (m && m.id) || (m && m.attributes && m.attributes.id);
+      return allowedSet[id];
+    });
+
+    // Cancel any in-flight Sony fetch that might overwrite our reset.
+    if (slv && slv._promiseFetch) {
+      try { slv._promiseFetch.abort(); } catch (_) {}
+      slv._promiseFetch = null;
+    }
+    if (target._promiseFetch) {
+      try { target._promiseFetch.abort(); } catch (_) {}
+      target._promiseFetch = null;
+    }
+
+    try { target.reset(filtered, { silent: true }); } catch (_) {}
+    // Backbone's reset triggers Sony's onReset which sets _totalCount=null.
+    // Set BOTH counters AFTER reset so prepareSkinDataForArc doesn't pad
+    // with empty placeholders up to the original totalCount.
+    try { target._totalContentCount = filtered.length; } catch (_) {}
+    try { target._totalCount = filtered.length; } catch (_) {}
+
+    if (slv) {
+      try {
+        if (typeof slv.cleanView === "function") slv.cleanView(true);
+        if (typeof slv.initArc === "function") slv.initArc(0);
+        if (filtered.length === 0 && typeof slv.displayNoSkinsMessage === "function") {
+          slv.displayNoSkinsMessage();
+        } else if (typeof slv.hideNoSkinMessage === "function") {
+          slv.hideNoSkinMessage();
+        }
+      } catch (_) {}
+    }
+  }
+
+  // Navigation helpers: drive jQM's router using the same hash-IDs Sony's
+  // templates use in data-navigate-to (e.g. "#home-closet"), with the same
+  // transitions. CDP.Framework.Router.navigate(hash, transition, reverse).
+  function _router() {
+    return (window.CDP && CDP.Framework && CDP.Framework.Router) || null;
+  }
+
+  function navigateTo(hash, transition) {
+    var r = _router();
+    if (!r) return false;
+    try { r.navigate(hash, transition || "platform-default", false); return true; } catch (_) {}
+    return false;
+  }
+
+  function navigateToCloset() { navigateTo("#home-closet", "slant"); }
+  function navigateToCatalog() { navigateTo("#home-store", "slant"); }
+  function navigateToEditBackground() {
+    var r = _router();
+    if (r && typeof r.beginSubFlow === "function") {
+      try { r.beginSubFlow("#edit-background", { subFlow: { operation: "begin" } }, "platform-alternative"); return; } catch (_) {}
+    }
+    navigateTo("#edit-background", "platform-alternative");
+  }
+  function navigateToSettings() { navigateTo("#settings-general", "platform-default"); }
+
+  // Sony's setArcWindowSize() reads .home-header.outerHeight() to compute
+  // the available arc area. We hide the header via display:none, which makes
+  // outerHeight return 0 — Sony then thinks the full window height is
+  // available and renders the watch behind our floating toolbar.
+  //
+  // Fix: write a CSS variable with the live toolbar height onto the document
+  // root and let CSS push .main-page's content down with padding-top. Sony's
+  // arc lives inside .main-page (which is height:50% relative to its parent
+  // .two-pages-container), so padding-top on .main-page shifts the arc
+  // without breaking Sony's absolute-positioned .info-and-controllers
+  // (anchored to bottom:0 of .main-page).
+  function toolbarHeight() {
+    var bar = document.getElementById(TOOLBAR_ID);
+    if (!bar) return 0;
+    return Math.round(bar.getBoundingClientRect().height);
+  }
+
+  function publishToolbarHeight() {
+    var h = toolbarHeight();
+    document.documentElement.style.setProperty("--fct-toolbar-h", h + "px");
+  }
+
+  // ---------- 3. VIEW: toolbar, pills, sheet, suggest --------------------
+
+  var TOOLBAR_ID = "fes-catalog-toolbar";
+  var SHEET_ID = "fes-catalog-filter-sheet";
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c];
+    });
+  }
+
+  function pretty(s) { return String(s || "").replace(/-/g, " "); }
+
+  // SVG paths for toolbar icons (kept inline so the toolbar has zero asset deps).
+  var ICON = {
+    closet:  '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 8.5a1.5 1.5 0 1 1 2.6-1"/><path d="M12 9v3"/><path d="M3 19l9-7 9 7"/><path d="M3 19h18"/></svg>',
+    catalog: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M9 3v18"/><path d="M12 7h5"/><path d="M12 11h5"/></svg>',
+    search:  '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+    filter:  '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>',
+    add:     '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>',
+    settings:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  };
+
+  function buildToolbar() {
+    var existing = document.getElementById(TOOLBAR_ID);
+    if (existing) return existing;
+    var bar = document.createElement("div");
+    bar.id = TOOLBAR_ID;
+    bar.dataset.fctMode = "catalog";
+    bar.innerHTML =
+      '<div class="fct-row1" data-fct-row-catalog>' +
+        '<button class="fct-icon-btn" id="fct-closet-btn" aria-label="Closet" type="button">' + ICON.closet + '</button>' +
+        '<div class="fct-title">Catalog</div>' +
+        '<button class="fct-icon-btn" id="fct-search-btn" aria-label="Search" type="button">' + ICON.search + '</button>' +
+        '<button class="fct-icon-btn" id="fct-filter-btn" aria-label="Filter" type="button">' + ICON.filter +
+          '<span class="fct-badge" data-active-count hidden></span>' +
+        '</button>' +
+      '</div>' +
+      '<div class="fct-row1" data-fct-row-closet hidden>' +
+        '<button class="fct-icon-btn" id="fct-catalog-btn" aria-label="Catalog" type="button">' + ICON.catalog + '</button>' +
+        '<div class="fct-title">Closet</div>' +
+        '<button class="fct-icon-btn" id="fct-add-btn" aria-label="Add" type="button">' + ICON.add + '</button>' +
+        '<button class="fct-icon-btn" id="fct-settings-btn" aria-label="Settings" type="button">' + ICON.settings + '</button>' +
+      '</div>' +
+      '<div class="fct-search-row" hidden>' +
+        '<input type="search" class="fct-search-input" placeholder="Search skins, creators, tags…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
+        '<button class="fct-search-clear" type="button" aria-label="Clear">×</button>' +
+      '</div>' +
+      '<div class="fct-suggest" data-suggest hidden></div>' +
+      '<div class="fct-pill-row" data-pill-row></div>';
+    document.body.appendChild(bar);
+    return bar;
+  }
+
+  function buildSheet() {
+    var existing = document.getElementById(SHEET_ID);
+    if (existing) return existing;
+    var sheet = document.createElement("div");
+    sheet.id = SHEET_ID;
+    sheet.hidden = true;
+    sheet.innerHTML =
+      '<div class="fcs-backdrop"></div>' +
+      '<div class="fcs-panel">' +
+        '<div class="fcs-head">' +
+          '<div class="fcs-title">Filters</div>' +
+          '<button class="fcs-reset" type="button">Reset</button>' +
+          '<button class="fcs-close" aria-label="Close" type="button">×</button>' +
+        '</div>' +
+        '<div class="fcs-body">' +
+          FACET_GROUPS.map(function (g) {
+            return '<section class="fcs-group" data-group="' + g + '">' +
+                     '<h4>' + g.charAt(0).toUpperCase() + g.slice(1) + '</h4>' +
+                     '<div class="fcs-chips"></div>' +
+                   '</section>';
+          }).join("") +
+        '</div>' +
+        '<div class="fcs-foot">' +
+          '<button class="fcs-apply" type="button">Done</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(sheet);
+    return sheet;
+  }
+
+  function setToolbarMode(mode) {
+    var bar = document.getElementById(TOOLBAR_ID);
+    if (!bar) return;
+    bar.dataset.fctMode = mode;
+    var rowCat = bar.querySelector("[data-fct-row-catalog]");
+    var rowClo = bar.querySelector("[data-fct-row-closet]");
+    var pillRow = bar.querySelector("[data-pill-row]");
+    var search = bar.querySelector(".fct-search-row");
+    var suggest = bar.querySelector("[data-suggest]");
+    if (mode === "closet") {
+      rowCat.hidden = true; rowClo.hidden = false;
+      pillRow.hidden = true; search.hidden = true; suggest.hidden = true;
+    } else {
+      rowCat.hidden = false; rowClo.hidden = true;
+      pillRow.hidden = false;
+    }
+  }
+
+  function renderPillRow() {
+    var row = document.querySelector("#" + TOOLBAR_ID + " [data-pill-row]");
+    if (!row || !facets) return;
+    row.innerHTML = "";
+
+    var allActive = !state.genre && !state.tag;
+    var allBtn = document.createElement("button");
+    allBtn.type = "button";
+    allBtn.className = "fct-pill" + (allActive ? " is-active" : "");
+    allBtn.textContent = "All";
+    allBtn.dataset.fctPill = "all";
+    row.appendChild(allBtn);
+
+    facets.genre.forEach(function (g) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "fct-pill fct-pill-genre" + (state.genre === g.value ? " is-active" : "");
+      b.dataset.fctPill = "genre";
+      b.dataset.fctValue = g.value;
+      b.innerHTML = '<span class="fct-pill-label">' + escapeHtml(pretty(g.value)) + '</span>' +
+                    '<span class="fct-pill-count">' + g.count + '</span>';
+      row.appendChild(b);
+    });
+
+    facets.tag.slice(0, 20).forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "fct-pill fct-pill-tag" + (state.tag === t.value ? " is-active" : "");
+      b.dataset.fctPill = "tag";
+      b.dataset.fctValue = t.value;
+      b.innerHTML = '<span class="fct-pill-label">#' + escapeHtml(pretty(t.value)) + '</span>' +
+                    '<span class="fct-pill-count">' + t.count + '</span>';
+      row.appendChild(b);
+    });
+  }
+
+  function renderSheet() {
+    var sheet = document.getElementById(SHEET_ID);
+    if (!sheet || !facets) return;
+    FACET_GROUPS.forEach(function (group) {
+      var host = sheet.querySelector('[data-group="' + group + '"] .fcs-chips');
+      if (!host) return;
+      host.innerHTML = "";
+      var values = facets[group] || [];
+      if (!values.length) {
+        host.innerHTML = '<span class="fcs-empty">—</span>';
+        return;
+      }
+      values.forEach(function (v) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "fcs-chip" + (state[group] === v.value ? " is-active" : "");
+        b.dataset.fcsGroup = group;
+        b.dataset.fcsValue = v.value;
+        b.innerHTML = '<span>' + escapeHtml(pretty(v.value)) + '</span>' +
+                      '<span class="fcs-count">' + v.count + '</span>';
+        host.appendChild(b);
+      });
+    });
+  }
+
+  function renderSuggest(query) {
+    var box = document.querySelector("#" + TOOLBAR_ID + " [data-suggest]");
+    if (!box || !facets) return;
+    if (!query) { box.hidden = true; box.innerHTML = ""; return; }
+    var ql = query.toLowerCase();
+    var hits = [];
+    var add = function (kind, list) {
+      list.forEach(function (e) {
+        if (e.value.toLowerCase().indexOf(ql) !== -1) {
+          hits.push({ kind: kind, value: e.value, count: e.count });
+        }
+      });
+    };
+    add("tag", facets.tag);
+    add("artist", facets.artist);
+    hits = hits.slice(0, 8);
+    if (!hits.length) { box.hidden = true; return; }
+    box.innerHTML = hits.map(function (h) {
+      return '<button class="fct-sg-row" type="button" data-sg-kind="' + h.kind +
+             '" data-sg-value="' + escapeHtml(h.value) + '">' +
+               '<span class="fct-sg-kind">' + h.kind + '</span>' +
+               '<span class="fct-sg-value">' + escapeHtml(pretty(h.value)) + '</span>' +
+               '<span class="fct-sg-count">' + h.count + '</span>' +
+             '</button>';
+    }).join("");
+    box.hidden = false;
+  }
+
+  function updateBadge() {
+    var badge = document.querySelector("[data-active-count]");
+    if (!badge) return;
+    var n = activeFilterCount();
+    if (n > 0) { badge.textContent = n; badge.hidden = false; }
+    else { badge.hidden = true; }
+  }
+
+  // ---------- view event handlers ----------------------------------------
+
+  function setSingle(group, value) {
+    state[group] = state[group] === value ? null : value;
+    refresh();
+  }
+
+  function resetAll() {
+    FACET_GROUPS.forEach(function (g) { state[g] = null; });
+    state.q = "";
+    var input = document.querySelector(".fct-search-input");
+    if (input) input.value = "";
+    refresh();
+  }
+
+  function refresh() {
+    // Update pill active-states in place — re-rendering blows away the
+    // pills' DOM mid-tap on iOS, which can cancel synthetic clicks.
+    syncPillActiveStates();
+    applyToArc();
+    renderSheet();
+    updateBadge();
+  }
+
+  function syncPillActiveStates() {
+    var row = document.querySelector("#" + TOOLBAR_ID + " [data-pill-row]");
+    if (!row) return;
+    var pills = row.querySelectorAll("[data-fct-pill]");
+    pills.forEach(function (p) {
+      var kind = p.dataset.fctPill;
+      var val  = p.dataset.fctValue;
+      var active = false;
+      if (kind === "all")   active = !state.genre && !state.tag;
+      else if (kind === "genre") active = state.genre === val;
+      else if (kind === "tag")   active = state.tag === val;
+      p.classList.toggle("is-active", active);
+    });
+  }
+
+  function openSheet()  { renderSheet(); var s = document.getElementById(SHEET_ID); if (s) s.hidden = false; }
+  function closeSheet() { var s = document.getElementById(SHEET_ID); if (s) s.hidden = true; }
+
+  function bindToolbarEvents(toolbar, sheet) {
+    if (toolbar.dataset.fctBound === "1") return;
+    toolbar.dataset.fctBound = "1";
+
+    // Single delegated tap handler.
+    var onTap = function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+
+      var pill = t.closest("[data-fct-pill]");
+      if (pill) {
+        e.preventDefault(); e.stopPropagation();
+        var kind = pill.dataset.fctPill;
+        var val  = pill.dataset.fctValue;
+        if (kind === "all")   return resetAll();
+        if (kind === "genre") return setSingle("genre", val);
+        if (kind === "tag")   return setSingle("tag", val);
+        return;
+      }
+
+      var hit = function (sel, fn) {
+        if (t.closest(sel)) {
+          e.preventDefault(); e.stopPropagation();
+          fn();
+          return true;
+        }
+        return false;
+      };
+      if (hit("#fct-closet-btn",   navigateToCloset)) return;
+      if (hit("#fct-catalog-btn",  navigateToCatalog)) return;
+      if (hit("#fct-add-btn",      navigateToEditBackground)) return;
+      if (hit("#fct-settings-btn", navigateToSettings)) return;
+      if (hit("#fct-search-btn",   toggleSearch)) return;
+      if (hit("#fct-filter-btn",   openSheet)) return;
+      if (hit(".fct-search-clear", clearSearch)) return;
+    };
+    toolbar.addEventListener("click", onTap);
+
+    // Search input
+    var input = toolbar.querySelector(".fct-search-input");
+    var suggest = toolbar.querySelector("[data-suggest]");
+    if (input) {
+      var t = null;
+      input.addEventListener("input", function (e) {
+        clearTimeout(t);
+        var v = e.target.value || "";
+        renderSuggest(v);
+        t = setTimeout(function () { state.q = v; refresh(); }, 180);
+      });
+      input.addEventListener("blur", function () {
+        setTimeout(function () { if (suggest) suggest.hidden = true; }, 200);
+      });
+      input.addEventListener("focus", function () {
+        if (input.value) renderSuggest(input.value);
+      });
+    }
+    if (suggest) {
+      suggest.addEventListener("click", function (e) {
+        var row = e.target.closest("[data-sg-kind]");
+        if (!row) return;
+        e.preventDefault(); e.stopPropagation();
+        state[row.dataset.sgKind] = row.dataset.sgValue;
+        if (input) input.value = "";
+        state.q = "";
+        suggest.hidden = true;
+        refresh();
+      }, true);
+    }
+
+    // Bottom-sheet
+    sheet.addEventListener("click", function (e) {
+      if (e.target.closest(".fcs-close") ||
+          e.target.closest(".fcs-apply") ||
+          e.target.closest(".fcs-backdrop")) {
+        closeSheet(); return;
+      }
+      if (e.target.closest(".fcs-reset")) { resetAll(); return; }
+      var chip = e.target.closest("[data-fcs-group]");
+      if (chip) {
+        var group = chip.dataset.fcsGroup;
+        var value = chip.dataset.fcsValue;
+        state[group] = state[group] === value ? null : value;
+        refresh();
+      }
+    });
+  }
+
+  function toggleSearch() {
+    var bar = document.getElementById(TOOLBAR_ID);
+    if (!bar) return;
+    var row = bar.querySelector(".fct-search-row");
+    if (!row) return;
+    row.hidden = !row.hidden;
+    if (!row.hidden) {
+      var inp = row.querySelector(".fct-search-input");
+      if (inp) inp.focus();
+    } else {
+      state.q = "";
+      refresh();
+    }
+  }
+
+  function clearSearch() {
+    var bar = document.getElementById(TOOLBAR_ID);
+    if (!bar) return;
+    var input = bar.querySelector(".fct-search-input");
+    if (input) input.value = "";
+    state.q = "";
+    refresh();
+  }
+
+  // ---------- 4. PAGE LIFECYCLE ------------------------------------------
+
+  function isHomePage(id) {
+    return id === "page-home-store" || id === "page-home-closet";
+  }
+
+  function detectActivePage(hint) {
+    // Prefer the page reported by the lifecycle event when available.
+    if (hint && hint.id) return hint;
+    // jQM may briefly mark both outgoing and incoming pages as active during
+    // a transition; prefer a home page if any home page is active.
+    var actives = document.querySelectorAll(".ui-page-active");
+    for (var i = 0; i < actives.length; i++) {
+      if (isHomePage(actives[i].id)) return actives[i];
+    }
+    return actives[0] || document.getElementById("page-home-store");
+  }
+
+  var lastActiveId = null;
+
+  function syncToolbarToActivePage(ev) {
+    var hint = ev && ev.target && ev.target.id ? ev.target : null;
+    var act = detectActivePage(hint);
+    if (!act) return;
+    if (!isHomePage(act.id)) {
+      hideToolbar();
+      lastActiveId = act.id;
+      return;
+    }
+    var sameAsLast = act.id === lastActiveId;
+    lastActiveId = act.id;
+    showToolbarFor(act, sameAsLast);
+  }
+
+  function hideToolbar() {
+    var t = document.getElementById(TOOLBAR_ID);
+    if (t) t.style.display = "none";
+  }
+
+  function showToolbarFor(page, skipHeavy) {
+    var toolbar = buildToolbar();
+    var sheet = buildSheet();
+    bindToolbarEvents(toolbar, sheet);
+    toolbar.style.display = "";
+
+    // Hide the legacy filter bar inside the home-store template if present.
+    var legacy = document.getElementById("catalog-filter-bar");
+    if (legacy && legacy.id !== TOOLBAR_ID) legacy.style.display = "none";
+
+    if (page.id === "page-home-closet") {
+      setToolbarMode("closet");
+    } else {
+      setToolbarMode("catalog");
+    }
+    // After mode switch (which changes the toolbar height), publish the new
+    // height so CSS can push .main-page down by exactly that amount.
+    requestAnimationFrame(publishToolbarHeight);
+    setTimeout(publishToolbarHeight, 200);
+    // Attach detail-page watcher whenever a home page becomes active. The
+    // jQM pageshow event isn't reliable here, so this is the durable hook.
+    watchDetailPage(page);
+    if (page.id === "page-home-closet") return;
+    if (skipHeavy) return;
+
+    loadFacets().then(function () {
+      renderPillRow();
+      renderSheet();
+      updateBadge();
+      applyToArc();
+      var coll = getCollection();
+      if (coll && coll.on && !coll._fesPostSyncBound) {
+        coll._fesPostSyncBound = true;
+        coll.on("sync", function () {
+          if (activeFilterCount() > 0) applyToArc();
+        });
+      }
+    });
+  }
+
+  // Detail-page detection: Sony's two-pages-container slides horizontally to
+  // reveal the .detail-page. We watch for the transform style change and add
+  // an `is-detail-active` class to the page so CSS can hide our toolbar.
+  function watchDetailPage(page) {
+    var twoPages = page.querySelector(".two-pages-container");
+    if (!twoPages || twoPages._fctDetailWatched) return;
+    twoPages._fctDetailWatched = true;
+    var update = function () {
+      var t = twoPages.style.transform || "";
+      var isDetail = t.indexOf("translate") !== -1 && t !== "translate3d(0,0,0)" && t !== "translate3d(0px, 0px, 0px)";
+      page.classList.toggle("is-detail-active", isDetail);
+      document.body.classList.toggle("fct-detail-active", isDetail);
+    };
+    var mo = new MutationObserver(update);
+    mo.observe(twoPages, { attributes: true, attributeFilter: ["style"] });
+    update();
+  }
+
+  function init() {
+    // jQM dispatches page lifecycle events as jQuery custom events — they
+    // don't propagate through native addEventListener. Bind via jQuery.
+    var $doc = window.$ ? $(document) : null;
+    if ($doc) {
+      $doc.on("pageshow pagebeforeshow", function (ev) {
+        var page = ev.target;
+        syncToolbarToActivePage({ type: ev.type, target: page });
+        if (page && (page.id === "page-home-store" || page.id === "page-home-closet")) {
+          watchDetailPage(page);
+        }
+      });
+      $doc.on("pagehide", function () {
+        setTimeout(function () { syncToolbarToActivePage(); }, 60);
+      });
+    }
+
+    // Watch each page element's class attribute for ui-page-active toggles.
+    // jQM loads page templates lazily, so we also watch body's direct
+    // children (childList only — no subtree) to attach observers as new
+    // pages are added.
+    var classMo = new MutationObserver(function () { syncToolbarToActivePage(); });
+    var watched = new WeakSet();
+    function watchPage(p) {
+      if (!p || watched.has(p)) return;
+      watched.add(p);
+      classMo.observe(p, { attributes: true, attributeFilter: ["class"] });
+    }
+    document.querySelectorAll('[data-role="page"]').forEach(watchPage);
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        m.addedNodes && m.addedNodes.forEach(function (n) {
+          if (n.nodeType === 1 && n.getAttribute && n.getAttribute("data-role") === "page") {
+            watchPage(n);
+            syncToolbarToActivePage();
+          }
+        });
+      });
+    }).observe(document.body, { childList: true });
+
+    // Initial-load fallback.
+    var attempts = 0;
+    var poll = setInterval(function () {
+      syncToolbarToActivePage();
+      if (lastActiveId || ++attempts > 40) clearInterval(poll);
+    }, 250);
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    init();
+  } else {
+    document.addEventListener("DOMContentLoaded", init);
+  }
+})();

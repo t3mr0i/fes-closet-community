@@ -1,0 +1,1158 @@
+/* FES Community modern design layer.
+ * Loaded last; overrides Sony's app.css visuals without touching layout
+ * primitives that the Cordova/jQuery-Mobile/Backbone runtime depends on.
+ *
+ * Design tokens live as CSS custom properties so dark-mode is a one-block
+ * override at the bottom of this file. Layout, transforms, and JS hooks
+ * (selectors, classes the framework reads) are NEVER changed here. */
+
+:root {
+  /* type */
+  --fes-font-display: -apple-system, "SF Pro Display", "BlinkMacSystemFont", "Inter", "Segoe UI", system-ui, sans-serif;
+  --fes-font-text: -apple-system, "SF Pro Text", "BlinkMacSystemFont", "Inter", "Segoe UI", system-ui, sans-serif;
+  --fes-font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --fes-font-serif: "Iowan Old Style", "Apple Garamond", "Georgia", "Times New Roman", serif;
+
+  /* surface palette - warm off-white scale */
+  --fes-surface-0: #ffffff;
+  --fes-surface-1: #faf8f4;
+  --fes-surface-2: #f3efe7;
+  --fes-surface-3: #e8e3d8;
+  --fes-line: rgba(20, 18, 14, 0.10);
+  --fes-line-strong: rgba(20, 18, 14, 0.18);
+
+  /* ink */
+  --fes-ink-1: #14120e;
+  --fes-ink-2: rgba(20, 18, 14, 0.72);
+  --fes-ink-3: rgba(20, 18, 14, 0.52);
+  --fes-ink-4: rgba(20, 18, 14, 0.34);
+
+  /* accents */
+  --fes-accent: #c4954b;
+  --fes-accent-ink: #1a1408;
+  --fes-positive: #3a8a5f;
+  --fes-warning: #c2632a;
+  --fes-danger: #b3382c;
+
+  /* radii */
+  --fes-r-xs: 4px;
+  --fes-r-sm: 8px;
+  --fes-r-md: 12px;
+  --fes-r-lg: 18px;
+  --fes-r-pill: 999px;
+
+  /* shadows */
+  --fes-shadow-sm: 0 1px 2px rgba(20, 18, 14, 0.06), 0 1px 1px rgba(20, 18, 14, 0.04);
+  --fes-shadow-md: 0 4px 14px rgba(20, 18, 14, 0.08), 0 1px 2px rgba(20, 18, 14, 0.05);
+  --fes-shadow-lg: 0 18px 36px rgba(20, 18, 14, 0.14), 0 4px 8px rgba(20, 18, 14, 0.06);
+
+  /* spacing */
+  --fes-pad-xs: 4px;
+  --fes-pad-sm: 8px;
+  --fes-pad-md: 14px;
+  --fes-pad-lg: 22px;
+  --fes-pad-xl: 32px;
+
+  /* motion */
+  --fes-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fes-ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --fes-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --fes-dur: 0.28s;
+  --fes-dur-fast: 160ms;
+  --fes-dur-base: 240ms;
+}
+
+/* ---------- ergonomics: tap, selection, scroll, image rendering ---------- */
+* { -webkit-tap-highlight-color: transparent; }
+a, button, .ui-btn, [role="button"], [data-role="button"] {
+  touch-action: manipulation;
+}
+.ui-page, .ui-bar, .ui-header, .ui-footer, .ui-title {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.skin-name, .skin-description, .creator-name, .skin-id, input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.ui-content, [data-role="content"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+img.skin-preview, .skin-preview img, .skin-thumbnail img,
+img[src*="/skin"], canvas.watch-preview {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+.skin-preview-small img, img.pixel-preview {
+  image-rendering: pixelated;
+}
+.fes-tnum, [data-role="header"] .battery, [data-role="header"] .clock,
+.skin-id, .fw-version, time, .numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ---------- baseline ---------- */
+body,
+.ui-page-theme-fes,
+#splash {
+  background-color: var(--fes-surface-1);
+  color: var(--fes-ink-1);
+  font-family: var(--fes-font-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- splash: replace the Sony PNG with a clean wordmark ---------- */
+#splash {
+  background-image: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#splash::before {
+  content: "FES";
+  font-family: var(--fes-font-display);
+  font-size: 64px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--fes-ink-1);
+  display: block;
+  text-align: center;
+  line-height: 1;
+}
+#splash::after {
+  content: "Community";
+  font-family: var(--fes-font-text);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  color: var(--fes-ink-3);
+  position: absolute;
+  margin-top: 84px;
+  text-transform: uppercase;
+}
+
+/* ---------- typography pass ---------- */
+h1, h2, h3, h4 {
+  font-family: var(--fes-font-display);
+  letter-spacing: -0.005em;
+}
+.ui-content,
+.ui-page-theme-fes p {
+  font-family: var(--fes-font-text);
+}
+.ui-page-theme-fes h1,
+.ui-page-theme-fes .ui-header h1 {
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--fes-ink-1);
+}
+.ui-page-theme-fes .home-header h1 {
+  letter-spacing: 0.22em;
+}
+
+/* ---------- buttons ---------- */
+.fes-button-regular,
+.command-connect-navigate.fes-button-regular,
+button.fes-button-regular {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border: 0;
+  border-radius: var(--fes-r-sm);
+  font-family: var(--fes-font-text);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  box-shadow: var(--fes-shadow-sm);
+  transition: transform var(--fes-dur) var(--fes-ease), box-shadow var(--fes-dur) var(--fes-ease);
+}
+.fes-button-regular:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* ---------- list rows (settings, file lists) ---------- */
+.ui-page-theme-fes .ui-listview > li {
+  background: var(--fes-surface-0);
+  border-bottom: 1px solid var(--fes-line);
+}
+.ui-page-theme-fes .ui-listview > li.ui-li-divider {
+  background: transparent;
+  color: var(--fes-ink-3);
+  font-family: var(--fes-font-text);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 18px 16px 6px;
+  border: 0;
+}
+.ui-page-theme-fes .ui-listview > li > a {
+  color: var(--fes-ink-1);
+  font-family: var(--fes-font-text);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* ---------- catalog filter bar polish ---------- */
+#page-home-store .catalog-filter-bar--hoisted {
+  background: var(--fes-surface-0);
+  border-bottom: 1px solid var(--fes-line);
+  box-shadow: var(--fes-shadow-sm);
+  padding: 8px 0;
+}
+.catalog-genre-pill {
+  background: var(--fes-surface-1);
+  border: 1px solid var(--fes-line-strong);
+  color: var(--fes-ink-1);
+  font-family: var(--fes-font-text);
+  letter-spacing: 0.04em;
+  height: 32px;
+  padding: 0 14px;
+  transition: background var(--fes-dur) var(--fes-ease), color var(--fes-dur) var(--fes-ease), border-color var(--fes-dur) var(--fes-ease);
+}
+.catalog-genre-pill.active {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border-color: var(--fes-ink-1);
+}
+.catalog-genre-pill-more {
+  border-style: dashed;
+  background: transparent;
+}
+.catalog-genre-pill-more.active {
+  background: var(--fes-accent);
+  color: var(--fes-accent-ink);
+  border-color: var(--fes-accent);
+  border-style: solid;
+}
+.catalog-chip-count {
+  background: rgba(20, 18, 14, 0.08);
+  color: var(--fes-ink-3);
+}
+.catalog-genre-pill.active .catalog-chip-count,
+.catalog-chip.active .catalog-chip-count {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+}
+.catalog-filter-panel {
+  background: var(--fes-surface-0);
+  border-top: 1px solid var(--fes-line);
+  border-bottom: 1px solid var(--fes-line);
+  box-shadow: var(--fes-shadow-md);
+}
+.catalog-filter-label {
+  color: var(--fes-ink-3);
+  font-family: var(--fes-font-text);
+  letter-spacing: 0.18em;
+}
+.catalog-chip {
+  background: var(--fes-surface-1);
+  border: 1px solid var(--fes-line-strong);
+  color: var(--fes-ink-1);
+}
+.catalog-chip.active {
+  background: var(--fes-ink-1);
+  border-color: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+}
+
+/* ---------- catalog/closet meta strip BELOW the arc ----------
+ * Sony's .info-and-controllers is the bottom 225px panel that shows
+ * skin name + creator + TRY/GET FREE buttons. The arc itself is left
+ * alone. We polish typography, buttons, and the share row. */
+
+#page-home-store .main-page .info-and-controllers,
+#page-home-closet .main-page .info-and-controllers {
+  background: linear-gradient(180deg, transparent 0%, var(--fes-surface-1) 28%);
+}
+
+/* skin-a / skin-b text wrapper - keep the slide-fade behavior, just retype */
+#page-home-store .main-page .info-and-controllers .skin-a,
+#page-home-store .main-page .info-and-controllers .skin-b,
+#page-home-closet .main-page .info-and-controllers .skin-a,
+#page-home-closet .main-page .info-and-controllers .skin-b {
+  text-align: center;
+}
+
+/* Buttons under the arc — shared shape, differentiated weight.
+ * purchase-skin (GET FREE / BUY / WEAR) is the primary action: filled.
+ * try-skin and transfer-skin are secondary: outlined. */
+#page-home-store .ui-content button.purchase-skin,
+#page-home-store .ui-content button.try-skin,
+#page-home-store .ui-content button.transfer-skin,
+#page-home-closet .ui-content button.purchase-skin,
+#page-home-closet .ui-content button.try-skin,
+#page-home-closet .ui-content button.transfer-skin {
+  border-radius: var(--fes-r-sm);
+  font-family: var(--fes-font-text);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  font-size: 12px;
+  transition: transform var(--fes-dur) var(--fes-ease), box-shadow var(--fes-dur) var(--fes-ease);
+}
+/* primary */
+#page-home-store .ui-content button.purchase-skin,
+#page-home-closet .ui-content button.purchase-skin {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border: 0;
+  box-shadow: var(--fes-shadow-sm);
+}
+/* secondary */
+#page-home-store .ui-content button.try-skin,
+#page-home-store .ui-content button.transfer-skin,
+#page-home-closet .ui-content button.try-skin,
+#page-home-closet .ui-content button.transfer-skin {
+  background: transparent;
+  color: var(--fes-ink-1);
+  border: 1px solid var(--fes-line-strong);
+  box-shadow: none;
+}
+#page-home-store .ui-content button.purchase-skin:active,
+#page-home-store .ui-content button.try-skin:active,
+#page-home-store .ui-content button.transfer-skin:active,
+#page-home-closet .ui-content button.purchase-skin:active,
+#page-home-closet .ui-content button.try-skin:active,
+#page-home-closet .ui-content button.transfer-skin:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Skin caption hierarchy: name strong, creator quiet. */
+#page-home-store .main-page .info-and-controllers .skin-name,
+#page-home-closet .main-page .info-and-controllers .skin-name {
+  font-family: var(--fes-font-display);
+  font-size: 17px !important;
+  font-weight: 700;
+  color: var(--fes-ink-1);
+  letter-spacing: 0;
+  height: auto !important;
+  line-height: 1.25 !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+}
+#page-home-store .main-page .info-and-controllers .creator-name,
+#page-home-closet .main-page .info-and-controllers .creator-name {
+  font-family: var(--fes-font-text);
+  font-size: 11px !important;
+  font-weight: 600;
+  color: var(--fes-ink-3);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  height: auto !important;
+  line-height: 1.4 !important;
+  padding: 4px 0 0 !important;
+}
+#page-home-store .ui-content button.purchase-skin .label span,
+#page-home-closet .ui-content button.purchase-skin .label span {
+  font-family: var(--fes-font-text);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+}
+
+/* bottom share/etc row - softer divider */
+#page-home-store .main-page .info-and-controllers .skin-a .bottom-buttons button.share-skin,
+#page-home-store .main-page .info-and-controllers .skin-b .bottom-buttons button.share-skin,
+#page-home-closet .main-page .info-and-controllers .skin-a .bottom-buttons button.share-skin,
+#page-home-closet .main-page .info-and-controllers .skin-b .bottom-buttons button.share-skin {
+  border-left: 1px solid var(--fes-line);
+  font-family: var(--fes-font-text);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fes-ink-2);
+}
+
+/* page indicator (e.g. 2/101) - softer */
+#page-home-store .main-page .skin-list-window ~ .page-indicator,
+#page-home-closet .main-page .skin-list-window ~ .page-indicator {
+  font-family: var(--fes-font-mono);
+  font-size: 11px;
+  color: var(--fes-ink-3);
+  letter-spacing: 0.05em;
+}
+
+/* the round nav arrow next to the arc (forward swipe affordance) */
+#page-home-store .left-svg-button .svg-icon,
+#page-home-closet .left-svg-button .svg-icon {
+  filter: drop-shadow(0 1px 2px rgba(20, 18, 14, 0.10));
+}
+
+/* Community skin badge — small "community" pill in the top-right corner
+ * of the arc card when data-community="1" is set by prepareSkinDataForArc. */
+.content-container[data-community="1"] {
+  position: relative;
+}
+.content-container[data-community="1"]::after {
+  content: "community";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(196, 149, 75, 0.90);
+  color: #1a1408;
+  font-family: var(--fes-font-text);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ---------- store / closet titles ---------- */
+.main-page .creator-name,
+#page-home-store .main-page .creator-name {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  color: var(--fes-ink-1);
+}
+.main-page .creator-introduction-headline,
+.main-page .skin-name,
+#page-home-store .main-page .skin-name {
+  font-family: var(--fes-font-text);
+  font-size: 13px;
+  color: var(--fes-ink-3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.main-page .skin-description,
+#page-home-store .main-page .skin-description {
+  font-family: var(--fes-font-serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fes-ink-2);
+}
+
+/* The detail page renders TWO sets of action buttons:
+ *   - .fes-cv-actions in the body (the polished GET FREE / TRY pair)
+ *   - .footer-buttons sticky at the bottom (legacy Sony duplicate)
+ * Hide the duplicate, give the body a bit of bottom-padding back. */
+#page-home-store .detail-page .footer-buttons,
+#page-home-closet .detail-page .footer-buttons {
+  display: none !important;
+}
+#page-home-store .detail-page .fes-cv .skin-detail-contents,
+#page-home-closet .detail-page .fes-cv .skin-detail-contents {
+  padding-bottom: 40px;
+}
+
+/* ---------- detail page (already uses .fes-cv-*) ---------- */
+.fes-cv {
+  background: var(--fes-surface-1);
+  color: var(--fes-ink-1);
+}
+.fes-cv .fes-cv-title {
+  font-family: var(--fes-font-serif);
+  color: var(--fes-ink-1);
+}
+.fes-cv .fes-cv-byline {
+  color: var(--fes-ink-3);
+}
+.fes-cv .fes-cv-eyebrow,
+.fes-cv .fes-cv-meta,
+.fes-cv .fes-cv-section-label {
+  color: var(--fes-ink-2);
+  letter-spacing: 0.22em;
+}
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action {
+  border-radius: var(--fes-r-sm);
+  letter-spacing: 0.12em;
+  font-family: var(--fes-font-text);
+}
+#page-home-store .detail-page .fes-cv .fes-cv-actions .fes-cv-action-primary,
+#page-home-closet .detail-page .fes-cv .fes-cv-actions .fes-cv-action-primary {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+}
+
+/* ---------- OOBE pages ---------- */
+.ui-page-theme-fes.oobe-page {
+  background: linear-gradient(180deg, var(--fes-surface-1) 0%, var(--fes-surface-0) 100%);
+}
+.ui-page-theme-fes.oobe-page .main-content h3,
+.ui-page-theme-fes.oobe-page .ui-content h3 {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.005em;
+  color: var(--fes-ink-1);
+}
+.ui-page-theme-fes.oobe-page .welcome-description,
+.ui-page-theme-fes.oobe-page .ui-content p {
+  font-family: var(--fes-font-text);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fes-ink-2);
+}
+.ui-page-theme-fes.oobe-page .ui-footer {
+  background: transparent;
+  border-top: 1px solid var(--fes-line);
+}
+
+/* ---------- settings list rows: more breathing room ---------- */
+.ui-page-theme-fes.settings-page .ui-listview {
+  background: transparent;
+}
+.ui-page-theme-fes.settings-page .ui-listview > li {
+  background: var(--fes-surface-0);
+  margin: 0;
+}
+.ui-page-theme-fes.settings-page .ui-listview > li:not(.ui-li-divider) {
+  min-height: 48px;
+}
+.ui-page-theme-fes.settings-page .ui-listview > li:not(.ui-li-divider):first-child {
+  border-top-left-radius: var(--fes-r-md);
+  border-top-right-radius: var(--fes-r-md);
+}
+.ui-page-theme-fes.settings-page .ui-listview > li:not(.ui-li-divider):last-child {
+  border-bottom-left-radius: var(--fes-r-md);
+  border-bottom-right-radius: var(--fes-r-md);
+}
+.ui-page-theme-fes .fes-list-property-title {
+  font-family: var(--fes-font-text);
+  color: var(--fes-ink-1);
+  font-size: 15px;
+}
+.ui-page-theme-fes .fes-list-property-value {
+  font-family: var(--fes-font-text);
+  color: var(--fes-ink-3);
+}
+
+/* ---------- edit-pattern / edit-background ---------- */
+.ui-page-theme-fes[id^="page-edit-"] .ui-content {
+  background: var(--fes-surface-1);
+}
+
+/* Header: solid surface so Cancel/Next are legible against the grey canvas */
+.ui-page-theme-fes[id^="page-edit-"] .ui-header {
+  background: var(--fes-surface-1) !important;
+  border-bottom: 1px solid var(--fes-line) !important;
+  box-shadow: none !important;
+}
+
+/* Cancel / Next header buttons — inherit ink colour, not jQuery Mobile white */
+.ui-page-theme-fes[id^="page-edit-"] .ui-header .fes-header-button,
+.ui-page-theme-fes[id^="page-edit-"] .ui-header .ui-btn,
+#page-edit-background .ui-header button,
+#page-edit-pattern   .ui-header button {
+  color: var(--fes-ink-1) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-family: var(--fes-font-text);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-shadow: none !important;
+}
+#page-edit-background .ui-header button:active,
+#page-edit-pattern   .ui-header button:active {
+  color: var(--fes-accent) !important;
+}
+
+/* Footer source bar (LIBRARY / CAMERA / AI) — three equal, quiet pills */
+#page-edit-background .footer-button-base,
+#page-edit-pattern    .footer-button-base {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0));
+  background: var(--fes-surface-1) !important;
+  border-top: 1px solid var(--fes-line) !important;
+  box-shadow: none !important;
+}
+
+#page-edit-background .footer-button-base .ui-btn,
+#page-edit-pattern    .footer-button-base .ui-btn {
+  flex: 1 1 0;
+  margin: 0 !important;
+  padding: 11px 6px !important;
+  background: var(--fes-surface-0) !important;
+  color: var(--fes-ink-1) !important;
+  border: 1px solid var(--fes-line-strong) !important;
+  border-radius: var(--fes-r-sm) !important;
+  font-family: var(--fes-font-text) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  text-shadow: none !important;
+  box-shadow: var(--fes-shadow-sm) !important;
+  line-height: 1.2 !important;
+}
+#page-edit-background .footer-button-base .ui-btn:active,
+#page-edit-pattern    .footer-button-base .ui-btn:active {
+  background: var(--fes-ink-1) !important;
+  color: var(--fes-surface-0) !important;
+  border-color: var(--fes-ink-1) !important;
+  transform: translateY(1px);
+  box-shadow: none !important;
+}
+
+#page-edit-pattern .ui-content .edit-area {
+  position: relative;
+}
+
+#page-edit-pattern .ui-content .edit-area .watch-face-position-handle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  margin: -21px 0 0 -21px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  background:
+    linear-gradient(currentColor, currentColor) 50% 13px / 1px 16px no-repeat,
+    linear-gradient(currentColor, currentColor) 13px 50% / 16px 1px no-repeat,
+    rgba(20, 20, 20, 0.58);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 3;
+  animation: watch-face-position-handle 2400ms var(--fes-ease) 600ms forwards;
+}
+
+@keyframes watch-face-position-handle {
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+/* ---------- OOBE welcome hero polish ---------- */
+.ui-page-theme-fes.oobe-page .image-area {
+  background: linear-gradient(135deg, var(--fes-surface-2) 0%, var(--fes-surface-1) 100%);
+}
+.ui-page-theme-fes.oobe-page.no-header .main-content {
+  padding-top: 48px;
+}
+.ui-page-theme-fes.oobe-page .main-content button.fes-button-regular {
+  margin: 24px auto 12px;
+  min-width: 200px;
+}
+
+/* ---------- dialogs / popups ---------- */
+.ui-popup .ui-popup-container,
+.ui-popup-container {
+  border-radius: var(--fes-r-md);
+  box-shadow: var(--fes-shadow-lg);
+  overflow: hidden;
+  font-family: var(--fes-font-text);
+}
+.ui-popup .ui-content {
+  background: var(--fes-surface-0);
+  color: var(--fes-ink-1);
+}
+.ui-popup h1,
+.ui-popup h2 {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- repair modal: pick up the same tokens ---------- */
+#fes-repair-modal {
+  background: var(--fes-surface-1) !important;
+  color: var(--fes-ink-1) !important;
+  font-family: var(--fes-font-text) !important;
+}
+#fes-repair-modal .r-title {
+  font-family: var(--fes-font-display);
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: -0.005em;
+}
+#fes-repair-modal .r-step {
+  background: var(--fes-surface-0);
+  border-color: var(--fes-line);
+}
+#fes-repair-modal .r-step.is-active {
+  background: var(--fes-surface-0);
+  border-color: var(--fes-accent);
+  box-shadow: var(--fes-shadow-md);
+}
+#fes-repair-modal .r-step.is-done {
+  background: var(--fes-surface-0);
+  border-color: rgba(58, 138, 95, 0.45);
+}
+#fes-repair-modal .r-step.is-fail {
+  background: var(--fes-surface-0);
+  border-color: rgba(179, 56, 44, 0.45);
+}
+#fes-repair-modal .r-step.is-active .r-pill {
+  background: var(--fes-accent);
+  color: var(--fes-accent-ink);
+}
+#fes-repair-modal .r-step.is-done .r-pill {
+  background: var(--fes-positive);
+}
+#fes-repair-modal .r-step.is-fail .r-pill {
+  background: var(--fes-danger);
+}
+#fes-repair-modal .r-progress {
+  background: var(--fes-line);
+}
+#fes-repair-modal .r-progress-fill {
+  background: var(--fes-accent);
+}
+#fes-repair-modal .r-btn.primary {
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  border-radius: var(--fes-r-sm);
+}
+#fes-repair-modal .r-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--fes-line-strong);
+  color: var(--fes-ink-1);
+  border-radius: var(--fes-r-sm);
+}
+#fes-repair-modal .r-step .r-step-body {
+  color: var(--fes-ink-2);
+}
+#fes-repair-modal .r-debug {
+  background: var(--fes-surface-2);
+  color: var(--fes-ink-3);
+  border: 1px solid var(--fes-line);
+}
+
+/* ---------- micro-interactions: pressed + ripple states ---------- */
+@keyframes fes-tap-ripple {
+  0% { transform: scale(0.8); opacity: 0.45; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.fes-button-regular,
+button.fes-button-regular,
+.fes-cv-action,
+button.purchase-skin,
+.catalog-genre-pill,
+.catalog-chip,
+.r-btn,
+.aigen-style-tile {
+  position: relative;
+  overflow: hidden;
+}
+.fes-tap-ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  background: currentColor;
+  opacity: 0.18;
+  width: 28px;
+  height: 28px;
+  transform: scale(0.8);
+  animation: fes-tap-ripple 480ms var(--fes-ease) forwards;
+  z-index: 0;
+}
+/* keep label/content on top of the ripple */
+.fes-button-regular > *,
+button.fes-button-regular > *,
+.fes-cv-action > *,
+.purchase-skin > *,
+.catalog-genre-pill > *,
+.catalog-chip > *,
+.r-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- skeleton loaders (cataloge, lists) ---------- */
+@keyframes fes-skeleton {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.fes-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--fes-surface-2) 0%,
+    var(--fes-surface-3) 50%,
+    var(--fes-surface-2) 100%
+  );
+  background-size: 200% 100%;
+  animation: fes-skeleton 1.4s linear infinite;
+  border-radius: var(--fes-r-sm);
+  color: transparent;
+  pointer-events: none;
+}
+
+/* ---------- toast (lightweight, summoned by polish.js) ---------- */
+.fes-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 16px) + 28px);
+  transform: translateX(-50%) translateY(20px);
+  background: var(--fes-ink-1);
+  color: var(--fes-surface-0);
+  font-family: var(--fes-font-text);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 16px;
+  border-radius: var(--fes-r-pill);
+  box-shadow: var(--fes-shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms var(--fes-ease), transform 220ms var(--fes-ease);
+  z-index: 100000;
+  max-width: 80vw;
+  text-align: center;
+}
+.fes-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- view transitions (Safari 18 + WKWebView 17.4+) ---------- */
+@supports (view-transition-name: a) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 320ms;
+    animation-timing-function: var(--fes-ease);
+  }
+  /* tag shared elements */
+  #page-home-store,
+  #page-home-closet {
+    view-transition-name: catalog-page;
+  }
+  #page-home-store .skin-list-window,
+  #page-home-closet .skin-list-window {
+    view-transition-name: arc-area;
+  }
+}
+
+/* ---------- accessibility: respect reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .fes-tap-ripple { display: none; }
+}
+
+/* ---------- dark mode ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fes-surface-0: #1a1816;
+    --fes-surface-1: #14120f;
+    --fes-surface-2: #221f1b;
+    --fes-surface-3: #2c2925;
+    --fes-line: rgba(244, 240, 230, 0.10);
+    --fes-line-strong: rgba(244, 240, 230, 0.20);
+
+    --fes-ink-1: #f4f0e6;
+    --fes-ink-2: rgba(244, 240, 230, 0.78);
+    --fes-ink-3: rgba(244, 240, 230, 0.56);
+    --fes-ink-4: rgba(244, 240, 230, 0.36);
+
+    --fes-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --fes-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.42);
+    --fes-shadow-lg: 0 18px 36px rgba(0, 0, 0, 0.55);
+  }
+  body,
+  .ui-page-theme-fes {
+    background-color: var(--fes-surface-1);
+    color: var(--fes-ink-1);
+  }
+  /* the catalog detail / closet detail uses Sony's white card layout
+   * heavily; flip the obvious surfaces but leave images alone */
+  #page-home-store .ui-content,
+  #page-home-closet .ui-content {
+    background: var(--fes-surface-1);
+  }
+  #page-home-store .skin-list-window,
+  #page-home-closet .skin-list-window {
+    background: var(--fes-surface-1);
+  }
+  /* reset white backgrounds Sony hardcoded inline-ish on white */
+  .ui-page-theme-fes .home-header,
+  .ui-page-theme-fes .ui-header {
+    background: var(--fes-surface-1) !important;
+    color: var(--fes-ink-1);
+  }
+
+  /* ── DARK: detail page (Pain Point #1) ──────────────────────────
+     Sony hardcodes .detail-page bg:#fff and 5× color:#000 on the
+     creator/skin text. Without these overrides the detail card is
+     unreadable in dark mode. */
+  #page-home-store .detail-page,
+  #page-home-closet .detail-page {
+    background-color: var(--fes-surface-1) !important;
+    color: var(--fes-ink-1);
+  }
+  #page-home-store .detail-page .creator-name,
+  #page-home-closet .detail-page .creator-name,
+  #page-home-store .main-page .creator-name,
+  #page-home-closet .main-page .creator-name,
+  #page-home-store .detail-page .skin-name,
+  #page-home-closet .detail-page .skin-name {
+    color: var(--fes-ink-1) !important;
+  }
+  #page-home-store .detail-page .skin-description,
+  #page-home-closet .detail-page .skin-description,
+  #page-home-store .main-page .skin-description,
+  #page-home-closet .main-page .skin-description,
+  #page-home-store .detail-page .creator-introduction,
+  #page-home-closet .detail-page .creator-introduction,
+  #page-home-store .main-page .creator-introduction,
+  #page-home-closet .main-page .creator-introduction {
+    color: var(--fes-ink-2) !important;
+  }
+  #page-home-store .detail-page .creator-url,
+  #page-home-closet .detail-page .creator-url,
+  #page-home-store .detail-page .creator-url a,
+  #page-home-closet .detail-page .creator-url a,
+  #page-home-store .detail-page .creator-url a:hover,
+  #page-home-closet .detail-page .creator-url a:hover,
+  #page-home-store .detail-page .creator-url a:active,
+  #page-home-closet .detail-page .creator-url a:active {
+    color: var(--fes-accent) !important;
+  }
+  #page-home-store .detail-page .creator-introduction-headline,
+  #page-home-closet .detail-page .creator-introduction-headline {
+    color: var(--fes-ink-3) !important;
+  }
+  /* slide indicators (the dots under the skin-images-wrapper) */
+  #page-home-store .detail-page .indicators .indicator,
+  #page-home-closet .detail-page .indicators .indicator {
+    background-color: var(--fes-line-strong);
+  }
+  #page-home-store .detail-page .indicators .indicator.active,
+  #page-home-closet .detail-page .indicators .indicator.active {
+    background-color: var(--fes-ink-1) !important;
+  }
+  /* back-to-main chevron — Sony draws it as ::after with #000 borders.
+     Selecting on the pseudo to flip the colour. */
+  #page-home-store .detail-page .header-buttons button.back-to-main::after,
+  #page-home-closet .detail-page .header-buttons button.back-to-main::after {
+    border-bottom-color: var(--fes-ink-1) !important;
+    border-left-color: var(--fes-ink-1) !important;
+  }
+
+  /* ── DARK: home / main bars (Pain Point #2) ─────────────────────
+     #page-home-store and its .footer-buttons get bg:#fff hardcoded.
+     #page-home-closet variant gets bg:#ccc. Both produce the
+     "white bar at the bottom" the user reported. */
+  #page-home-store,
+  #page-home-store .footer-buttons,
+  #page-home-closet,
+  #page-home-closet .footer-buttons {
+    background-color: var(--fes-surface-1) !important;
+  }
+
+  /* alternative + transparent button variants — Sony hardcodes
+     bg:#fff/color:#000 and color:#000 respectively, neither flips */
+  .ui-bar-fes .ui-btn.fes-button-alternative,
+  .ui-body-fes .ui-btn.fes-button-alternative,
+  .ui-btn.ui-btn-fes.fes-button-alternative,
+  .ui-page-theme-fes .ui-btn.fes-button-alternative {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1) !important;
+    border-color: var(--fes-line-strong) !important;
+  }
+  .ui-bar-fes .ui-btn.fes-button-transparent,
+  .ui-body-fes .ui-btn.fes-button-transparent,
+  .ui-btn.ui-btn-fes.fes-button-transparent,
+  .ui-page-theme-fes .ui-btn.fes-button-transparent {
+    color: var(--fes-ink-1) !important;
+  }
+
+  /* error info card on home (network down / store error) */
+  #page-home-store .main-page .store-error-info,
+  #page-home-closet .main-page .store-error-info {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1);
+  }
+  #page-home-store .main-page .store-error-info a,
+  #page-home-closet .main-page .store-error-info a {
+    color: var(--fes-accent) !important;
+  }
+
+  /* the bottom info-and-controllers strip uses a gradient FROM the
+     light surface; in dark we want the same gradient to a dark
+     surface so the fade-into-arc still reads. */
+  #page-home-store .main-page .info-and-controllers,
+  #page-home-closet .main-page .info-and-controllers {
+    background: linear-gradient(180deg, transparent 0%, var(--fes-surface-1) 28%);
+  }
+
+  /* ── DARK: OOBE ─────────────────────────────────────────────────
+     Sony hardcodes .oobe-page bg:#fff and the OOBE footer to a
+     black-on-white invert (bg:#000, color:#fff). In dark mode that
+     footer becomes black-on-black. We retarget the page surface to
+     a dark gradient and let the footer pick up the surface tokens. */
+  .ui-page-theme-fes.oobe-page {
+    background: linear-gradient(180deg, var(--fes-surface-1) 0%, var(--fes-surface-0) 100%) !important;
+  }
+  .ui-page-theme-fes.oobe-page .image-area {
+    background: linear-gradient(135deg, var(--fes-surface-2) 0%, var(--fes-surface-1) 100%);
+  }
+  .ui-page-theme-fes.oobe-page .image-area .guide-image {
+    background-color: var(--fes-surface-2);
+  }
+  .ui-page-theme-fes.oobe-page .ui-footer,
+  .ui-page-theme-fes.oobe-page .ui-footer .ui-btn {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1) !important;
+    border-top-color: var(--fes-line) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-footer .settings-progress,
+  .ui-page-theme-fes.oobe-page .ui-footer .fes-back-navigator {
+    color: var(--fes-ink-2) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-footer .fes-back-navigator:after {
+    border-bottom-color: var(--fes-ink-1) !important;
+    border-left-color: var(--fes-ink-1) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-header button {
+    color: var(--fes-ink-1) !important;
+  }
+  .ui-page-theme-fes.oobe-page .ui-content .main-content .welcome-agreement,
+  .ui-page-theme-fes.oobe-page .ui-content .main-content .welcome-agreement-list a,
+  .ui-page-theme-fes.oobe-page .ui-content .main-content .detail-description,
+  .platform-ios .ui-page-theme-fes.oobe-page .main-content .welcome-agreement,
+  .platform-ios .ui-page-theme-fes.oobe-page .main-content .detail-description {
+    color: var(--fes-ink-3) !important;
+  }
+  .ui-page-theme-fes.oobe-page .manual-set-datetime .value {
+    color: var(--fes-ink-1) !important;
+  }
+  /* the toggle switch — Sony fills active with #000; in dark that
+     reads as the off state. Use the accent colour instead. */
+  .ui-page-theme-fes.oobe-page .ui-flipswitch.ui-flipswitch-active {
+    background-color: var(--fes-accent) !important;
+    border-color: var(--fes-accent) !important;
+  }
+
+  /* ── DARK: settings list rows ───────────────────────────────────
+     Sony's .ui-bar-fes/.ui-body-fes/.ui-group-theme-fes selectors
+     win on specificity over modern.css's existing list-row styles.
+     Targeted overrides scoped to prefers-color-scheme:dark. */
+  .ui-bar-fes .ui-listview > .ui-li-static,
+  .ui-body-fes .ui-listview > .ui-li-static,
+  .ui-group-theme-fes .ui-listview > .ui-li-static,
+  .ui-page-theme-fes .ui-listview > .ui-li-static,
+  .ui-page-theme-fes.settings-page .ui-listview > li {
+    background-color: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1);
+  }
+  .ui-bar-fes .ui-listview > .ui-li-divider,
+  .ui-body-fes .ui-listview > .ui-li-divider,
+  .ui-group-theme-fes .ui-listview > .ui-li-divider,
+  .ui-page-theme-fes .ui-listview > .ui-li-divider {
+    color: var(--fes-ink-3) !important;
+    border-color: var(--fes-line) !important;
+    background-color: transparent !important;
+  }
+  .ui-bar-fes .ui-listview .fes-list-property-title,
+  .ui-body-fes .ui-listview .fes-list-property-title,
+  .ui-group-theme-fes .ui-listview .fes-list-property-title,
+  .ui-page-theme-fes .fes-list-property-title {
+    color: var(--fes-ink-1) !important;
+  }
+  .ui-page-theme-fes .fes-list-property-value {
+    color: var(--fes-ink-3) !important;
+  }
+  /* row separator + carat chevron */
+  .ui-bar-fes .ui-listview .ui-btn.ui-btn-icon-right.ui-icon-carat-r:after,
+  .ui-body-fes .ui-listview .ui-btn.ui-btn-icon-right.ui-icon-carat-r:after {
+    border-bottom-color: var(--fes-ink-3) !important;
+    border-left-color: var(--fes-ink-3) !important;
+  }
+  /* :active state — Sony uses #ededed which is invisible on dark surface */
+  .platform-android .ui-bar-fes .ui-listview .ui-btn:active,
+  .platform-android .ui-body-fes .ui-listview .ui-btn:active,
+  .platform-android .ui-group-theme-fes .ui-listview .ui-btn:active,
+  .platform-android .ui-page-theme-fes .ui-listview > li:active {
+    background-color: var(--fes-surface-2) !important;
+  }
+
+  /* ── DARK: edit pages ───────────────────────────────────────────
+     edit-pattern footer hardcodes bg:#fff, edit-save inherits the
+     oobe-page bg:#fff rule, pattern-select buttons hardcode #ccccd9
+     and #000. */
+  #page-edit-save {
+    background-color: var(--fes-surface-1) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area {
+    background-color: var(--fes-surface-1) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .select-content-list .content-listitem-base .content-listitem.selected {
+    border-color: var(--fes-ink-1) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .select-content-list .content-listitem-base .content-listitem .effect {
+    border-color: var(--fes-line-strong) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .footer-button-base .ui-btn.fes-button-alternative.select-btn {
+    color: var(--fes-ink-3) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .footer-button-base .ui-btn.fes-button-alternative.select-btn.selected,
+  #page-edit-pattern .footer-pattern-select-area .footer-button-base .ui-btn.fes-button-alternative.select-btn:active {
+    color: var(--fes-ink-1) !important;
+    border-color: var(--fes-ink-1) !important;
+  }
+  #page-edit-background .footer-button-base .fes-button-regular.ui-block-b {
+    color: var(--fes-ink-4) !important;  /* disabled state */
+  }
+  #page-edit-pattern .footer-pattern-select-area .adjust-filter-slider-area .edit-slider-container .center-guide {
+    background-color: var(--fes-line-strong) !important;
+  }
+  #page-edit-pattern .footer-pattern-select-area .adjust-filter-slider-area .edit-slider-container .ui-slider-popup {
+    color: var(--fes-ink-1) !important;
+    background-color: var(--fes-surface-2) !important;
+  }
+  #page-edit-select-content .content-item-container {
+    border-color: var(--fes-line) !important;
+  }
+  #page-edit-select-content .content-item figure.default {
+    background-color: var(--fes-surface-3) !important;
+  }
+
+  /* ── DARK: base-connection ─────────────────────────────────────
+     The "connect your watch" page uses .image-area .guide-image
+     with a soft #f4f4f4 background — invisible on dark. */
+  .base-connection .image-area .guide-image {
+    background-color: var(--fes-surface-2) !important;
+  }
+
+  /* ── DARK: popups / dialogs / overlays ──────────────────────────
+     Sony's .ui-overlay-fes is a backdrop layer (bg:#000) — already
+     dark, leave it. The popup container itself gets surface-0 from
+     modern.css's existing .ui-popup-container rule. Verify the
+     content area too. */
+  .ui-popup .ui-content,
+  .ui-popup-container .ui-content {
+    background: var(--fes-surface-0) !important;
+    color: var(--fes-ink-1);
+  }
+
+  /* skin-image allow-list: the e-paper preview imagery must NOT be
+     touched by any later filter/invert rules. Explicit identity
+     filter to make this a hard lock. */
+  .detail-image,
+  .skin-image,
+  .skin-images-wrapper img,
+  .aigen-watch-screen img,
+  .aigen-history-strip .h-img img,
+  .tile-img img,
+  .skin-list-window canvas {
+    filter: none;
+  }
+}

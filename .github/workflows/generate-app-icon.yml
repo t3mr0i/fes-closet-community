@@ -1,0 +1,71 @@
+name: Generate App Icon
+
+on:
+  workflow_dispatch:
+    inputs:
+      concept:
+        description: "Icon concept (free text)"
+        required: true
+        default: "an abstract emblem combining a watch silhouette with a rising sun, suggesting community and continuity"
+        type: string
+      style:
+        description: "Style preset"
+        required: false
+        default: "minimalist flat"
+        type: choice
+        options:
+          - minimalist flat
+          - geometric
+          - editorial
+          - bauhaus
+          - retro tech
+          - gradient modern
+          - line art
+      palette:
+        description: "Comma-separated hex colors (optional)"
+        required: false
+        default: ""
+        type: string
+      slug:
+        description: "Stable slug (optional, auto-generated if empty)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-app-icon
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ImageMagick
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends imagemagick
+
+      - name: Generate app icon
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ICON_CONCEPT: ${{ inputs.concept }}
+          ICON_STYLE: ${{ inputs.style }}
+          ICON_PALETTE: ${{ inputs.palette }}
+          ICON_SLUG: ${{ inputs.slug }}
+        run: node server-mirror/scripts/generate-app-icon.mjs
+
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ios-app/store-assets/icon
+          if git diff --cached --quiet; then
+            echo "No icon changes."
+            exit 0
+          fi
+          git commit -m "ios icon: ${{ inputs.concept }}"
+          git push

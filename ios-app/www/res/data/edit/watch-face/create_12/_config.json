@@ -1,0 +1,1 @@
+{"version": "<%= version %>","revision": <%= revision %>,"components":[{"type":"background","image":"bg.png","layout":{"size":[152,704]}},{"type":"watch","parts":[{"type":"analog","image":{"hour":"hour.png","min":"min.png"},"layouts":[{"rotateOrigin":[3,43],"translate":[73,<%= translateY_329 %>]},{"rotateOrigin":[3,65],"translate":[73,<%= translateY_307 %>]}]}]}]}

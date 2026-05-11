@@ -1,0 +1,10 @@
+<article id="page-edit-select-content" class="edit-page fes-fixed-page" data-role="page" data-theme="fes"><header data-role="header" data-position="fixed" data-tap-toggle="false"><button class="command-back ui-btn ui-btn-icon-left ui-icon-close fes-header-button" data-i18n="app.common.cancel">app.common.cancel</button><h1 data-i18n="edit.selectContent.title">edit.selectContent.title</h1></header><section class="fes-fixed-screen select-content-list" data-role="content"><ul class="listview-scroll-map"></ul></section></article><article><script type="text/template" id="template-select-content-listitemview"><div class="grid-layout">
+            {{#items}}
+            <div class="grid-item-container content-item-container">
+                <div class="command-content-selected fes-material-ripple grid-item content-item" data-content-key="{{key}}" data-content-index="{{index}}">
+                    <figure class="thumbnail">&nbsp;</figure>
+                    <figure class="default fade-in">&nbsp;</figure>
+                </div>
+            </div>
+            {{/items}}
+        </div></script></article>
