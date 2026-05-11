@@ -16,7 +16,7 @@ const displayName = (process.env.AI_NAME || "").trim() || concept;
 const requestedSlug = (process.env.AI_SLUG || "").trim();
 const apiKey = process.env.OPENAI_API_KEY;
 const model = process.env.OPENAI_MODEL || "gpt-image-2";
-const size = process.env.OPENAI_SIZE || "1024x3072";
+const size = process.env.OPENAI_SIZE || "1088x3264";
 
 if (!apiKey) {
   console.error("OPENAI_API_KEY is required.");
@@ -35,7 +35,7 @@ const slug = requestedSlug ? slugify(requestedSlug) : `${slugify(displayName)}-$
 
 function buildPrompt() {
   return [
-    `Design a decorative background artwork for a vertical narrow display, exact pixel size 152x704 (aspect ratio 1:4.6).`,
+    `Design a decorative background artwork for a Sony FES vertical strip. The generated canvas is 1088x3264 (1:3 portrait, the tallest supported ratio). ONLY the CENTER STRIP will be used: x=192..897, full height. That 705x3264 strip is downsampled to 152x704. Compose for that strip, not for the whole source canvas.`,
     `Style: ${style}. Mood: ${mood}.`,
     `Concept: ${concept}.`,
     ``,
@@ -45,9 +45,10 @@ function buildPrompt() {
     `- This is a BACKGROUND only. The watch overlays time, date, and battery on top — do NOT draw any of those.`,
     `- ABSOLUTELY NO watches, clocks, dials, watch faces, clock hands, hour markers, numerals, digits, time readouts, or timepieces.`,
     `- NO text, letters, numbers, logos, signatures, or watermarks.`,
-    `- FILL THE FULL CANVAS with deliberate design from edge to edge. Do NOT default to a landscape with sky on top and ground at the bottom. No horizon lines splitting the canvas in half. No empty sky. No flat region reserved as 'space for the clock'. Every region of the 152x704 must carry composition.`,
-    `- Pick a subject, pattern, or motif that occupies the full vertical strip — interlocking forms, full-bleed pattern, stacked motifs, or a tall single subject — not a horizon scene.`,
+    `- FILL THE CENTER STRIP with deliberate design from edge to edge. Do NOT default to a landscape with sky on top and ground at the bottom. No horizon lines splitting the canvas in half. No empty sky. No flat region reserved as 'space for the clock'. Every region of the final 152x704 center strip must carry composition.`,
+    `- Pick a subject, pattern, or motif that occupies the full vertical strip — interlocking forms, full-bleed pattern, stacked motifs, or a tall single subject — not a horizon scene. Overscan may continue outside the center strip, but the complete watch design must be visible inside x=192..897.`,
     `- SAFE ZONE for the time overlay: large clock digits are drawn by the watch firmware in the MIDDLE band of the canvas (roughly y=240 to y=510, the central ~38% of the height). In that middle band, use calmer texture or simpler tonal blocks so the clock reads on top. The TOP third (y<240) and BOTTOM third (y>510) carry NO overlay — put your strongest detail, focal element, and texture in those regions. Do NOT empty out the top — that is the wrong default.`,
+    `- The visible motif must bleed past the top and bottom crop edges. No blank cap above or below the artwork.`,
     `- High contrast, sharp at small render sizes (final display ~30 mm wide on the wrist).`,
     `- Edge-to-edge artwork, no white border, no padding, no frame.`,
     `Render only the artwork as a single PNG/JPEG image.`,
@@ -86,10 +87,18 @@ async function rasterize(sourceBuffer) {
   const targetPath = path.join(tmpDir, "bg.png");
   fs.writeFileSync(sourcePath, sourceBuffer);
 
-  // ImageMagick is preinstalled on github actions ubuntu-latest. -resize "WxH^" + -gravity center -extent WxH = cover-fit crop.
+  // ImageMagick is preinstalled on github actions ubuntu-latest. First crop a
+  // center strip from GPT Image 2's max 1:3 portrait canvas, then fit the
+  // final 152x704 watch raster.
   try {
     execFileSync("magick", [
       sourcePath,
+      "-gravity", "center",
+      "-crop", "705x3264+192+0",
+      "+repage",
+      "-fuzz", "4%",
+      "-trim",
+      "+repage",
       "-resize", `${WIDTH}x${HEIGHT}^`,
       "-gravity", "center",
       "-extent", `${WIDTH}x${HEIGHT}`,
@@ -102,6 +111,12 @@ async function rasterize(sourceBuffer) {
     // older ImageMagick: no `magick` wrapper, fall back to convert
     execFileSync("convert", [
       sourcePath,
+      "-gravity", "center",
+      "-crop", "705x3264+192+0",
+      "+repage",
+      "-fuzz", "4%",
+      "-trim",
+      "+repage",
       "-resize", `${WIDTH}x${HEIGHT}^`,
       "-gravity", "center",
       "-extent", `${WIDTH}x${HEIGHT}`,

@@ -605,6 +605,37 @@ button.fes-button-regular {
   box-shadow: none !important;
 }
 
+#page-edit-pattern .ui-content .edit-area {
+  position: relative;
+}
+
+#page-edit-pattern .ui-content .edit-area .watch-face-position-handle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 42px;
+  height: 42px;
+  margin: -21px 0 0 -21px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  background:
+    linear-gradient(currentColor, currentColor) 50% 13px / 1px 16px no-repeat,
+    linear-gradient(currentColor, currentColor) 13px 50% / 16px 1px no-repeat,
+    rgba(20, 20, 20, 0.58);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  pointer-events: none;
+  z-index: 3;
+  animation: watch-face-position-handle 2400ms var(--fes-ease) 600ms forwards;
+}
+
+@keyframes watch-face-position-handle {
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
 /* ---------- OOBE welcome hero polish ---------- */
 .ui-page-theme-fes.oobe-page .image-area {
   background: linear-gradient(135deg, var(--fes-surface-2) 0%, var(--fes-surface-1) 100%);

@@ -134,6 +134,253 @@
     };
   }
 
+  function installWatchFaceFreePositioning() {
+    var ns = window.FES;
+    var model = ns && ns.Model;
+    var utils = ns && ns.Utils;
+    var edit = ns && ns.View && ns.View.Edit;
+    var WatchFaceLayoutInfo = model && model.WatchFaceLayoutInfo;
+    var WatchFaceController = edit && edit.SpriteControllerWatchFace;
+    var OffscreenEditor = edit && edit.OffscreenEditor;
+    var SkinEditInfo = model && model.SkinEditInfo;
+    if (!WatchFaceLayoutInfo || !WatchFaceController) return false;
+
+    if (utils && utils.resizeImage && !utils.resizeImage.__fesAigenExact) {
+      var resizeImage = utils.resizeImage;
+      utils.resizeImage = function (src) {
+        if (window.FES_AIGEN_EXACT_BACKGROUNDS && window.FES_AIGEN_EXACT_BACKGROUNDS[src]) {
+          var df = $.Deferred();
+          setTimeout(function () { df.resolve(src); });
+          return df.promise();
+        }
+        return resizeImage.apply(this, arguments);
+      };
+      utils.resizeImage.__fesAigenExact = true;
+    }
+
+    if (SkinEditInfo && !SkinEditInfo.prototype.__fesAigenExactBackgrounds) {
+      var setModel = SkinEditInfo.prototype.setModel;
+      SkinEditInfo.prototype.setModel = function (type, layout) {
+        if (
+          type === "background" &&
+          layout &&
+          layout.src &&
+          window.FES_AIGEN_EXACT_BACKGROUNDS &&
+          window.FES_AIGEN_EXACT_BACKGROUNDS[layout.src]
+        ) {
+          layout.set({
+            translationX: 0,
+            translationY: 0,
+            scale: 1,
+            boundingScale: 1,
+            rotation: 0,
+          }, { silent: true });
+        }
+        return setModel.apply(this, arguments);
+      };
+      SkinEditInfo.prototype.__fesAigenExactBackgrounds = true;
+    }
+
+    if (OffscreenEditor && !OffscreenEditor.prototype.__fesAigenPreview) {
+      var createSkinThumbnail = OffscreenEditor.prototype.createSkinThumbnail;
+      var createSkinDetailImage = OffscreenEditor.prototype.createSkinDetailImage;
+
+      function isExactAigenBackground(editor) {
+        var src = editor &&
+          editor._editInfo &&
+          editor._editInfo.background &&
+          editor._editInfo.background.src;
+        return !!(src && window.FES_AIGEN_EXACT_BACKGROUNDS && window.FES_AIGEN_EXACT_BACKGROUNDS[src]);
+      }
+
+      function drawExactPreview(editor, width, height) {
+        var df = $.Deferred();
+        var bg = editor._editInfo.background.src;
+        var face = editor._editInfo.face && editor._editInfo.face.src;
+        var bgImg = new Image();
+        bgImg.onload = function () {
+          var canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          var ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#d7d7d7";
+          ctx.fillRect(0, 0, width, height);
+
+          var bandW = Math.min(width * 0.34, height * 0.22);
+          var bandH = Math.min(height * 0.9, bandW * 4.63);
+          var bandX = (width - bandW) / 2;
+          var bandY = (height - bandH) / 2;
+          ctx.save();
+          ctx.shadowColor = "rgba(0,0,0,0.22)";
+          ctx.shadowBlur = Math.max(6, width * 0.035);
+          ctx.shadowOffsetY = Math.max(3, height * 0.012);
+          ctx.drawImage(bgImg, bandX, bandY, bandW, bandH);
+          ctx.restore();
+
+          var circleR = bandW * 0.82;
+          var circleX = width / 2;
+          var circleY = height / 2;
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(circleX, circleY, circleR, 0, Math.PI * 2);
+          ctx.clip();
+          ctx.drawImage(bgImg, bandX, bandY, bandW, bandH);
+          ctx.restore();
+          ctx.lineWidth = Math.max(5, bandW * 0.13);
+          ctx.strokeStyle = "#222";
+          ctx.beginPath();
+          ctx.arc(circleX, circleY, circleR, 0, Math.PI * 2);
+          ctx.stroke();
+
+          if (!face) {
+            df.resolve(canvas.toDataURL("image/png"));
+            return;
+          }
+          var faceImg = new Image();
+          faceImg.onload = function () {
+            var fw = circleR * 1.45;
+            var fh = fw * (faceImg.height / Math.max(1, faceImg.width));
+            ctx.drawImage(faceImg, circleX - fw / 2, circleY - fh / 2, fw, fh);
+            df.resolve(canvas.toDataURL("image/png"));
+          };
+          faceImg.onerror = function () {
+            df.resolve(canvas.toDataURL("image/png"));
+          };
+          faceImg.src = face;
+        };
+        bgImg.onerror = function () {
+          createSkinDetailImage.call(editor).done(function (url) { df.resolve(url); }).fail(function (err) { df.reject(err); });
+        };
+        bgImg.src = bg;
+        return df.promise();
+      }
+
+      OffscreenEditor.prototype.createSkinThumbnail = function () {
+        if (isExactAigenBackground(this)) return drawExactPreview(this, 552, 882);
+        return createSkinThumbnail.apply(this, arguments);
+      };
+      OffscreenEditor.prototype.createSkinDetailImage = function () {
+        if (isExactAigenBackground(this)) return drawExactPreview(this, 444, 444);
+        return createSkinDetailImage.apply(this, arguments);
+      };
+      OffscreenEditor.prototype.__fesAigenPreview = true;
+    }
+
+    if (!WatchFaceLayoutInfo.prototype.__fesFreePositionConfig) {
+      var createConfig = WatchFaceLayoutInfo.prototype.createConfig;
+      WatchFaceLayoutInfo.prototype.createConfig = function () {
+        var config = createConfig.apply(this, arguments);
+        var dx = Math.floor(Number(this.translationX) || 0);
+        if (!config || !dx || !config.components) return config;
+
+        config.components.forEach(function (component) {
+          if (!component || component.type !== "watch" || !component.parts) return;
+          component.parts.forEach(function (part) {
+            if (!part || !part.layouts) return;
+            part.layouts.forEach(function (layout) {
+              if (layout && Array.isArray(layout.translate) && layout.translate.length > 0) {
+                layout.translate[0] += dx;
+              }
+            });
+          });
+        });
+        return config;
+      };
+      WatchFaceLayoutInfo.prototype.__fesFreePositionConfig = true;
+    }
+
+    if (!WatchFaceController.__fesFreePositionDrag) {
+      WatchFaceController.onDragMove = function () {
+        var sprite = this;
+        var controller = sprite.controller;
+        if (sprite.state !== 10 || !sprite.data) return;
+
+        var point = sprite.data.getLocalPosition(sprite.parent);
+        controller.checkGesture(
+          "[FES.View.Edit.SpriteControllerWatchFace] onDragMove(x:" +
+            point.x +
+            ", y:" +
+            point.y +
+            ")"
+        );
+        controller.setEffectSpriteState(sprite, true);
+        sprite.position.x += point.x - sprite.gestureInitTransform.position.x;
+        sprite.position.y += point.y - sprite.gestureInitTransform.position.y;
+
+        var editMetrics = model.EditMetrics || {};
+        var minX = controller.basePosition.x - (editMetrics.BACKGROUND_WIDTH || 152) / 2;
+        var maxX = controller.basePosition.x + (editMetrics.BACKGROUND_WIDTH || 152) / 2;
+        var minY = controller.basePosition.y - (editMetrics.BACKGROUND_DISTANCE_U || 372);
+        var maxY = controller.basePosition.y + (editMetrics.BACKGROUND_DISTANCE_L || 332);
+        sprite.position.x = Math.max(minX, Math.min(maxX, sprite.position.x));
+        sprite.position.y = Math.max(minY, Math.min(maxY, sprite.position.y));
+        sprite.gestureInitTransform.position = point.clone();
+      };
+
+      WatchFaceController.onDragEnd = function () {
+        var sprite = this;
+        var controller = sprite.controller;
+        controller.checkGesture("[FES.View.Edit.SpriteControllerWatchFace] onDragEnd()");
+        sprite.data = null;
+        controller.setEffectSpriteState(sprite, false);
+        if (sprite.state === 1) return;
+
+        sprite.state = 0;
+        controller.stopAnimation();
+        var threshold = (edit.UI_CONST && edit.UI_CONST.AUTO_ADJUST_THRESHOLD) || 10;
+        var dx = Math.abs(sprite.defaultTransform.position.x - sprite.position.x);
+        var dy = Math.abs(sprite.defaultTransform.position.y - sprite.position.y);
+        if (dx <= threshold && dy <= threshold) {
+          controller.toDefaultPosition();
+        }
+      };
+
+      WatchFaceController.prototype.onAnimationProc = function (animation) {
+        if (!this._face || !animation || animation.cookie !== "watch-face-controller" || !animation.amplitude) {
+          return;
+        }
+        this._face.position.x =
+          animation.start.position.x + animation.amplitude.position.x * animation.coeff;
+        this._face.position.y =
+          animation.start.position.y + animation.amplitude.position.y * animation.coeff;
+        if (animation.complete) {
+          this._face.position.x = this._face.defaultTransform.position.x;
+          this._face.position.y = this._face.defaultTransform.position.y;
+        }
+      };
+
+      WatchFaceController.prototype.toDefaultPosition = function () {
+        if (this._face.state && this._face.state !== 10) return;
+        this._face.state = 1;
+        var current = this._face.position;
+        var target = this._face.defaultTransform.position;
+        var animation = {
+          cookie: "watch-face-controller",
+          timestamp: Date.now(),
+          start: { position: current.clone() },
+          amplitude: {
+            position: new PIXI.Point(target.x - current.x, target.y - current.y),
+          },
+        };
+        this.startAnimation(animation);
+      };
+
+      WatchFaceController.__fesFreePositionDrag = true;
+    }
+
+    return true;
+  }
+
+  function waitForRuntimePatches() {
+    var attempts = 0;
+    var timer = setInterval(function () {
+      attempts += 1;
+      if (installWatchFaceFreePositioning() || attempts > 600) {
+        clearInterval(timer);
+      }
+    }, 100);
+  }
+
   function ready(fn) {
     if (document.readyState !== "loading") fn();
     else document.addEventListener("DOMContentLoaded", fn, { once: true });
@@ -141,6 +388,7 @@
 
   // Passive must run before frameworks attach handlers.
   makePassive();
+  waitForRuntimePatches();
 
   // Haptic feedback when catalog/closet skin selection changes.
   // We watch the skin-name element; when its textContent changes we trigger a
@@ -175,10 +423,23 @@
     });
   }
 
+  function bindWatchFacePositionHint() {
+    document.addEventListener("pageshow", function (ev) {
+      var page = ev.target;
+      if (!page || page.id !== "page-edit-pattern") return;
+      var editArea = page.querySelector(".edit-area");
+      if (!editArea || editArea.querySelector(".watch-face-position-handle")) return;
+      var handle = document.createElement("div");
+      handle.className = "watch-face-position-handle";
+      editArea.appendChild(handle);
+    });
+  }
+
   ready(function () {
     bindHaptics();
     bindRipples();
     bindCatalogScrollHaptics();
+    bindWatchFacePositionHint();
     wrapReloadWithTransition();
   });
 

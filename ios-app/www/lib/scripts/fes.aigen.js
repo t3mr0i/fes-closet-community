@@ -9,6 +9,9 @@
 
     var WIDTH = 152;
     var HEIGHT = 704;
+    var SOURCE_WIDTH = 1088;
+    var SOURCE_HEIGHT = 3264;
+    var CENTER_STRIP_RATIO = WIDTH / HEIGHT;
     var HISTORY_KEY = "fes-aigen-history-v1";
     var HISTORY_LIMIT = 8;
 
@@ -363,7 +366,9 @@
         // shape, a display circle, or split the canvas into zones — they are simply
         // tall narrow images.
         lines.push("PHYSICAL FORMAT (non-negotiable):");
-        lines.push("Output is a single tall narrow image, 152 px wide × 704 px tall (~1:4.6 portrait). This is the COMPLETE SKIN — printed once on the wristband surface and the round display window reveals a slice of it through glass. The hardware (round bezel + glass) is supplied by the watch itself.");
+        lines.push("The model output canvas is 1088 px wide × 3264 px tall (1:3 portrait, the tallest API-supported ratio). ONLY the CENTER STRIP will be used: x=192..897, full height. That 705×3264 strip is exactly the watch aspect ratio and is downsampled to 152×704. Compose for that strip, not for the whole source canvas.");
+        lines.push("Make the artwork continue outside that center strip as overscan, but the complete watch design must be visible inside x=192..897 from y=0..3264. Do not letterbox. Do not place the subject in a square centered composition. Do not fit the subject to the full 1088 px width.");
+        lines.push("This is the COMPLETE SKIN — printed once on the wristband surface and the round display window reveals a slice of it through glass. The hardware (round bezel + glass) is supplied by the watch itself.");
         lines.push("");
         lines.push("WHAT REAL SKINS LOOK LIKE (modeled on Sony's catalog):");
         lines.push("- A high-contrast aerial city map: streets as white lines on black, rivers, a handful of named landmarks.");
@@ -383,8 +388,9 @@
         lines.push("COMPOSITION:");
         lines.push("- Bold tonal masses beat fine detail — the final print is only ~30 mm wide on the wrist.");
         lines.push("- The watch firmware overlays clock digits in the middle ~40% of the canvas. To keep them readable, that middle band should NOT be the loudest part — but it carries the same artwork as the rest, just tonally a touch calmer. Think: an aerial city map where the middle has slightly less dense streets, or a photo where the middle is a large tonal mass rather than a point of high detail.");
-        lines.push("- Top third and bottom third of the canvas carry the strongest tonal contrast and most detail — they are the visual statement.");
+        lines.push("- Top third and bottom third of the canvas carry the strongest tonal contrast and most detail — they are the visual statement. Do not leave them white or blank.");
         lines.push("- Patterns and motifs flow continuously edge-to-edge top-to-bottom, no division into separate scenes.");
+        lines.push("- The visible motif must bleed past the top and bottom crop edges. No blank cap above or below the artwork.");
         lines.push("");
 
         if (opts.vary) {
@@ -392,7 +398,7 @@
             lines.push("");
         }
 
-        lines.push("OUTPUT: a single flat greyscale image, 152×704 px, showing the complete artwork ready to print onto the watch surface.");
+        lines.push("OUTPUT: a single flat greyscale 1088×3264 image. It must survive a center crop to 152×704 without losing top/bottom content.");
 
         return lines.join("\n");
     }
@@ -402,7 +408,7 @@
         return {
             key: s.OPENAI_API_KEY || "",
             model: s.OPENAI_MODEL || "gpt-image-2",
-            size: s.OPENAI_SIZE || "1024x3072",
+            size: s.OPENAI_SIZE || (SOURCE_WIDTH + "x" + SOURCE_HEIGHT),
             rephraseModel: s.OPENAI_REPHRASE_MODEL || "gpt-5.4-nano"
         };
     }
@@ -497,15 +503,73 @@
     /* Pure-white source for the "Empty" style — no OpenAI call needed. */
     function makeBlankWhiteSourceDataUrl() {
         var c = document.createElement("canvas");
-        c.width = 1024; c.height = 3072;
+        c.width = SOURCE_WIDTH; c.height = SOURCE_HEIGHT;
         var x = c.getContext("2d");
         x.fillStyle = "#ffffff";
         x.fillRect(0, 0, c.width, c.height);
         return c.toDataURL("image/png");
     }
 
+    function fillCanvasFromContentBounds(canvas, bounds) {
+        var source = document.createElement("canvas");
+        source.width = canvas.width;
+        source.height = canvas.height;
+        source.getContext("2d").drawImage(canvas, 0, 0);
+
+        var ctx = canvas.getContext("2d");
+        var bw = bounds.maxX - bounds.minX + 1;
+        var bh = bounds.maxY - bounds.minY + 1;
+        var sourceRatio = bw / bh;
+        var targetRatio = canvas.width / canvas.height;
+        var dx = 0, dy = 0, dw = canvas.width, dh = canvas.height;
+        if (sourceRatio > targetRatio) {
+            dw = canvas.height * sourceRatio;
+            dx = (canvas.width - dw) / 2;
+        } else {
+            dh = canvas.width / sourceRatio;
+            dy = (canvas.height - dh) / 2;
+        }
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(source, bounds.minX, bounds.minY, bw, bh, dx, dy, dw, dh);
+    }
+
+    function trimBlankMargins(canvas) {
+        var ctx = canvas.getContext("2d");
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        var data = imgData.data;
+        var minX = canvas.width, minY = canvas.height, maxX = -1, maxY = -1;
+        for (var y = 0; y < canvas.height; y++) {
+            for (var x = 0; x < canvas.width; x++) {
+                var p = (y * canvas.width + x) * 4;
+                if (data[p + 3] < 12) continue;
+                var l = 0.2126 * data[p] + 0.7152 * data[p + 1] + 0.0722 * data[p + 2];
+                if (l < 248) {
+                    if (x < minX) minX = x;
+                    if (y < minY) minY = y;
+                    if (x > maxX) maxX = x;
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        if (maxX < 0 || maxY < 0) return;
+        var pad = 2;
+        var bounds = {
+            minX: Math.max(0, minX - pad),
+            minY: Math.max(0, minY - pad),
+            maxX: Math.min(canvas.width - 1, maxX + pad),
+            maxY: Math.min(canvas.height - 1, maxY + pad)
+        };
+        var contentW = bounds.maxX - bounds.minX + 1;
+        var contentH = bounds.maxY - bounds.minY + 1;
+        if (contentW < canvas.width * 0.96 || contentH < canvas.height * 0.96) {
+            fillCanvasFromContentBounds(canvas, bounds);
+        }
+    }
+
     /* Cover-fit crop to 152x704 AND greyscale conversion in one pass. */
-    function rasterizeToWatch(sourceDataUrl) {
+    function rasterizeToWatch(sourceDataUrl, options) {
+        options = options || {};
         return new Promise(function (resolve, reject) {
             var img = new Image();
             // No crossOrigin: source is a data:URL, not a remote URL.
@@ -518,15 +582,23 @@
 
                     var sourceRatio = img.width / img.height;
                     var targetRatio = WIDTH / HEIGHT;
+                    var cropHintRatio = targetRatio;
+                    if (sourceRatio > targetRatio && sourceRatio <= 3.05) {
+                        // GPT Image 2 tops out at 1:3 in portrait. Treat that
+                        // as an overscan source and extract only the center
+                        // strip that matches the real 152x704 watch ratio.
+                        cropHintRatio = CENTER_STRIP_RATIO;
+                    }
                     var sx = 0, sy = 0, sw = img.width, sh = img.height;
-                    if (sourceRatio > targetRatio) {
-                        sw = img.height * targetRatio;
+                    if (sourceRatio > cropHintRatio) {
+                        sw = img.height * cropHintRatio;
                         sx = (img.width - sw) / 2;
                     } else {
-                        sh = img.width / targetRatio;
+                        sh = img.width / cropHintRatio;
                         sy = (img.height - sh) / 2;
                     }
                     ctx.drawImage(img, sx, sy, sw, sh, 0, 0, WIDTH, HEIGHT);
+                    if (options.trim !== false) trimBlankMargins(canvas);
 
                     /* Force pure greyscale + a touch of contrast on the
                        pixel data so the bytes that ultimately reach the
@@ -611,7 +683,7 @@
 
             // Phase 4: crop + grayscale-bake.
             setStatus("Preparing for the watch…");
-            var result = await rasterizeToWatch(sourceDataUrl);
+            var result = await rasterizeToWatch(sourceDataUrl, { trim: styleId !== "empty" });
 
             // After rasterizeToWatch the image is 152×704 monochrome PNG —
             // about 30-50 KB. DataURL is fine at this size and renders more
@@ -934,6 +1006,8 @@
         if (!state.currentDataUrl) return;
         var cb = state.onAccept;
         var dataUrl = state.currentDataUrl;
+        global.FES_AIGEN_EXACT_BACKGROUNDS = global.FES_AIGEN_EXACT_BACKGROUNDS || {};
+        global.FES_AIGEN_EXACT_BACKGROUNDS[dataUrl] = true;
         close();
         if (typeof cb === "function") cb(dataUrl);
     }
