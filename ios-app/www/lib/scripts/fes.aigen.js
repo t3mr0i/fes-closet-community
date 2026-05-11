@@ -25,6 +25,13 @@
             desc: ""
         },
         {
+            id: "empty",
+            label: "Empty",
+            // pure white tile: a clean canvas
+            img: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 160'><rect width='100' height='160' fill='%23f4f0e6'/><line x1='15' y1='40' x2='85' y2='40' stroke='%23c9c2b3' stroke-width='1.2'/><line x1='15' y1='80' x2='85' y2='80' stroke='%23c9c2b3' stroke-width='1.2'/><line x1='15' y1='120' x2='85' y2='120' stroke='%23c9c2b3' stroke-width='1.2'/></svg>",
+            desc: "completely empty white face — no design, no pattern, just clean space for the watch's overlay"
+        },
+        {
             id: "minimalist",
             label: "Minimalist",
             // calm, lots of negative space
@@ -246,6 +253,13 @@
     /* Per-style art-direction packet that goes into the structured prompt.
        Light, depth, negative space, contrast — concrete, image-makeable. */
     var STYLE_DIRECTION = {
+        empty: {
+            light:        "uniform white",
+            depth:        "no depth, completely flat",
+            negativeSpace:"100% empty white",
+            contrast:     "none — pure white",
+            extras:       "leave the entire canvas pure white with no marks, no pattern, no shading — a blank slate that the watch hardware overlays content onto"
+        },
         minimalist: {
             light:        "diffuse soft light from the upper edge",
             depth:        "essentially flat, one or two value layers",
@@ -312,6 +326,10 @@
 
         var lines = [];
 
+        // 0. Hard medium constraint FIRST — so the model bakes greyscale from pixel one.
+        lines.push("MEDIUM (absolute, non-negotiable): Pure black-and-white greyscale. 4 tones only: pure black, dark grey, light grey, pure white. No colour whatsoever. Design in tonal masses from the start — do NOT render a colour image and convert it.");
+        lines.push("");
+
         // 1. Lead with the brief.
         lines.push("THE DESIGN BRIEF (this is the main thing — render this):");
         lines.push(opts.concept);
@@ -338,20 +356,35 @@
         lines.push("This is a greyscale e-paper screen with only 4 tones: pure black, dark grey, light grey, pure white. No colour. Do not render a colour image and rely on conversion — design IN greyscale from the start, thinking in tonal blocks, not hues. Smooth gradients posterise into ugly bands; use flat tonal areas with clean tonal edges, like a screen-printed poster, a woodblock print, or a high-contrast black-and-white photograph.");
         lines.push("");
 
-        // 4. Hard physical / canvas constraints — the watch shape.
+        // 4. Physical format — based on what real Sony FES U skins actually look like.
+        // Reference: extracted bg.png from Sony's bundled skins. They are monolithic
+        // full-bleed compositions: city maps from above, photographic urban scenes,
+        // diagonal type compositions, geometric stripes. NONE of them depict a watch
+        // shape, a display circle, or split the canvas into zones — they are simply
+        // tall narrow images.
         lines.push("PHYSICAL FORMAT (non-negotiable):");
-        lines.push("The image IS the entire surface of a Sony FES Watch U, unrolled and flat. 152 px wide × 704 px tall. Three connected zones:");
-        lines.push("  • Upper strap (y=0–196), full width.");
-        lines.push("  • Watch face circle (y=196–508), full width — the design is circular but the canvas stays rectangular; corners of this zone read as background.");
-        lines.push("  • Lower strap (y=508–704), full width.");
-        lines.push("The artwork must flow continuously across all three zones, like a textile print wrapping the object. No frame, border, padding, white margin, or scene background — fill every pixel.");
+        lines.push("Output is a single tall narrow image, 152 px wide × 704 px tall (~1:4.6 portrait). This is the COMPLETE SKIN — printed once on the wristband surface and the round display window reveals a slice of it through glass. The hardware (round bezel + glass) is supplied by the watch itself.");
+        lines.push("");
+        lines.push("WHAT REAL SKINS LOOK LIKE (modeled on Sony's catalog):");
+        lines.push("- A high-contrast aerial city map: streets as white lines on black, rivers, a handful of named landmarks.");
+        lines.push("- A photographic vertical slice of an urban scene: night street, bridge above a road, building corner with strong tonal contrast.");
+        lines.push("- A bold geometric pattern: parallel stripes, dense halftone dots, a diagonal type collage of numbers or letters.");
+        lines.push("- A botanical or organic motif filling the canvas: dense leaves, a tall waterfall, falling petals, a vertical panel of waves.");
+        lines.push("Each is ONE composition top-to-bottom, no internal frames, no centre medallion, no zone divisions, no watch-shape depicted.");
+        lines.push("");
+        lines.push("DO NOT DRAW:");
+        lines.push("- A watch, clock, wristband illustration, dial, bezel, hour markers, hands, numerals.");
+        lines.push("- A circle, ring, oval, or medallion in the middle of the canvas.");
+        lines.push("- A 'time' overlay / mockup time digits.");
+        lines.push("- A frame, border, padding, white margin, or untouched negative-space region in the centre.");
         lines.push("");
 
-        // 5. Composition advice, in service of the brief.
-        lines.push("HOW TO MAKE THE BRIEF WORK ON THIS SHAPE:");
-        lines.push("- The watch firmware overlays large clock digits inside the circular face area (centred ~x=76 y=352, radius 76 px). Keep that central region readable — a calm, uniform tonal block (either solid dark or solid light) under where the time will sit. The expressive, detailed parts of the brief should land in the upper and lower strap regions.");
-        lines.push("- The watch is only 30 mm wide physically. Shapes must read clearly at thumbnail size. Bold tonal masses beat fine detail.");
-        lines.push("- No text, no digits, no clock hands, no logos — the firmware handles the time.");
+        // 5. Composition advice tied to the strip format.
+        lines.push("COMPOSITION:");
+        lines.push("- Bold tonal masses beat fine detail — the final print is only ~30 mm wide on the wrist.");
+        lines.push("- The watch firmware overlays clock digits in the middle ~40% of the canvas. To keep them readable, that middle band should NOT be the loudest part — but it carries the same artwork as the rest, just tonally a touch calmer. Think: an aerial city map where the middle has slightly less dense streets, or a photo where the middle is a large tonal mass rather than a point of high detail.");
+        lines.push("- Top third and bottom third of the canvas carry the strongest tonal contrast and most detail — they are the visual statement.");
+        lines.push("- Patterns and motifs flow continuously edge-to-edge top-to-bottom, no division into separate scenes.");
         lines.push("");
 
         if (opts.vary) {
@@ -449,7 +482,7 @@
                 "Authorization": "Bearer " + sec.key,
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ model: sec.model, prompt: promptText, size: sec.size, quality: "high", n: 1 })
+            body: JSON.stringify({ model: sec.model, prompt: promptText, size: sec.size, quality: "low", n: 1 })
         });
         if (!res.ok) {
             var errText = await res.text();
@@ -461,11 +494,21 @@
         return "data:image/png;base64," + b64;
     }
 
+    /* Pure-white source for the "Empty" style — no OpenAI call needed. */
+    function makeBlankWhiteSourceDataUrl() {
+        var c = document.createElement("canvas");
+        c.width = 1024; c.height = 3072;
+        var x = c.getContext("2d");
+        x.fillStyle = "#ffffff";
+        x.fillRect(0, 0, c.width, c.height);
+        return c.toDataURL("image/png");
+    }
+
     /* Cover-fit crop to 152x704 AND greyscale conversion in one pass. */
     function rasterizeToWatch(sourceDataUrl) {
         return new Promise(function (resolve, reject) {
             var img = new Image();
-            img.crossOrigin = "anonymous";
+            // No crossOrigin: source is a data:URL, not a remote URL.
             img.onload = function () {
                 try {
                     var canvas = document.createElement("canvas");
@@ -501,8 +544,13 @@
 
                     canvas.toBlob(function (blob) {
                         if (!blob) { reject(new Error("Could not encode PNG")); return; }
+                        // Object URL is cheaper than a multi-MB base64 data URL
+                        // and iOS WKWebView renders it reliably.
+                        var objectUrl = URL.createObjectURL(blob);
                         var reader = new FileReader();
-                        reader.onload = function () { resolve({ dataUrl: reader.result, blob: blob }); };
+                        reader.onload = function () {
+                            resolve({ dataUrl: reader.result, objectUrl: objectUrl, blob: blob });
+                        };
                         reader.readAsDataURL(blob);
                     }, "image/png");
                 } catch (err) { reject(err); }
@@ -523,7 +571,9 @@
         var styleLabel = currentStyleLabel();
         var mood = modal.querySelector("#aigen-mood").value;
 
-        if (!rawConcept) { setStatus("Describe what you want first.", "error"); return; }
+        if (!rawConcept && styleId !== "empty") {
+            setStatus("Describe what you want first.", "error"); return;
+        }
 
         goBtn.disabled = true; acceptBtn.disabled = true;
         var preview = modal.querySelector("#aigen-preview");
@@ -532,29 +582,40 @@
         if (screen) screen.classList.add("is-loading");
 
         try {
-            // Phase 1: rephrase the user's concept into a vivid brief.
-            // Cheap (gpt-5.4-nano), ~1-2s, dramatically improves image quality.
-            setStatus("Refining your concept…");
-            var refinedConcept = await rephraseConcept(rawConcept, styleLabel, mood);
-            console.log("[aigen] rephrased:", JSON.stringify(refinedConcept));
+            var sourceDataUrl;
+            var refinedConcept;
 
-            // Phase 2: build the structured art-direction prompt around it.
-            var promptText = structuredPrompt({
-                concept: refinedConcept,
-                styleId: styleId,
-                styleLabel: styleLabel,
-                mood: mood,
-                vary: varyOnly
-            });
+            // Empty face: skip OpenAI entirely, paint a pure white canvas.
+            if (styleId === "empty") {
+                setStatus("Preparing blank face…");
+                refinedConcept = "(empty face)";
+                sourceDataUrl = makeBlankWhiteSourceDataUrl();
+            } else {
+                // Phase 1: rephrase the user's concept into a vivid brief.
+                setStatus("Refining your concept…");
+                refinedConcept = await rephraseConcept(rawConcept, styleLabel, mood);
 
-            // Phase 3: image generation.
-            setStatus("Generating your design (~20s)…");
-            var sourceDataUrl = await callOpenAI(promptText);
+                // Phase 2: build the structured art-direction prompt around it.
+                var promptText = structuredPrompt({
+                    concept: refinedConcept,
+                    styleId: styleId,
+                    styleLabel: styleLabel,
+                    mood: mood,
+                    vary: varyOnly
+                });
+
+                // Phase 3: image generation.
+                setStatus("Generating your design (~20s)…");
+                sourceDataUrl = await callOpenAI(promptText);
+            }
 
             // Phase 4: crop + grayscale-bake.
             setStatus("Preparing for the watch…");
             var result = await rasterizeToWatch(sourceDataUrl);
 
+            // After rasterizeToWatch the image is 152×704 monochrome PNG —
+            // about 30-50 KB. DataURL is fine at this size and renders more
+            // reliably than blob: URLs across WKWebView versions.
             preview.innerHTML =
                 '<div class="aigen-watch"><div class="aigen-watch-screen"><img src="' + result.dataUrl + '" alt=""></div></div>';
             preview.classList.add("has-image");
@@ -787,14 +848,17 @@
     async function submitToCommunity() {
         var modal = state.modal;
         var btn = modal.querySelector("#aigen-submit");
-        if (!state.currentDataUrl) return;
+        if (!state.currentDataUrl) {
+            setStatus("Generate a design first, then share.", "error");
+            return;
+        }
 
         var sec = global.FES_SECRETS || {};
         var token = sec.GITHUB_SUBMISSION_TOKEN;
         var repo = sec.GITHUB_SUBMISSION_REPO || "t3mr0i/fes-closet-community";
         var branch = sec.GITHUB_SUBMISSION_BRANCH || "main";
         if (!isPromptKey(token)) {
-            setStatus("Submission not configured — token missing.", "error");
+            setStatus("Submission not configured — GITHUB_SUBMISSION_TOKEN missing or placeholder.", "error");
             return;
         }
 
